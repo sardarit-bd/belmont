@@ -79,12 +79,6 @@ Create the database manually (e.g. `belmont`) before running migrations.
 php artisan migrate
 ```
 
-(Optional: if seeders exist)
-
-```bash
-php artisan db:seed
-```
-
 ---
 
 ### 7. Build Frontend Assets
