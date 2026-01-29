@@ -24,6 +24,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->configureDefaults();
+        \Filament\Resources\Pages\CreateRecord::disableCreateAnother();
     }
 
     protected function configureDefaults(): void
