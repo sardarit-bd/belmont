@@ -23,7 +23,7 @@ class OrderResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-truck';
 
-    protected static string | UnitEnum | null $navigationGroup = 'Order Section';
+    protected static string | UnitEnum | null $navigationGroup = 'Orders Section';
     protected static ?int $navigationSort = 1;
 
     public static function form(Schema $schema): Schema

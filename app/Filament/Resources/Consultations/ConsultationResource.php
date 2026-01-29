@@ -15,12 +15,16 @@ use App\Filament\Resources\Consultations\Pages\ListConsultations;
 use App\Filament\Resources\Consultations\Pages\CreateConsultation;
 use App\Filament\Resources\Consultations\Schemas\ConsultationForm;
 use App\Filament\Resources\Consultations\Tables\ConsultationsTable;
+use UnitEnum;
 
 class ConsultationResource extends Resource
 {
     protected static ?string $model = Consultation::class;
 
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-briefcase';
+
+    protected static string | UnitEnum | null $navigationGroup = 'Services Section';
+    protected static ?int $navigationSort = 2;
 
     public static function form(Schema $schema): Schema
     {

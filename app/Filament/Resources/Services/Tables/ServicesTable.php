@@ -23,7 +23,9 @@ class ServicesTable
                     ->searchable(),
                 TextColumn::make('slug')
                     ->searchable(),
-                ImageColumn::make('image_path'),
+                ImageColumn::make('image_path')
+                    ->circular()
+                    ->label('Image'),
                 IconColumn::make('is_active')
                     ->boolean(),
                 TextColumn::make('created_at')
