@@ -7,7 +7,7 @@
    1. GLOBAL LAYOUT & BACKGROUNDS
    ========================================= */
 .fi-main-ctn {
-    background-color: #F9FAFB; /* Light gray to make white cards pop */
+    background-color: #F9FAFB; 
 }
 
 .fi-simple-main-ctn {
@@ -29,21 +29,29 @@
 .fi-topbar-open-sidebar-btn,
 .fi-topbar .fi-dropdown-trigger,
 .fi-topbar .fi-topbar-item {
-    color: #4B5563 !important; /* Indigo-Gray */
+    color: #4B5563 !important;
 }
 
 .fi-topbar-open-sidebar-btn:hover,
 .fi-topbar .fi-dropdown-trigger:hover,
 .fi-topbar .fi-topbar-item:hover {
-    color: #9007EE !important; /* Brand Purple */
+    color: #9007EE !important;
 }
 
 /* =========================================
    3. SIDEBAR (NAVIGATION)
    ========================================= */
 .fi-sidebar {
-    background-color: #FDF9FF !important; /* Very light lavender tint */
+    background-color: #FDF9FF !important;
     border-right: 1px solid #F3E8FF;
+    width: 16rem !important;
+}
+
+/* Adjust main content area to compensate */
+@media (min-width: 1024px) {
+    .fi-sidebar-open .fi-main {
+        margin-inline-start: 16rem !important;
+    }
 }
 
 .fi-sidebar-header-logo-ctn {
@@ -60,13 +68,20 @@
     border-top: 1px solid #F3E8FF;
 }
 
+/* REDUCE GAP BETWEEN GROUPS */
+.fi-sidebar-nav-groups {
+    gap: 0.5rem !important; 
+}
+
 /* --- Sidebar Item States --- */
 
-/* Default State */
+/* Default Item Spacing */
 .fi-sidebar-item-btn {
     transition: all 0.2s ease-in-out;
     border-radius: 0.5rem;
     margin: 0 0.5rem;
+    padding-top: 0.35rem !important;  
+    padding-bottom: 0.35rem !important; 
 }
 
 .fi-sidebar-item-label, 
@@ -74,7 +89,7 @@
     color: #4B5563 !important;
 }
 
-/* Unified Hover State (Fixes separate icon/text hover) */
+/* Unified Hover State */
 .fi-sidebar-item-btn:hover {
     background-color: rgba(144, 7, 238, 0.08) !important;
 }
@@ -95,11 +110,25 @@
     font-weight: 600;
 }
 
+/* TIGHTEN GROUP LABEL TO ITEMS GAP */
+.fi-sidebar-group-btn {
+    padding-top: 0.25rem !important;
+    padding-bottom: 0.25rem !important; /* Shrinks the label container height */
+    min-height: 0px !important;
+}
+
 .fi-sidebar-group-label {
     color: #9CA3AF !important;
     text-transform: uppercase;
     font-size: 0.75rem;
     letter-spacing: 0.05em;
+}
+
+.fi-sidebar-group-items {
+    margin-top: -4px !important; /* Pulls the items list up toward the label */
+    display: flex;
+    flex-direction: column;
+    gap: 2px; /* Gap between items inside the group */
 }
 
 /* =========================================
@@ -114,7 +143,7 @@
     border-color: #9007EE !important;
 }
 
-/* Custom Auth Panel for the Dry Cleaning Brand */
+/* Custom Auth Panel */
 .custom-auth-form-panel {
     background: white;
     border: 1px solid #F3E8FF;
@@ -127,6 +156,6 @@
     border-color: #9007EE !important;
 }
 
-.fi-main,  .fi-width-7xl {
+.fi-main, .fi-width-7xl {
     max-width: none !important;
 }

@@ -17,25 +17,30 @@ class ConsultationsTable
     {
         return $table
             ->columns([
-                TextColumn::make('id')
-                    ->label('ID')
-                    ->searchable(),
-                TextColumn::make('user.name')
-                    ->searchable(),
+                // TextColumn::make('id')
+                //     ->label('ID')
+                //     ->searchable(),
+                // TextColumn::make('user.name')
+                //     ->searchable(),
                 TextColumn::make('full_name')
+                    ->label('Full Name')
                     ->searchable(),
                 TextColumn::make('company_name')
+                    ->label('Company Name')
                     ->searchable(),
                 TextColumn::make('email')
-                    ->label('Email address')
+                    ->label('Email Address')
                     ->searchable(),
                 TextColumn::make('phone')
                     ->searchable(),
                 TextColumn::make('service_type')
+                    ->label('Service Type')
                     ->searchable(),
                 TextColumn::make('estimated_item_count')
+                    ->label('Estimated Item Count')
                     ->searchable(),
                 TextColumn::make('event_date')
+                    ->label('Event Date')
                     ->date()
                     ->sortable(),
                 TextColumn::make('status')

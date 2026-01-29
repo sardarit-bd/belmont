@@ -13,12 +13,16 @@ use App\Filament\Resources\Services\Pages\ListServices;
 use App\Filament\Resources\Services\Pages\CreateService;
 use App\Filament\Resources\Services\Schemas\ServiceForm;
 use App\Filament\Resources\Services\Tables\ServicesTable;
+use UnitEnum;
 
 class ServiceResource extends Resource
 {
     protected static ?string $model = Service::class;
 
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-wrench-screwdriver';
+
+    protected static string | UnitEnum | null $navigationGroup = 'Services Section';
+    protected static ?int $navigationSort = 1;
 
     public static function form(Schema $schema): Schema
     {
