@@ -17,9 +17,9 @@ class AddressesTable
     {
         return $table
             ->columns([
-                TextColumn::make('id')
-                    ->label('ID')
-                    ->searchable(),
+                // TextColumn::make('id')
+                //     ->label('ID')
+                //     ->searchable(),
                 TextColumn::make('user.name')
                     ->searchable(),
                 TextColumn::make('type')

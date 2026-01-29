@@ -18,12 +18,12 @@ class UsersTable
     {
         return $table
             ->columns([
-                TextColumn::make('id')
-                    ->label('ID')
+                // TextColumn::make('id')
+                //     ->label('ID')
+                //     ->searchable(),
+                TextColumn::make('name')
                     ->searchable(),
                 TextColumn::make('role.name')
-                    ->searchable(),
-                TextColumn::make('name')
                     ->searchable(),
                 TextColumn::make('email')
                     ->label('Email address')
