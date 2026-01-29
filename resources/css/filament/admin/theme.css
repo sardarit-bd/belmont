@@ -1,0 +1,132 @@
+@import '../../../../vendor/filament/filament/resources/css/theme.css';
+
+@source '../../../../app/Filament/**/*';
+@source '../../../../resources/views/filament/**/*';
+
+/* =========================================
+   1. GLOBAL LAYOUT & BACKGROUNDS
+   ========================================= */
+.fi-main-ctn {
+    background-color: #F9FAFB; /* Light gray to make white cards pop */
+}
+
+.fi-simple-main-ctn {
+    @apply bg-gradient-to-br from-purple-50 to-white;
+}
+
+.fi-main .fi-width-7xl {
+    max-width: none !important;
+}
+
+/* =========================================
+   2. TOPBAR (HEADER) 
+   ========================================= */
+.fi-topbar {
+    background-color: #FFFFFF !important;
+    border-bottom: 1px solid #F3E8FF;
+}
+
+.fi-topbar-open-sidebar-btn,
+.fi-topbar .fi-dropdown-trigger,
+.fi-topbar .fi-topbar-item {
+    color: #4B5563 !important; /* Indigo-Gray */
+}
+
+.fi-topbar-open-sidebar-btn:hover,
+.fi-topbar .fi-dropdown-trigger:hover,
+.fi-topbar .fi-topbar-item:hover {
+    color: #9007EE !important; /* Brand Purple */
+}
+
+/* =========================================
+   3. SIDEBAR (NAVIGATION)
+   ========================================= */
+.fi-sidebar {
+    background-color: #FDF9FF !important; /* Very light lavender tint */
+    border-right: 1px solid #F3E8FF;
+}
+
+.fi-sidebar-header-logo-ctn {
+    @apply border-b border-purple-50;
+    padding-bottom: 1rem;
+}
+
+.fi-logo {
+    color: #9007EE !important;
+    font-weight: 800;
+}
+
+.fi-sidebar-nav {
+    border-top: 1px solid #F3E8FF;
+}
+
+/* --- Sidebar Item States --- */
+
+/* Default State */
+.fi-sidebar-item-btn {
+    transition: all 0.2s ease-in-out;
+    border-radius: 0.5rem;
+    margin: 0 0.5rem;
+}
+
+.fi-sidebar-item-label, 
+.fi-sidebar-item-icon {
+    color: #4B5563 !important;
+}
+
+/* Unified Hover State (Fixes separate icon/text hover) */
+.fi-sidebar-item-btn:hover {
+    background-color: rgba(144, 7, 238, 0.08) !important;
+}
+
+.fi-sidebar-item-btn:hover .fi-sidebar-item-icon,
+.fi-sidebar-item-btn:hover .fi-sidebar-item-label {
+    color: #9007EE !important;
+}
+
+/* Active State */
+.fi-sidebar-item.fi-active > .fi-sidebar-item-btn {
+    background-color: #F3E8FF !important;
+}
+
+.fi-sidebar-item.fi-active .fi-sidebar-item-icon,
+.fi-sidebar-item.fi-active .fi-sidebar-item-label {
+    color: #9007EE !important;
+    font-weight: 600;
+}
+
+.fi-sidebar-group-label {
+    color: #9CA3AF !important;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+}
+
+/* =========================================
+   4. FORM ELEMENTS & COMPONENTS
+   ========================================= */
+.fi-wi-stats-overview-stat {
+    border: 1px solid #F3E8FF;
+}
+
+.fi-checkbox-input:checked {
+    background-color: #9007EE !important;
+    border-color: #9007EE !important;
+}
+
+/* Custom Auth Panel for the Dry Cleaning Brand */
+.custom-auth-form-panel {
+    background: white;
+    border: 1px solid #F3E8FF;
+    box-shadow: 0 10px 15px -3px rgba(144, 7, 238, 0.1);
+}
+
+/* Input Focus States */
+.fi-input-wrp:focus-within {
+    box-shadow: 0 0 0 2px #F3E8FF !important;
+    border-color: #9007EE !important;
+}
+
+.fi-main,  .fi-width-7xl {
+    max-width: none !important;
+}
