@@ -10,6 +10,18 @@ Route::get('/', function () {
     ]);
 })->name('home');
 
+Route::get('/schedule', function () {
+    return Inertia::render('schedule');
+});
+
+Route::get('/checkrate', function () {
+    return Inertia::render('Checkrate');
+});
+
+Route::get('/luxury', function () {
+    return Inertia::render('Luxury');
+});
+
 Route::get('dashboard', function () {
     return Inertia::render('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
