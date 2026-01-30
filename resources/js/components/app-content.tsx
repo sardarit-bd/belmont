@@ -12,8 +12,7 @@ export function AppContent({ variant = 'header', children, ...props }: Props) {
 
     return (
         <main
-            className="mx-auto flex h-full w-full max-w-7xl flex-1 flex-col gap-4 rounded-xl"
-            {...props}
+            className="bg-gradient-to-br from-pink-100 via-teal-50 to-pink-100"
         >
             {children}
         </main>
