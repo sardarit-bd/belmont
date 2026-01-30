@@ -7,8 +7,7 @@ export default function Services() {
     const services = [
         {
             icon: (
-                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-shirt w-8 h-8 text-purple-600 group-hover:text-white transition-all duration-500 group-hover:scale-110" aria-hidden="true"><path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"></path>
                 </svg>
             ),
             title: "Dry Cleaning",
@@ -28,8 +27,7 @@ export default function Services() {
         },
         {
             icon: (
-                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-sparkles w-8 h-8 text-purple-600 group-hover:text-white transition-all duration-500 group-hover:scale-110" aria-hidden="true"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"></path><path d="M20 2v4"></path><path d="M22 4h-4"></path><circle cx="4" cy="20" r="2"></circle>
                 </svg>
             ),
             title: "Wash & Fold",
@@ -49,10 +47,7 @@ export default function Services() {
         },
         {
             icon: (
-                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z" />
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.879 16.121A3 3 0 1012.015 11L11 14H9c0 .768.293 1.536.879 2.121z" />
-                </svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-flame w-8 h-8 text-purple-600 group-hover:text-white transition-all duration-500 group-hover:scale-110" aria-hidden="true"><path d="M12 3q1 4 4 6.5t3 5.5a1 1 0 0 1-14 0 5 5 0 0 1 1-3 1 1 0 0 0 5 0c0-2-1.5-3-1.5-5q0-2 2.5-4"></path></svg>
             ),
             title: "Pressing & Ironing",
             description: "Professional pressing and ironing services to keep your clothes crisp and wrinkle-free.",
@@ -71,9 +66,7 @@ export default function Services() {
         },
         {
             icon: (
-                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.121 14.121L19 19m-7-7l7-7m-7 7l-2.879 2.879M12 12L9.121 9.121m0 5.758a3 3 0 10-4.243 4.243 3 3 0 004.243-4.243zm0-5.758a3 3 0 10-4.243-4.243 3 3 0 004.243 4.243z" />
-                </svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-wind w-8 h-8 text-purple-600 group-hover:text-white transition-all duration-500 group-hover:scale-110" aria-hidden="true"><path d="M12.8 19.6A2 2 0 1 0 14 16H2"></path><path d="M17.5 8a2.5 2.5 0 1 1 2 4H2"></path><path d="M9.8 4.4A2 2 0 1 1 11 8H2"></path></svg>
             ),
             title: "Alterations",
             description: "Expert tailoring and alterations to ensure your clothes fit perfectly every time.",
@@ -92,8 +85,7 @@ export default function Services() {
         },
         {
             icon: (
-                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-droplets w-8 h-8 text-purple-600 group-hover:text-white transition-all duration-500 group-hover:scale-110" aria-hidden="true"><path d="M7 16.3c2.2 0 4-1.83 4-4.05 0-1.16-.57-2.26-1.71-3.19S7.29 6.75 7 5.3c-.29 1.45-1.14 2.84-2.29 3.76S3 11.1 3 12.25c0 2.22 1.8 4.05 4 4.05z"></path><path d="M12.56 6.6A10.97 10.97 0 0 0 14 3.02c.5 2.5 2 4.9 4 6.5s3 3.5 3 5.5a6.98 6.98 0 0 1-11.91 4.97"></path>
                 </svg>
             ),
             title: "Stain Removal",
@@ -113,9 +105,7 @@ export default function Services() {
         },
         {
             icon: (
-                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-                </svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-package w-8 h-8 text-purple-600 group-hover:text-white transition-all duration-500 group-hover:scale-110" aria-hidden="true"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"></path><path d="M12 22V12"></path><polyline points="3.29 7 12 12 20.71 7"></polyline><path d="m7.5 4.27 9 5.15"></path></svg>
             ),
             title: "Pickup & Delivery",
             description: "Convenient pickup and delivery service at your convenience. Schedule online in minutes.",
@@ -136,11 +126,11 @@ export default function Services() {
 
     return (
         <>
-            <section className="py-20 scroll-mt-8" id='services'>
-                <div className="max-w-7xl mx-auto px-6 lg:px-8">
+            <section className="py-20 scroll-mt-8 bg-gradient-to-b from-white to-purple-50/50" id='services'>
+                <div className="container mx-auto px-6 lg:px-8">
                     {/* Header */}
                     <div className="text-center mb-16">
-                        <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
+                        <h2 className="text-4xl lg:text-5xl text-gray-900 mb-4 font-serif">
                             Our Services
                         </h2>
                         <p className="text-lg text-gray-600 max-w-3xl mx-auto">
@@ -152,39 +142,40 @@ export default function Services() {
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                         {services.map((service, index) => (
                             <div
-                                key={index}
-                                onClick={() => setSelectedService(service)}
-                                className="group bg-white hover:bg-gradient-to-br hover:from-purple-600 hover:to-purple-700 rounded-2xl p-8 shadow-sm hover:shadow-2xl transition-all duration-300 cursor-pointer"
+                            key={index}
+                            onClick={() => setSelectedService(service)}
+                            className="group relative bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 cursor-pointer overflow-hidden border border-gray-100 hover:border-purple-200"
                             >
+                            <div className="absolute inset-0 bg-gradient-to-br from-purple-500 to-purple-700 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+
+                            <div className="relative z-10">
                                 {/* Icon */}
-                                <div className="bg-purple-100 group-hover:bg-white/20 w-16 h-16 rounded-2xl flex items-center justify-center mb-6 text-purple-600 group-hover:text-white transition-all ">
-                                    {service.icon}
+                                <div className="w-16 h-16 bg-purple-100 group-hover:bg-white/20 rounded-xl flex items-center justify-center mb-6 transition-all duration-500 group-hover:scale-110 group-hover:rotate-6 text-purple-600 group-hover:text-white">
+                                {service.icon}
                                 </div>
 
                                 {/* Title */}
-                                <h3 className="text-xl font-bold text-gray-900 group-hover:text-white mb-3 transition-colors">
-                                    {service.title}
+                                <h3 className="mb-3 group-hover:text-white transition-colors duration-500">
+                                {service.title}
                                 </h3>
 
                                 {/* Description */}
-                                <p className="text-gray-600 group-hover:text-white/90 leading-relaxed mb-4 transition-colors">
-                                    {service.description}
+                                <p className="text-gray-600 group-hover:text-white/90 transition-colors duration-500 mb-4">
+                                {service.description}
                                 </p>
 
                                 {/* Learn More Link */}
-                                <div className="flex items-center text-purple-600 group-hover:text-white font-semibold transition-colors">
-                                    <span>Learn more</span>
-                                    <svg
-                                        className="w-5 h-5 ml-2 transform group-hover:translate-x-1 transition-transform"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        viewBox="0 0 24 24"
-                                    >
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                                    </svg>
+                                <div class="mt-6 flex items-center gap-2 text-purple-600 group-hover:text-white opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-x-0 group-hover:translate-x-2"><span>Learn more</span><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                                 </div>
                             </div>
+                            </div>
                         ))}
+                    </div>
+                    <div class="text-center mt-16">
+                        <p class="text-gray-600 mb-6">Need a custom service? We're here to help!</p>
+
+                        <a href="#contact" class="inline-flex items-center gap-2 bg-purple-600 text-white px-8 py-3 rounded-lg hover:bg-purple-700 transition-colors duration-300 shadow-lg hover:shadow-xl"><span>Contact Us</span><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                        </a>
                     </div>
                 </div>
             </section>

@@ -2,19 +2,23 @@ import { Link } from '@inertiajs/react';
 import { LuSparkles  } from "react-icons/lu";
 export default function HeroSection() {
     return (
-        <section className="w-full py-16 lg:pb-24 pt-30" animation="fade-up">
+        <section className="w-full py-10 lg:pb-24 pt-5 bg-gradient-to-l from-pink-50 via-white to-gray-50/10" animation="fade-up">
             <div className="max-w-7xl mx-auto px-6 lg:px-8">
+                <div class="absolute inset-0 overflow-hidden pointer-events-none">
+                    <div class="absolute top-20 -left-20 w-96 h-96 bg-gradient-to-br from-purple-400/20 to-pink-400/20 rounded-full blur-3xl"></div>
+                    <div class="absolute top-20 -right-20 w-[500px] h-[500px] bg-gradient-to-br from-pink-400/20 to-purple-400/20 rounded-full blur-3xl"></div>
+                </div>
                 <div className="grid lg:grid-cols-2 gap-16 items-center">
                     {/* Left Content */}
                     <div className="space-y-8">
                         {/* Trust Badge */}
-                        <div className="py-2 flex items-center inline-flex gap-2 text-purple-600 border border-purple-600 rounded-full px-2 py-0.5 h bg-gradient-to-br from-pink-50 to-pink-70 hover:scale-105 transition-all">
+                        <div className="px-4 py-2 flex items-center inline-flex gap-2 text-purple-600 rounded-full px-2 py-0.5 h bg-[#F8E7F9] hover:scale-105 transition-all">
                             <LuSparkles />
-                            <span className="text-sm font-medium">Trusted by 1000+ Happy Customers</span>
+                            <span className="text-md font-medium">Trusted by 1000+ Happy Customers</span>
                         </div>
 
                         {/* Main Heading */}
-                        <h1 className="text-2xl lg:text-3xl font-bold text-purple-600 leading-tight">
+                        <h1 className="text-2xl lg:text-[17px] text-purple-600 leading-tight">
                             Professional Dry Cleaning & Laundry Services
                         </h1>
 
@@ -27,14 +31,14 @@ export default function HeroSection() {
                         <div className="flex flex-wrap gap-4">
                             <Link
                                 href="/schedule-pickup"
-                                className="inline-block bg-purple-600 hover:bg-purple-700 text-white px-8 py-3.5 rounded-lg font-semibold transition-all shadow-md hover:shadow-lg"
+                                className="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive text-primary-foreground hover:bg-primary/90 h-10 rounded-md px-6 has-[>svg]:px-4 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 shadow-lg hover:shadow-xl transition-all duration-300"
                             >
                                 Schedule Pickup
                             </Link>
                             <Link
                                 href="/luxury"
-                                className="inline-block bg-white hover:bg-gray-50 text-purple-600 px-8 py-3.5 rounded-lg font-semibold border-2 border-purple-600 transition-all"
-                            >
+                                className="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium disabled:pointer-events-none disabled:opacity-50 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive bg-background dark:bg-input/30 h-10 rounded-md px-6 border-2 border-purple-600 dark:border-purple-600 text-purple-600 hover:bg-purple-600 hover:text-white dark:hover:bg-purple-600 transition-all duration-300"
+                                >
                                 Luxury & Enterprise
                             </Link>
                         </div>
@@ -48,30 +52,26 @@ export default function HeroSection() {
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                                     </svg>
                                 </div>
-                                <h3 className="font-bold text-gray-900 mb-1 text-sm">24hr Service</h3>
-                                <p className="text-xs text-gray-600">Fast turnaround</p>
+                                <h3 className="text-sm md:text-base">24hr Service</h3>
+                                <p className="text-xs md:text-sm text-gray-600">Fast turnaround</p>
                             </div>
 
                             {/* Certified */}
                             <div className="text-center">
-                                <div className="bg-pink-100 w-15 h-15 rounded-full flex items-center justify-center mx-auto mb-4">
-                                    <svg className="w-10 h-10 text-pink-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
-                                    </svg>
+                                <div className="bg-pink-100 w-15 h-15 rounded-lg flex items-center justify-center mx-auto mb-4">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-award w-6 h-6 md:w-7 md:h-7 text-pink-600" aria-hidden="true"><path d="m15.477 12.89 1.515 8.526a.5.5 0 0 1-.81.47l-3.58-2.687a1 1 0 0 0-1.197 0l-3.586 2.686a.5.5 0 0 1-.81-.469l1.514-8.526"></path><circle cx="12" cy="8" r="6"></circle></svg>
                                 </div>
-                                <h3 className="font-bold text-gray-900 mb-1 text-sm">Certified</h3>
-                                <p className="text-xs text-gray-600">Expert care</p>
+                                <h3 className="text-sm md:text-base">Certified</h3>
+                                <p className="text-xs md:text-sm text-gray-600">Expert care</p>
                             </div>
 
                             {/* Guaranteed */}
                             <div className="text-center">
-                                <div className="bg-blue-100 w-15 h-15 rounded-full flex items-center justify-center mx-auto mb-4">
-                                    <svg className="w-10 h-10 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5" />
-                                    </svg>
+                                <div className="bg-blue-100 w-15 h-15 rounded-lg flex items-center justify-center mx-auto mb-4">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-thumbs-up w-6 h-6 md:w-7 md:h-7 text-indigo-600" aria-hidden="true"><path d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2a3.13 3.13 0 0 1 3 3.88Z"></path><path d="M7 10v12"></path></svg>
                                 </div>
-                                <h3 className="font-bold text-gray-900 mb-1 text-sm">Guaranteed</h3>
-                                <p className="text-xs text-gray-600">100% satisfaction</p>
+                                <h3 className="text-sm md:text-base">Guaranteed</h3>
+                                <p className="text-xs md:text-sm text-gray-600">100% satisfaction</p>
                             </div>
                         </div>
                     </div>
@@ -88,14 +88,10 @@ export default function HeroSection() {
 
                         {/* Rating Badge */}
                         <div className="absolute -bottom-6 -right-6 bg-white rounded-2xl shadow-2xl p-5 flex items-center gap-4 border border-gray-100">
-                            <div className="bg-purple-600 w-14 h-14 rounded-full flex items-center justify-center flex-shrink-0">
-                                <svg className="w-7 h-7 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                </svg>
-                            </div>
+                            <div class="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-sparkles w-5 h-5 md:w-6 md:h-6 text-white" aria-hidden="true"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"></path><path d="M20 2v4"></path><path d="M22 4h-4"></path><circle cx="4" cy="20" r="2"></circle></svg></div>
                             <div>
-                                <div className="text-3xl font-bold text-gray-900 leading-none mb-1">4.9★</div>
-                                <div className="text-sm text-gray-600 font-medium">Customer Rating</div>
+                                <div className="text-xl md:text-2xl bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">4.9★</div>
+                                <div className="text-xs md:text-sm text-gray-600">Customer Rating</div>
                             </div>
                         </div>
                     </div>

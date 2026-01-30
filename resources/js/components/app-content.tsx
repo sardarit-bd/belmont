@@ -12,7 +12,7 @@ export function AppContent({ variant = 'header', children, ...props }: Props) {
 
     return (
         <main
-            className="bg-gradient-to-br from-pink-100 via-teal-50 to-pink-100"
+            className=""
         >
             {children}
         </main>

@@ -6,7 +6,7 @@ export default function CheckRates() {
     const [isCartOpen, setIsCartOpen] = useState(false);
 
     const [expandedCategories, setExpandedCategories] = useState({
-        shirts: true,
+        shirts: false,
         polos: false,
         bottoms: false,
         tops: false,
@@ -14,19 +14,19 @@ export default function CheckRates() {
 
     const services = {
         shirts: [
-            { id: 1, name: "Shirt (Hanger)", price: 5.5 },
-            { id: 2, name: "Shirt (Box)", price: 6.0 },
-            { id: 3, name: "Shirt (Laundry)", price: 4.45 },
+            { id: 1, name: "Shirt (Hanger)", price: 5.5, description: "test" },
+            { id: 2, name: "Shirt (Box)", price: 6.0, description: "test" },
+            { id: 3, name: "Shirt (Laundry)", price: 4.45, description: "test" },
         ],
-        polos: [{ id: 4, name: "Polo Shirt", price: 7.0 }],
+        polos: [{ id: 4, name: "Polo Shirt", price: 7.0, description: "test" }],
         bottoms: [
-            { id: 5, name: "Pants", price: 8.5 },
-            { id: 6, name: "Jeans", price: 9.0 },
-            { id: 7, name: "Shorts", price: 7.5 },
+            { id: 5, name: "Pants", price: 8.5, description: "test" },
+            { id: 6, name: "Jeans", price: 9.0, description: "test" },
+            { id: 7, name: "Shorts", price: 7.5, description: "test" },
         ],
         tops: [
-            { id: 8, name: "Blouse", price: 8.0 },
-            { id: 9, name: "Sweater", price: 10.0 },
+            { id: 8, name: "Blouse", price: 8.0, description: "test" },
+            { id: 9, name: "Sweater", price: 10.0, description: "test" },
         ],
     };
 
@@ -86,79 +86,129 @@ export default function CheckRates() {
 
     return (
         <AppHeaderLayout>
-            <div className="min-h-screen bg-gray-50 py-8 px-4">
-                <div className="max-w-6xl mx-auto">
+            <div className="min-h-screen bg-gray-50 py-12 px-4">
+                <div className="max-w-7xl mx-auto">
+                    
+                    {/* NEW HEADER SECTION */}
+                    <div className="text-center mb-8">
+                        <h1 className="mb-6 text-5xl md:text-6xl">
+                            Check Rates
+                        </h1>
+                        <p className="text-gray-600 max-w-2xl mx-auto mb-6">
+                            Browse our services, add items to your cart, and get an estimated quote. All prices are
+                            estimates and may vary based on garment condition.
+                        </p>
+                    </div>
 
                     {/* CART BAR OR BUTTON */}
-                    {cart.length === 0 ? (
-                        <div className="flex justify-center mb-6">
+                    <div className="max-w-4xl mx-auto">
+                        {cart.length === 0 ? (
+                        <div className="flex justify-center mb-10">
                             <button
                                 onClick={() => setIsCartOpen(true)}
-                                className="bg-purple-600 text-white px-8 py-4 rounded-xl font-semibold shadow-lg hover:bg-purple-700"
+                                className="bg-[#8b2cf5] text-white px-4 py-2 rounded-xl shadow-lg hover:bg-purple-700 flex items-center gap-2"
                             >
-                                View Cart
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="lucide lucide-shopping-cart w-5 h-5 mr-2" aria-hidden="true"><circle cx="8" cy="21" r="1"></circle><circle cx="19" cy="21" r="1"></circle><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"></path></svg> View Cart
                             </button>
                         </div>
                     ) : (
-                        <div className="bg-gradient-to-r from-purple-600 to-purple-700 rounded-2xl shadow-lg p-6 mb-6 flex items-center justify-between text-white">
-                            <div>
-                                <p className="text-sm">Your Cart</p>
-                                <p className="text-xl font-bold">
-                                    {getTotalItems()} items
-                                </p>
+                        <div className="bg-[#9300e8] rounded-2xl shadow-xl p-4 px-6 mb-10 flex flex-col md:flex-row items-center justify-between text-white max-w-4xl mx-auto gap-4">
+                            <div className="flex items-center gap-4 w-full md:w-auto">
+                                <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm shrink-0">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-shopping-cart w-6 h-6"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
+                                </div>
+                                <div>
+                                    <p className="text-sm font-medium opacity-90 text-purple-100">Your Cart</p>
+                                    <p className="text-2xl">{getTotalItems()} {getTotalItems() === 1 ? 'Item' : 'Items'}</p>
+                                </div>
                             </div>
-                            <p className="text-2xl font-bold">
-                                ~${getTotalPrice().toFixed(2)}
-                            </p>
-                            <button
-                                onClick={() => setIsCartOpen(true)}
-                                className="bg-white text-purple-600 px-6 py-3 rounded-lg font-semibold"
-                            >
-                                View Cart
-                            </button>
+
+                            <div className="flex items-center gap-6 w-full md:w-auto justify-between md:justify-end">
+                                <div className="text-right">
+                                    <p className="text-sm font-medium opacity-90 text-purple-100">Estimated Total</p>
+                                    <p className="text-3xl font-bold">~${getTotalPrice().toFixed(2)}</p>
+                                </div>
+                                <button
+                                    onClick={() => setIsCartOpen(true)}
+                                    className="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive h-10 rounded-md px-6 has-[>svg]:px-4 bg-white text-purple-600 hover:bg-purple-50 shadow-lg hover:shadow-xl transition-all hover:scale-105"
+                                >
+                                    View Cart
+                                </button>
+                            </div>
                         </div>
                     )}
+                    </div>
+
+                    {/* NEW IMPORTANT NOTICE BOX */}
+                    <div className="bg-[#fffdf2] border border-[#f5e6b3] rounded-2xl p-5 flex items-start gap-4 mb-10 text-left max-w-3xl mx-auto">
+                        <div className="bg-[#facc15] text-white p-1 rounded-full flex-shrink-0 mt-0.5 w-5 h-5 flex items-center justify-center text-xs font-bold">
+                            !
+                        </div>
+                        <p className="text-[#854d0e] text-sm leading-relaxed">
+                            <span className="font-bold">Important:</span> Prices shown are estimates only. Final pricing will be confirmed after garment inspection and may vary based on fabric type, condition, and special treatments required.
+                        </p>
+                    </div>
 
                     {/* SERVICE LIST */}
                     <div className="space-y-4">
                         {Object.entries(services).map(([category, items]) => (
                             <div
                                 key={category}
-                                className="bg-white rounded-xl shadow"
+                                className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden"
                             >
                                 <button
                                     onClick={() => toggleCategory(category)}
-                                    className="w-full px-6 py-4 flex justify-between"
+                                    className="w-full px-6 py-4 flex justify-between items-center hover:bg-gray-50"
                                 >
-                                    <h2 className="font-semibold text-lg">
+                                    <h2 className="text-semibold text-gray-800">
                                         {categoryLabels[category]}
                                     </h2>
-                                    <span>
-                                        {expandedCategories[category]
-                                            ? "−"
-                                            : "+"}
-                                    </span>
+                                    <div className="flex items-center gap-4">
+                                        <span className="inline-flex items-center justify-center rounded-md border border-transparent px-2 py-0.5 text-xs font-medium bg-purple-100 text-purple-700 whitespace-nowrap shrink-0 transition-colors overflow-hidden">
+                                            {items.length} items
+                                        </span>
+                                        <svg 
+                                            xmlns="http://www.w3.org/2000/svg" 
+                                            width="24" 
+                                            height="24" 
+                                            viewBox="0 0 24 24" 
+                                            fill="none" 
+                                            stroke="currentColor" 
+                                            strokeWidth="2" 
+                                            strokeLinecap="round" 
+                                            strokeLinejoin="round" 
+                                            className={`lucide lucide-chevron-down text-gray-400 pointer-events-none w-4 h-4 shrink-0 transition-transform duration-200 ${expandedCategories[category] ? "rotate-180" : "translate-y-0.5"}`}
+                                        >
+                                            <path d="m6 9 6 6 6-6"></path>
+                                        </svg>
+                                    </div>
                                 </button>
 
                                 {expandedCategories[category] && (
-                                    <div className="grid md:grid-cols-3 gap-4 p-6">
+                                    <div className="grid md:grid-cols-3 gap-4 p-6 border-t border-gray-50">
                                         {items.map((item) => (
                                             <div
                                                 key={item.id}
-                                                className="border rounded-lg p-4"
+                                                className="border border-gray-100 rounded-lg p-4 flex flex-col justify-between"
                                             >
-                                                <h3 className="font-semibold">
-                                                    {item.name}
-                                                </h3>
-                                                <p className="text-purple-600 font-bold">
-                                                    ${item.price.toFixed(2)}
-                                                </p>
+                                                <div className="flex justify-between items-start mb-4">
+                                                    <h3 className="font-semibold text-gray-800">
+                                                        {item.name}
+                                                    </h3>
+                                                    <p className="text-purple-600 font-bold shrink-0 ml-2">
+                                                        ${item.price.toFixed(2)}
+                                                    </p>
+                                                </div>
+                                                <div className="mb-2">
+                                                    <p className="text-gray-600">{item.description}</p>
+                                                </div>
                                                 <button
                                                     onClick={() =>
                                                         addToCart(item)
                                                     }
-                                                    className="mt-3 w-full bg-purple-600 text-white py-2 rounded-lg"
+                                                    className="w-full bg-purple-600 text-white py-2 rounded-lg hover:bg-purple-700 transition-colors flex items-center justify-center"
                                                 >
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-plus w-4 h-4 mr-2" aria-hidden="true"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg>
                                                     Add to Cart
                                                 </button>
                                             </div>
@@ -171,7 +221,6 @@ export default function CheckRates() {
                 </div>
             </div>
 
-            {/* DRAWER */}
             {/* CART DRAWER */}
             {isCartOpen && (
                 <>
@@ -231,16 +280,16 @@ export default function CheckRates() {
                                             onClick={() =>
                                                 removeFromCart(item.id)
                                             }
-                                            className="text-red-500 text-lg"
+                                            className="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:hover:bg-accent/50 h-8 rounded-md gap-1.5 px-3 has-[>svg]:px-2.5 text-red-500 hover:text-red-700 hover:bg-red-50 -mt-1"
                                         >
-                                            🗑
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="lucide lucide-trash2 lucide-trash-2 w-4 h-4" aria-hidden="true"><path d="M10 11v6"></path><path d="M14 11v6"></path><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"></path><path d="M3 6h18"></path><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
                                         </button>
                                     </div>
 
-                                    <div className="mt-4 flex justify-between items-center">
+                                    <div className="flex items-center justify-between bg-purple-50 rounded-lg mt-2">
 
                                         {/* QTY */}
-                                        <div className="flex gap-3 items-center bg-purple-50 px-3 py-2 rounded-xl">
+                                        <div className="flex gap-3 items-center bg-purple-50 px-2 py-1 rounded-xl">
                                             <button
                                                 onClick={() =>
                                                     updateQuantity(item.id, -1)
@@ -264,7 +313,7 @@ export default function CheckRates() {
                                             </button>
                                         </div>
 
-                                        <p className="font-bold text-purple-600">
+                                        <p className="font-bold text-purple-600 px-2">
                                             ~$
                                             {(item.price * item.quantity).toFixed(
                                                 2
@@ -280,15 +329,15 @@ export default function CheckRates() {
                             <>
                                 <div className="mx-5 rounded-2xl bg-gradient-to-br from-purple-600 to-purple-800 text-white p-5 space-y-3">
 
-                                    <div className="flex justify-between text-sm">
+                                    <div className="flex items-center justify-between text-purple-100">
                                         <span>Total Items:</span>
-                                        <span>{getTotalItems()}</span>
+                                        <span className="text-xl">{getTotalItems()}</span>
                                     </div>
 
                                     <hr className="opacity-30" />
 
                                     <div className="flex justify-between items-center">
-                                        <span className="font-semibold">
+                                        <span className="text-lg">
                                             Estimated Total:
                                         </span>
                                         <span className="text-3xl font-bold">

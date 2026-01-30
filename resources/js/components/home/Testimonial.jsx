@@ -23,11 +23,11 @@ export default function Testimonial() {
     ];
 
     return (
-        <section id="testimonials" className="py-20">
+        <section id="testimonials" className="py-20 bg-gradient-to-r from-purple-50 via-white to-purple-100/60">
             <div className="max-w-7xl mx-auto px-6 lg:px-8">
                 {/* Header */}
                 <div className="text-center mb-16">
-                    <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
+                    <h2 className="text-4xl lg:text-5xl text-gray-900 mb-4">
                         What Our Customers Say
                     </h2>
                     <p className="text-lg text-gray-600 max-w-3xl mx-auto">
@@ -55,9 +55,9 @@ export default function Testimonial() {
                             </p>
 
                             {/* Author */}
-                            <div className="border-t border-gray-200 pt-4">
-                                <p className="font-bold text-gray-900">{testimonial.name}</p>
-                                <p className="text-sm text-gray-600">{testimonial.title}</p>
+                            <div className="border-gray-200 pt-4">
+                                <p className="text-gray-900">{testimonial.name}</p>
+                                <p className="text-[16px] text-gray-600">{testimonial.title}</p>
                             </div>
                         </div>
                     ))}
