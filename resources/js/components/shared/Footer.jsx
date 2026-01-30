@@ -11,19 +11,17 @@ export default function Footer() {
                         <div className="flex items-center gap-3">
                             {/* Logo */}
                             <div className="w-16 h-16 bg-purple-500 rounded-lg flex items-center justify-center">
-                                <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                                </svg>
+                                <img src="/images/footer.png" alt="Logo" className="w-16 h-16" />
                             </div>
                         </div>
-                        <p className="text-purple-100 text-sm leading-relaxed max-w-xs">
+                        <p className="text-purple-200 mb-4">
                             Premium dry cleaning and laundry services with convenient pickup and delivery.
                         </p>
                     </div>
 
                     {/* Services Column */}
                     <div>
-                        <h3 className="text-lg font-semibold mb-4">Services</h3>
+                        <h3 className="text-lg mb-4">Services</h3>
                         <ul className="space-y-2">
                             <li>
                                 <a href="#" className="text-purple-100 hover:text-white transition-colors">
@@ -55,7 +53,7 @@ export default function Footer() {
 
                     {/* Quick Links Column */}
                     <div>
-                        <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
+                        <h3 className="text-lg mb-4">Quick Links</h3>
                         <ul className="space-y-2">
                             <li>
                                 <a href="#" className="text-purple-100 hover:text-white transition-colors">
@@ -92,9 +90,9 @@ export default function Footer() {
                 </div>
 
                 {/* Copyright */}
-                <div className="border-t border-purple-600 pt-6">
-                    <p className="text-center text-purple-200 text-sm">
-                        © 2025 Belmont Dry Cleaners. All rights reserved.
+                <div className="border-t border-purple-700 pt-8 text-center">
+                    <p className="text-purple-200">
+                        © {new Date().getFullYear()} Belmont Dry Cleaners. All Rights Reserved.
                     </p>
                 </div>
             </div>

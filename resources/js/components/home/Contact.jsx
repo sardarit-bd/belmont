@@ -35,11 +35,11 @@ export default function Contact() {
     };
 
     return (
-        <div className="min-h-screen py-12 px-4 scroll-mt-16" id='contact'>
+        <div className="min-h-screen py-12 px-4 scroll-mt-16 bg-gradient-to-r from-white to-purple-100/60" id='contact'>
             <div className="max-w-6xl mx-auto">
                 {/* Header */}
                 <div className="text-center mb-12">
-                    <h1 className="text-4xl md:text-5xl font-serif font-bold text-gray-900 mb-4">
+                    <h1 className="text-4xl lg:text-5xl text-gray-900 mb-4">
                         Get In Touch
                     </h1>
                     <p className="text-gray-600 text-lg max-w-2xl mx-auto">
@@ -51,7 +51,7 @@ export default function Contact() {
                 <div className="grid md:grid-cols-2 gap-8 items-start">
                     {/* Contact Form */}
                     <div className="bg-white rounded-lg shadow-sm p-8">
-                        <h2 className="text-2xl font-semibold text-gray-900 mb-2">
+                        <h2 className="text-xl text-gray-900 mb-2">
                             Send Us a Message
                         </h2>
                         <p className="text-gray-600 mb-6">
@@ -112,7 +112,7 @@ export default function Contact() {
 
                             <button
                                 type="submit"
-                                className="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 px-6 rounded-md transition-colors duration-200"
+                                className="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 px-6 rounded-md transition-colors duration-200 text-sm"
                             >
                                 Send Message
                             </button>
@@ -132,7 +132,7 @@ export default function Contact() {
                                 </div>
                             </div>
                             <div>
-                                <h3 className="text-xl font-semibold text-gray-900 mb-2">Visit Us</h3>
+                                <h3 className="text-2xl text-gray-900 mb-2">Visit Us</h3>
                                 <p className="text-gray-600">92 Torrey St</p>
                                 <p className="text-gray-600">Brockton, MA 02301</p>
                             </div>
@@ -148,7 +148,7 @@ export default function Contact() {
                                 </div>
                             </div>
                             <div>
-                                <h3 className="text-xl font-semibold text-gray-900 mb-2">Call Us</h3>
+                                <h3 className="text-2xl text-gray-900 mb-2">Call Us</h3>
                                 <p className="text-gray-600">(508) 580-4610</p>
                             </div>
                         </div>
@@ -163,7 +163,7 @@ export default function Contact() {
                                 </div>
                             </div>
                             <div>
-                                <h3 className="text-xl font-semibold text-gray-900 mb-2">Business Hours</h3>
+                                <h3 className="text-2xl text-gray-900 mb-2">Business Hours</h3>
                                 <p className="text-gray-600">Monday - Friday: 7:00 AM - 7:00 PM</p>
                                 <p className="text-gray-600">Saturday: 7:00 AM - 5:00 PM</p>
                                 <p className="text-gray-600">Sunday: Closed</p>

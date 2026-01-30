@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { Link } from '@inertiajs/react';
 
 export default function Pricing() {
-    const [openCategory, setOpenCategory] = useState('shirts');
+    const [openCategory, setOpenCategory] = useState(null);
 
     const pricingData = [
         {
@@ -143,11 +143,11 @@ export default function Pricing() {
     };
 
     return (
-        <section id="pricing" className="py-20 scroll-mt-10" animation="fade-up">
+        <section id="pricing" className="py-20 scroll-mt-10 bg-gradient-to-l from-pink-50/50 to-white" animation="fade-up">
             <div className="max-w-7xl mx-auto px-6 lg:px-8">
                 {/* Header */}
                 <div className="text-center mb-12">
-                    <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
+                    <h2 className="text-4xl lg:text-5xl text-gray-900 mb-4">
                         Simple, Transparent Pricing
                     </h2>
                     <p className="text-lg text-gray-600 max-w-2xl mx-auto">
@@ -159,7 +159,7 @@ export default function Pricing() {
                 <div className="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden">
                     {/* Card Header */}
                     <div className="bg-gray-50 px-6 py-5 border-b border-gray-200">
-                        <h3 className="text-lg font-bold text-gray-900">Price List by Item Type</h3>
+                        <h3 className="text-lg text-gray-900">Price List by Item Type</h3>
                         <p className="text-sm text-gray-600 mt-1">Click each category to view detailed pricing</p>
                     </div>
 
@@ -170,9 +170,9 @@ export default function Pricing() {
                                 {/* Accordion Header */}
                                 <button
                                     onClick={() => toggleCategory(category.id)}
-                                    className="w-full px-6 py-4 flex items-center justify-between hover:bg-gray-50 transition-all duration-300"
+                                    className="w-full px-6 py-4 flex items-center justify-between transition-all duration-300"
                                 >
-                                    <span className="font-semibold text-gray-900">{category.title}</span>
+                                    <span className="text-gray-900 hover:text-purple-700 hover:underline">{category.title}</span>
                                     <svg
                                         className={`w-5 h-5 text-gray-400 transition-transform duration-300 ease-in-out ${openCategory === category.id ? 'rotate-180' : 'rotate-0'
                                             }`}
@@ -194,18 +194,18 @@ export default function Pricing() {
                                         overflow: 'hidden'
                                     }}
                                 >
-                                    <div className="px-6 py-4 bg-gray-50 border-t border-gray-100">
+                                    <div className="px-6 py-3">
                                         <div className="grid grid-cols-2 gap-4">
                                             {category.items.map((item, idx) => (
                                                 <div
                                                     key={idx}
-                                                    className="bg-pink-100 rounded-lg p-4 font-semibold flex items-center justify-between transform transition-all duration-300 ease-out"
+                                                    className="bg-gray-50 rounded-lg px-4 py-2 flex items-center justify-between transform transition-all duration-300 ease-out"
                                                     style={{
                                                         transitionDelay: `${idx * 50}ms`
                                                     }}
                                                 >
                                                     <span className="text-gray-700">{item.name}</span>
-                                                    <span className="font-semibold text-purple-600">{item.price}</span>
+                                                    <span className="text-purple-600">{item.price}</span>
                                                 </div>
                                             ))}
                                         </div>
@@ -230,7 +230,7 @@ export default function Pricing() {
                 <div className="text-center mt-8">
                     <p className="text-gray-600">
                         Questions about pricing?{' '}
-                        <Link href="/contact" className="text-purple-600 font-semibold hover:text-purple-700 transition-colors">
+                        <Link href="/#contact" className="text-purple-600 font-semibold hover:text-purple-700 transition-colors">
                             Contact us
                         </Link>
                         {' '}for a custom quote.
