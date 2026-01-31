@@ -9,6 +9,8 @@ const categories = [
         description: "Expert care for high-end designer garments and couture pieces",
         items: ["Gucci, Prada, Versace", "Custom Couture", "Evening Gowns", "Luxury Suits"],
         color: "bg-gradient-to-br from-purple-600 to-indigo-600",
+        // Added explicit hover string for Tailwind detection
+        hoverColor: "hover:bg-gradient-to-br hover:from-purple-600 hover:to-indigo-600",
     },
     {
         icon: (
@@ -18,6 +20,7 @@ const categories = [
         description: "Specialized wedding dress preservation and bridal party services",
         items: ["Wedding Dress Cleaning", "Preservation & Boxing", "Bridal Party Attire", "Veil & Accessories"],
         color: "bg-gradient-to-br from-pink-500 to-purple-600",
+        hoverColor: "hover:bg-gradient-to-br hover:from-pink-500 hover:to-purple-600",
     },
     {
         icon: (
@@ -27,6 +30,7 @@ const categories = [
         description: "Premium care for fine linens, leather, suede, and exotic materials",
         items: ["Leather & Suede", "Silk & Cashmere", "Fine Linens", "Fur Storage"],
         color: "bg-gradient-to-br from-indigo-600 to-purple-700",
+        hoverColor: "hover:bg-gradient-to-br hover:from-indigo-600 hover:to-purple-700",
     },
     {
         icon: (
@@ -36,6 +40,7 @@ const categories = [
         description: "Dedicated service for businesses with regular dry cleaning needs",
         items: ["Volume Discounts", "Dedicated Account Rep", "Priority Service", "Monthly Billing"],
         color: "bg-gradient-to-br from-purple-700 to-indigo-800",
+        hoverColor: "hover:bg-gradient-to-br hover:from-purple-700 hover:to-indigo-800",
     },
 ];
 
@@ -51,7 +56,8 @@ export default function ServiceCategories() {
                 {categories.map((cat, idx) => (
                     <div 
                         key={idx} 
-                        className={`group bg-white rounded-xl p-6 shadow hover:shadow-lg transition upperAnimation hover:${cat.color}`}
+                        // Changed from hover:${cat.color} to explicit ${cat.hoverColor}
+                        className={`group bg-white rounded-xl p-6 shadow hover:shadow-lg transition upperAnimation ${cat.hoverColor}`}
                     >
                         <div className={`w-16 h-16 rounded-xl flex items-center justify-center mb-6 ${cat.color}`}>
                             {cat.icon}
