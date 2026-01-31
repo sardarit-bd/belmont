@@ -12,7 +12,7 @@
         'Instrument Sans', ui-sans-serif, system-ui, sans-serif,
         'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
         'Noto Color Emoji'; */
-    --font-sans: Georgia, 'Times New Roman', Times, serif;
+    --font-sans: "Georgia", "Times New Roman", Times, serif;
 
     --radius-lg: var(--radius);
     --radius-md: calc(var(--radius) - 2px);
@@ -99,7 +99,7 @@
 }
 
 @layer base {
-    html {
+    /* html {
         scroll-behavior: smooth;
         box-sizing: border-box;
     }
@@ -110,6 +110,23 @@
 
     body {
         @apply bg-background text-foreground;
+    } */
+
+    *, ::before, ::after {
+        font-family: var(--font-sans) !important;
+        border-color: var(--border);
+    }
+
+    html {
+        scroll-behavior: smooth;
+        box-sizing: border-box;
+        /* Ensure the variable is available at the highest level */
+        font-family: var(--font-sans);
+    }
+
+    body {
+        @apply bg-background text-foreground antialiased;
+        font-family: var(--font-sans);
     }
 }
 
