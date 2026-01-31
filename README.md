@@ -117,4 +117,4 @@ http://127.0.0.1:8000
 * **Frontend:** React (Laravel React Starter Kit)
 * **Build Tool:** Vite
 * **Database:** MySQL
-* **Authentication:** Laravel Starter Kit (React)
+* **Authentication:** Laravel Starter Kit (React), Filament (for admin user)
