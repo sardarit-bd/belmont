@@ -127,7 +127,7 @@ export default function Services() {
     return (
         <>
             <section className="py-20 scroll-mt-8 bg-gradient-to-b from-white to-purple-50/50" id='services'>
-                <div className="container mx-auto px-6 lg:px-8">
+                <div className="max-w-7xl mx-auto px-6 lg:px-8">
                     {/* Header */}
                     <div className="text-center mb-16">
                         <h2 className="text-5xl text-gray-900 mb-4 font-serif">
