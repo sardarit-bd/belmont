@@ -147,7 +147,7 @@ export default function Pricing() {
             <div className="max-w-7xl mx-auto px-6 lg:px-8">
                 {/* Header */}
                 <div className="text-center mb-12">
-                    <h2 className="text-4xl lg:text-5xl text-gray-900 mb-4">
+                    <h2 className="text-5xl text-gray-900 mb-4">
                         Simple, Transparent Pricing
                     </h2>
                     <p className="text-lg text-gray-600 max-w-2xl mx-auto">
@@ -195,7 +195,8 @@ export default function Pricing() {
                                     }}
                                 >
                                     <div className="px-6 py-3">
-                                        <div className="grid grid-cols-2 gap-4">
+                                        {/* CHANGED: grid-cols-1 for mobile, md:grid-cols-2 for tablet/desktop */}
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                             {category.items.map((item, idx) => (
                                                 <div
                                                     key={idx}
@@ -205,7 +206,7 @@ export default function Pricing() {
                                                     }}
                                                 >
                                                     <span className="text-gray-700">{item.name}</span>
-                                                    <span className="text-purple-600">{item.price}</span>
+                                                    <span className="text-purple-600 font-medium">{item.price}</span>
                                                 </div>
                                             ))}
                                         </div>

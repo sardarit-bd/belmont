@@ -130,7 +130,7 @@ export default function Services() {
                 <div className="container mx-auto px-6 lg:px-8">
                     {/* Header */}
                     <div className="text-center mb-16">
-                        <h2 className="text-4xl lg:text-5xl text-gray-900 mb-4 font-serif">
+                        <h2 className="text-5xl text-gray-900 mb-4 font-serif">
                             Our Services
                         </h2>
                         <p className="text-lg text-gray-600 max-w-3xl mx-auto">

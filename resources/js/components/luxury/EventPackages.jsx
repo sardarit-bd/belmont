@@ -45,7 +45,7 @@ const packages = [
 
 export default function EventPackages() {
     return (
-        <section className="py-20 px-4">
+        <section className="py-20 px-4 bg-gradient-to-b from-white to-purple-50/50">
             <div className="max-w-6xl mx-auto text-center mb-12">
                 <h2 className="text-5xl mb-2">Event & Enterprise Packages</h2>
                 <p className="text-gray-600 max-w-2xl mx-auto">

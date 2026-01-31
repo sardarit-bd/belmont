@@ -188,172 +188,173 @@ export default function PickupScheduler() {
 
                         {/* Step 2 - Schedule */}
                         {currentStep === 2 && (
-                            <div>
-                                <div className="bg-purple-50 rounded-lg p-4 mb-6 flex items-start gap-3">
-                                    <div className="w-10 h-10 bg-gradient-to-br from-pink-500 to-purple-500 rounded-lg flex items-center justify-center">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="lucide lucide-calendar w-6 h-6 text-white" aria-hidden="true"><path d="M8 2v4"></path><path d="M16 2v4"></path><rect width="18" height="18" x="3" y="4" rx="2"></rect><path d="M3 10h18"></path></svg>
-                                    </div>
-                                    <div>
-                                        <h2 className="mb-0">Pick Your Perfect Time</h2>
-                                        <p className="text-sm text-gray-600">When should we swing by?</p>
-                                    </div>
+                        <div>
+                            <div className="bg-purple-50 rounded-lg p-4 mb-6 flex items-start gap-3">
+                                <div className="w-10 h-10 bg-gradient-to-br from-pink-500 to-purple-500 rounded-lg flex items-center justify-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-calendar w-6 h-6 text-white" aria-hidden="true"><path d="M8 2v4"></path><path d="M16 2v4"></path><rect width="18" height="18" x="3" y="4" rx="2"></rect><path d="M3 10h18"></path></svg>
                                 </div>
+                                <div>
+                                    <h2 className="mb-0">Pick Your Perfect Time</h2>
+                                    <p className="text-sm text-gray-600">When should we swing by?</p>
+                                </div>
+                            </div>
 
-                                <div className="space-y-4 mb-6">
-                                    <div className="grid grid-cols-2 gap-4">
-                                        <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-2">
-                                                Pickup Date <span className="text-red-500">*</span>
-                                            </label>
-                                            <input
-                                                type="date"
-                                                name="pickupDate"
-                                                value={formData.pickupDate}
-                                                onChange={handleChange}
-                                                className="w-full px-4 py-3 text-black bg-gray-50 border-0 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none"
-                                            />
-                                        </div>
-
-                                        <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-2">
-                                                Preferred Time <span className="text-red-500">*</span>
-                                            </label>
-                                            <input
-                                                type="time"
-                                                name="preferredTime"
-                                                value={formData.preferredTime}
-                                                onChange={handleChange}
-                                                className="w-full px-4 py-3 bg-gray-50 border-0 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none"
-                                            />
-                                        </div>
+                            <div className="space-y-4 mb-6">
+                                {/* CHANGED: grid-cols-1 for mobile (stacked), md:grid-cols-2 for desktop (side-by-side) */}
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                            Pickup Date <span className="text-red-500">*</span>
+                                        </label>
+                                        <input
+                                            type="date"
+                                            name="pickupDate"
+                                            value={formData.pickupDate}
+                                            onChange={handleChange}
+                                            className="w-full px-4 py-3 text-black bg-gray-50 border-0 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none"
+                                        />
                                     </div>
 
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-2">
-                                            Special Instructions <span className="text-gray-400 text-xs">(Optional)</span>
+                                            Preferred Time <span className="text-red-500">*</span>
                                         </label>
-                                        <textarea
-                                            name="specialInstructions"
-                                            value={formData.specialInstructions}
+                                        <input
+                                            type="time"
+                                            name="preferredTime"
+                                            value={formData.preferredTime}
                                             onChange={handleChange}
-                                            placeholder="Gate code, parking instructions, or anything else we should know..."
-                                            rows="3"
-                                            className="w-full px-4 py-3 bg-gray-50 border-0 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none resize-none"
+                                            className="w-full px-4 py-3 bg-gray-50 border-0 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none"
                                         />
                                     </div>
                                 </div>
 
-                                {/* Payment Information */}
-                                <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
-                                    <div className="flex items-start gap-3 mb-4">
-                                        <div className="w-10 h-10 bg-green-500 rounded-lg flex items-center justify-center flex-shrink-0">
-                                            <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
-                                            </svg>
-                                        </div>
-                                        <div className="flex-1">
-                                            <h3 className="font-semibold text-gray-900 flex items-center gap-2">
-                                                Payment Information
-                                                <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                                                </svg>
-                                            </h3>
-                                            <p className="text-sm text-gray-600">Secure payment - Card charged only after service completion</p>
-                                        </div>
-                                    </div>
-
-                                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-4 flex items-start gap-2">
-                                        <svg className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                                        </svg>
-                                        <p className="text-sm text-blue-900">
-                                            <strong>Protected Payment:</strong> Your card information is securely stored and will <strong>only be charged after your items are cleaned and delivered</strong>. No upfront charges!
-                                        </p>
-                                    </div>
-
-                                    <div className="space-y-4">
-                                        <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-2">
-                                                Cardholder Name <span className="text-red-500">*</span>
-                                            </label>
-                                            <input
-                                                type="text"
-                                                name="cardholderName"
-                                                value={formData.cardholderName}
-                                                onChange={handleChange}
-                                                placeholder="John Doe"
-                                                className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none"
-                                            />
-                                        </div>
-
-                                        <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-2">
-                                                Card Number <span className="text-red-500">*</span>
-                                            </label>
-                                            <input
-                                                type="text"
-                                                name="cardNumber"
-                                                value={formData.cardNumber}
-                                                onChange={handleChange}
-                                                placeholder="1234 5678 9012 3456"
-                                                maxLength="19"
-                                                className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none"
-                                            />
-                                        </div>
-
-                                        <div className="grid grid-cols-2 gap-4">
-                                            <div>
-                                                <label className="block text-sm font-medium text-gray-700 mb-2">
-                                                    Expiry Date <span className="text-red-500">*</span>
-                                                </label>
-                                                <input
-                                                    type="text"
-                                                    name="expiryDate"
-                                                    value={formData.expiryDate}
-                                                    onChange={handleChange}
-                                                    placeholder="MM/YY"
-                                                    maxLength="5"
-                                                    className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none"
-                                                />
-                                            </div>
-
-                                            <div>
-                                                <label className="block text-sm font-medium text-gray-700 mb-2">
-                                                    CVC <span className="text-red-500">*</span>
-                                                </label>
-                                                <input
-                                                    type="text"
-                                                    name="cvc"
-                                                    value={formData.cvc}
-                                                    onChange={handleChange}
-                                                    placeholder="123"
-                                                    maxLength="3"
-                                                    className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none"
-                                                />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className="space-y-3">
-                                    <button
-                                        onClick={prevStep}
-                                        className="w-full bg-white hover:bg-gray-50 text-gray-700 font-semibold py-3 px-6 rounded-lg border border-gray-300 transition-colors"
-                                    >
-                                        ← Back
-                                    </button>
-                                    <button
-                                        onClick={nextStep}
-                                        className="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive text-primary-foreground hover:bg-primary/90 h-10 rounded-md px-6 has-[>svg]:px-4 w-full bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group"
-                                    >
-                                        Continue to Review
-                                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                                        </svg>
-                                    </button>
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                                        Special Instructions <span className="text-gray-400 text-xs">(Optional)</span>
+                                    </label>
+                                    <textarea
+                                        name="specialInstructions"
+                                        value={formData.specialInstructions}
+                                        onChange={handleChange}
+                                        placeholder="Gate code, parking instructions, or anything else we should know..."
+                                        rows="3"
+                                        className="w-full px-4 py-3 bg-gray-50 border-0 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none resize-none"
+                                    />
                                 </div>
                             </div>
-                        )}
+
+                            {/* Payment Information */}
+                            <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
+                                <div className="flex items-start gap-3 mb-4">
+                                    <div className="w-10 h-10 bg-green-500 rounded-lg flex items-center justify-center flex-shrink-0">
+                                        <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                                        </svg>
+                                    </div>
+                                    <div className="flex-1">
+                                        <h3 className="font-semibold text-gray-900 flex items-center gap-2">
+                                            Payment Information
+                                            <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                                            </svg>
+                                        </h3>
+                                        <p className="text-sm text-gray-600">Secure payment - Card charged only after service completion</p>
+                                    </div>
+                                </div>
+
+                                <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-4 flex items-start gap-2">
+                                    <svg className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                                    </svg>
+                                    <p className="text-sm text-blue-900">
+                                        <strong>Protected Payment:</strong> Your card information is securely stored and will <strong>only be charged after your items are cleaned and delivered</strong>. No upfront charges!
+                                    </p>
+                                </div>
+
+                                <div className="space-y-4">
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                            Cardholder Name <span className="text-red-500">*</span>
+                                        </label>
+                                        <input
+                                            type="text"
+                                            name="cardholderName"
+                                            value={formData.cardholderName}
+                                            onChange={handleChange}
+                                            placeholder="John Doe"
+                                            className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none"
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                            Card Number <span className="text-red-500">*</span>
+                                        </label>
+                                        <input
+                                            type="text"
+                                            name="cardNumber"
+                                            value={formData.cardNumber}
+                                            onChange={handleChange}
+                                            placeholder="1234 5678 9012 3456"
+                                            maxLength="19"
+                                            className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none"
+                                        />
+                                    </div>
+
+                                    <div className="grid grid-cols-2 gap-4">
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                                                Expiry Date <span className="text-red-500">*</span>
+                                            </label>
+                                            <input
+                                                type="text"
+                                                name="expiryDate"
+                                                value={formData.expiryDate}
+                                                onChange={handleChange}
+                                                placeholder="MM/YY"
+                                                maxLength="5"
+                                                className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none"
+                                            />
+                                        </div>
+
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                                                CVC <span className="text-red-500">*</span>
+                                            </label>
+                                            <input
+                                                type="text"
+                                                name="cvc"
+                                                value={formData.cvc}
+                                                onChange={handleChange}
+                                                placeholder="123"
+                                                maxLength="3"
+                                                className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none"
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="space-y-3">
+                                <button
+                                    onClick={prevStep}
+                                    className="w-full bg-white hover:bg-gray-50 text-gray-700 font-semibold py-3 px-6 rounded-lg border border-gray-300 transition-colors"
+                                >
+                                    ← Back
+                                </button>
+                                <button
+                                    onClick={nextStep}
+                                    className="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive text-primary-foreground hover:bg-primary/90 h-10 rounded-md px-6 has-[>svg]:px-4 w-full bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group"
+                                >
+                                    Continue to Review
+                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    )}
 
                         {/* Step 3 - Confirm */}
                         {currentStep === 3 && (

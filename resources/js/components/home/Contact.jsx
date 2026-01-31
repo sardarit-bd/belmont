@@ -30,8 +30,6 @@ export default function Contact() {
             alert('Please fill out all required fields.');
             return;
         }
-
-        //send form data to backend
     };
 
     return (
@@ -39,7 +37,7 @@ export default function Contact() {
             <div className="max-w-6xl mx-auto">
                 {/* Header */}
                 <div className="text-center mb-12">
-                    <h1 className="text-4xl lg:text-5xl text-gray-900 mb-4">
+                    <h1 className="text-5xl text-gray-900 mb-4">
                         Get In Touch
                     </h1>
                     <p className="text-gray-600 text-lg max-w-2xl mx-auto">
@@ -96,17 +94,20 @@ export default function Contact() {
                             />
 
                             {/* Captcha */}
-                            <div className="flex items-center gap-2 text-gray-600">
-                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg>
-                                <span>Verify you're human: 8+13 =
+                            <div className="flex items-center gap-2 text-gray-600 whitespace-nowrap text-sm sm:text-base">
+                                {/* Added shrink-0 to prevent icon from squishing on small screens */}
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-shield w-5 h-5 text-gray-500" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path></svg>
+                                
+                                {/* Added flex items-center to align text and input perfectly */}
+                                <span className="flex items-center">
+                                    Verify you're human: 8+13 =
                                     <input
                                         value={formData.numcaptcha}
                                         onChange={handleChange}
                                         name="numcaptcha"
                                         type="text"
-                                        className='mx-2 w-16 px-2 py-1 bg-gray-50 border rounded-md focus:ring-2 focus:ring-purple-500 focus:outline-none text-gray-900 placeholder-gray-500' />
+                                        className='mx-2 w-16 px-2 py-1 bg-gray-50 border rounded-md focus:ring-2 focus:ring-purple-500 focus:outline-none text-gray-900 placeholder-gray-500' 
+                                    />
                                 </span>
                             </div>
 
