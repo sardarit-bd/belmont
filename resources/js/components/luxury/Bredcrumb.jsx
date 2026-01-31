@@ -1,17 +1,21 @@
 export default function Bredcrumb() {
     return (
-        <section className="bg-gradient-to-r from-purple-600 to-purple-800 text-white text-center py-20 px-4">
-            <div className="max-w-3xl mx-auto">
-                <span className="inline-block bg-purple-800 px-3 py-1 rounded-full text-sm mb-4">
-                    Premium Services
-                </span>
-                <h1 className="text-4xl md:text-5xl font-bold mb-4">
+        <section className="bg-gradient-to-br from-purple-600 via-indigo-700 to-purple-900 opacity-95 text-white text-center pt-5 pb-20 px-4">
+            <div className="max-w-4xl mx-auto text-center text-white">
+                <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full mb-6">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-crown w-5 h-5" aria-hidden="true"><path d="M11.562 3.266a.5.5 0 0 1 .876 0L15.39 8.87a1 1 0 0 0 1.516.294L21.183 5.5a.5.5 0 0 1 .798.519l-2.834 10.246a1 1 0 0 1-.956.734H5.81a1 1 0 0 1-.957-.734L2.02 6.02a.5.5 0 0 1 .798-.519l4.276 3.664a1 1 0 0 0 1.516-.294z"></path><path d="M5 21h14"></path></svg>
+                    <span >
+                        Premium Services
+                    </span>
+                </div>
+                
+                <h1 className="mb-6 text-5xl md:text-6xl text-white">
                     Luxury & Enterprise Solutions
                 </h1>
-                <p className="text-lg md:text-xl mb-6">
+                <p className="text-xl mb-8 text-purple-100 max-w-3xl mx-auto">
                     Specialized dry cleaning services for high-end garments, corporate accounts, and large events. White-glove service with dedicated support for orders of 40+ items.
                 </p>
-                <button className="bg-white text-purple-700 font-semibold px-6 py-3 rounded-lg hover:bg-gray-100 transition">
+                <button className="inline-flex items-center justify-center gap-2 whitespace-nowrap text-md font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive h-10 rounded-md px-6 has-[>svg]:px-4 bg-white text-purple-700 hover:bg-purple-50">
                     Request Consultation
                 </button>
             </div>
