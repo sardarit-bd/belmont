@@ -24,7 +24,7 @@ export default function App() {
             <div className="mx-auto w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mb-6">
               <DollarSign className="w-8 h-8 text-[#361b6b]" />
             </div>
-            <h1 className="mb-4 text-2xl md:text-3xl font-serif text-gray-900 font-medium">
+            <h1 className="mb-4">
               Refund Policy
             </h1>
             <p className="text-gray-600 font-serif">
@@ -37,7 +37,7 @@ export default function App() {
             
             {/* Our Commitment */}
             <section className="space-y-4">
-              <h2 className="text-5xl font-serif text-gray-900 leading-tight">
+              <h2 className="text-4xl font-serif text-gray-900 leading-tight">
                 Our Commitment to Customer Satisfaction
               </h2>
               <p className="text-gray-600 leading-relaxed font-serif">
