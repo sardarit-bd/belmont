@@ -24,7 +24,7 @@ export default function App() {
               {/* Using FileText to match the document icon in Screenshot_20 */}
               <FileText className="w-8 h-8 text-[#361b6b]" />
             </div>
-            <h1 className="mb-4 text-2xl md:text-3xl font-serif text-gray-900 font-medium">
+            <h1 className="mb-4">
               Terms of Service
             </h1>
             <p className="text-gray-600 font-serif">
