@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from '@inertiajs/react';
 
 export default function Footer() {
     return (
@@ -20,7 +21,7 @@ export default function Footer() {
                     </div>
 
                     {/* Services Column */}
-                    <div>
+                    {/* <div>
                         <h3 className="text-lg mb-4">Services</h3>
                         <ul className="space-y-2">
                             <li>
@@ -49,6 +50,28 @@ export default function Footer() {
                                 </a>
                             </li>
                         </ul>
+                    </div> */}
+
+                    <div>
+                        <h3 className="text-lg mb-4">Services</h3>
+                        <ul className="space-y-2">
+                            {[
+                                "Dry Cleaning",
+                                "Wash & Fold",
+                                "Pressing & Ironing",
+                                "Alterations",
+                                "Stain Removal",
+                            ].map((service) => (
+                                <li key={service}>
+                                    <button
+                                        type="button"
+                                        className="text-purple-100 hover:text-white transition-colors"
+                                    >
+                                        {service}
+                                    </button>
+                                </li>
+                            ))}
+                        </ul>
                     </div>
 
                     {/* Quick Links Column */}
@@ -56,34 +79,34 @@ export default function Footer() {
                         <h3 className="text-lg mb-4">Quick Links</h3>
                         <ul className="space-y-2">
                             <li>
-                                <a href="/about-us" className="text-purple-100 hover:text-white transition-colors">
+                                <Link href="/about-us" className="text-purple-100 hover:text-white transition-colors">
                                     About Us
-                                </a>
+                                </Link>
                             </li>
                             <li>
-                                <a href="/#contact" className="text-purple-100 hover:text-white transition-colors">
+                                <Link href="/#contact" className="text-purple-100 hover:text-white transition-colors">
                                     Contact Us
-                                </a>
+                                </Link>
                             </li>
                             <li>
-                                <a href="/privacy-policy" className="text-purple-100 hover:text-white transition-colors">
+                                <Link href="/privacy-policy" className="text-purple-100 hover:text-white transition-colors">
                                     Privacy Policy
-                                </a>
+                                </Link>
                             </li>
                             <li>
-                                <a href="/terms" className="text-purple-100 hover:text-white transition-colors">
+                                <Link href="/terms" className="text-purple-100 hover:text-white transition-colors">
                                     Terms of Service
-                                </a>
+                                </Link>
                             </li>
                             <li>
-                                <a href="/faq" className="text-purple-100 hover:text-white transition-colors">
+                                <Link href="/faq" className="text-purple-100 hover:text-white transition-colors">
                                     FAQs
-                                </a>
+                                </Link>
                             </li>
                             <li>
-                                <a href="/refund" className="text-purple-100 hover:text-white transition-colors">
+                                <Link href="/refund" className="text-purple-100 hover:text-white transition-colors">
                                     Refund Policy
-                                </a>
+                                </Link>
                             </li>
                         </ul>
                     </div>
