@@ -58,7 +58,7 @@ export default function EventPackages() {
                     <div
                         key={idx}
                         className={`relative bg-white rounded-xl shadow hover:shadow-lg transition border ${
-                            pkg.label ? "border-purple-500 border-2 shadow-xl" : "border-gray-200 border"
+                            pkg.label ? "border-[#361b6b] border-2 shadow-xl" : "border-gray-200 border"
                         }`}
                     >
                         {pkg.label && (
@@ -83,9 +83,9 @@ export default function EventPackages() {
                                 ))}
                             </ul>
                             <div className="pt-6 border-t">
-                                <p className="text-purple-600 mb-4">{pkg.cta}</p>
+                                <p className="text-[#361b6b] mb-4">{pkg.cta}</p>
                             </div>
-                            <button className="w-full bg-purple-600 text-white py-2 rounded-lg font-semibold hover:bg-purple-700 transition">
+                            <button className="w-full bg-[#361b6b] text-white py-2 rounded-lg font-semibold hover:bg-[#5c2baa] transition">
                                  Get Quote
                             </button>
                         </div>

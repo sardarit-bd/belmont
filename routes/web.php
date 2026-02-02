@@ -22,6 +22,26 @@ Route::get('/luxury', function () {
     return Inertia::render('Luxury');
 });
 
+Route::get('/about-us', function () {
+    return Inertia::render('AboutUs');
+});
+
+Route::get('/privacy-policy', function () {
+    return Inertia::render('PrivacyPolicy');
+});
+
+Route::get('/terms', function () {
+    return Inertia::render('Terms');
+});
+
+Route::get('/faq', function () {
+    return Inertia::render('FAQ');
+});
+
+Route::get('/refund', function () {
+    return Inertia::render('Refund');
+});
+
 Route::get('dashboard', function () {
     return Inertia::render('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');

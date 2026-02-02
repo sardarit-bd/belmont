@@ -108,13 +108,13 @@ export default function CheckRates() {
                             <div className="flex justify-center mb-10">
                                 <button
                                     onClick={() => setIsCartOpen(true)}
-                                    className="bg-[#8b2cf5] text-white px-4 py-2 rounded-xl shadow-lg hover:bg-purple-700 flex items-center gap-2"
+                                    className="bg-[#361b6b] text-white px-4 py-2 rounded-xl shadow-lg hover:bg-[#5c2baa] flex items-center gap-2 cursor-pointer"
                                 >
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-shopping-cart w-5 h-5 mr-2" aria-hidden="true"><circle cx="8" cy="21" r="1"></circle><circle cx="19" cy="21" r="1"></circle><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"></path></svg> View Cart
                                 </button>
                             </div>
                         ) : (
-                            <div className="bg-[#9300e8] rounded-2xl shadow-xl p-4 px-6 mb-10 flex flex-col md:flex-row items-center justify-between text-white max-w-4xl mx-auto gap-4">
+                            <div className="bg-[#5c2baa] rounded-2xl shadow-xl p-4 px-6 mb-10 flex flex-col md:flex-row items-center justify-between text-white max-w-4xl mx-auto gap-4">
                                 <div className="flex items-center gap-4 w-full md:w-auto">
                                     <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm shrink-0">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-shopping-cart w-6 h-6"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
@@ -132,7 +132,7 @@ export default function CheckRates() {
                                     </div>
                                     <button
                                         onClick={() => setIsCartOpen(true)}
-                                        className="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium disabled:pointer-events-none disabled:opacity-50 h-10 rounded-md px-6 bg-white text-purple-600 hover:bg-purple-50 shadow-lg hover:shadow-xl transition-all hover:scale-105"
+                                        className="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium disabled:pointer-events-none disabled:opacity-50 h-10 rounded-md px-6 bg-white text-gray-900 hover:bg-purple-50 shadow-lg hover:shadow-xl transition-all hover:scale-105"
                                     >
                                         View Cart
                                     </button>
@@ -208,7 +208,7 @@ export default function CheckRates() {
                                                     onClick={() =>
                                                         addToCart(item)
                                                     }
-                                                    className="w-full bg-purple-600 text-white py-2 rounded-lg hover:bg-purple-700 transition-colors flex items-center justify-center"
+                                                    className="w-full bg-[#361b6b] text-white py-2 rounded-lg hover:bg-[#5c2baa] transition-colors flex items-center justify-center cursor-pointer"
                                                 >
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-plus w-4 h-4 mr-2" aria-hidden="true"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg>
                                                     Add to Cart
