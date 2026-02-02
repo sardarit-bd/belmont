@@ -3,7 +3,7 @@ import { Phone } from 'lucide-react';
 
 export default function App() {
   return (
-    <div className="py-20 px-4 bg-gradient-to-b from-purple-50 to-white flex items-center justify-center">
+    <div className="py-20 px-4 bg-gradient-to-b from-purple-50 to-white flex items-center justify-center" id="consultation">
       <div className="container mx-auto max-w-3xl bg-white rounded-2xl shadow-2xl p-8 md:p-12 border border-purple-100">
         
         {/* Header */}
@@ -108,7 +108,7 @@ export default function App() {
           </div>
 
           {/* Submit Button */}
-          <button className="w-full bg-[#9333EA] hover:bg-[#7e22ce] text-white font-medium py-3.5 rounded-lg transition-colors shadow-sm text-sm tracking-wide mt-2">
+          <button className="w-full bg-[#361b6b] hover:bg-[#5c2baa] text-white font-medium py-3.5 rounded-lg transition-colors shadow-sm text-sm tracking-wide mt-2 cursor-pointer">
             Submit Consultation Request
           </button>
         </form>

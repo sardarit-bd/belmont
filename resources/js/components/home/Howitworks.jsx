@@ -6,7 +6,7 @@ export default function HowItWorks() {
         {
             number: 1,
             icon: (
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-calendar w-10 h-10 text-purple-600" aria-hidden="true"><path d="M8 2v4"></path><path d="M16 2v4"></path><rect width="18" height="18" x="3" y="4" rx="2"></rect><path d="M3 10h18"></path></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-calendar w-10 h-10 text-[#5c2baa]" aria-hidden="true"><path d="M8 2v4"></path><path d="M16 2v4"></path><rect width="18" height="18" x="3" y="4" rx="2"></rect><path d="M3 10h18"></path></svg>
             ),
             title: "Schedule Pickup",
             description: "Book your pickup online or call us. We offer paid pickup and delivery service."
@@ -14,7 +14,7 @@ export default function HowItWorks() {
         {
             number: 2,
             icon: (
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-package w-10 h-10 text-purple-600" aria-hidden="true"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"></path><path d="M12 22V12"></path><polyline points="3.29 7 12 12 20.71 7"></polyline><path d="m7.5 4.27 9 5.15"></path></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-package w-10 h-10 text-[#5c2baa]" aria-hidden="true"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"></path><path d="M12 22V12"></path><polyline points="3.29 7 12 12 20.71 7"></polyline><path d="m7.5 4.27 9 5.15"></path></svg>
             ),
             title: "We Clean",
             description: "Our experts clean your items with care using professional-grade equipment"
@@ -22,7 +22,7 @@ export default function HowItWorks() {
         {
             number: 3,
             icon: (
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-sparkles w-10 h-10 text-purple-600" aria-hidden="true"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"></path><path d="M20 2v4"></path><path d="M22 4h-4"></path><circle cx="4" cy="20" r="2"></circle></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-sparkles w-10 h-10 text-[#5c2baa]" aria-hidden="true"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"></path><path d="M20 2v4"></path><path d="M22 4h-4"></path><circle cx="4" cy="20" r="2"></circle></svg>
             ),
             title: "Delivery",
             description: "Get your items delivered fresh and clean to your doorstep"
@@ -48,14 +48,14 @@ export default function HowItWorks() {
     ];
 
     return (
-        <section id="Howitworks" className="py-20 scroll-mt-14 bg-gradient-to-r from-white to-purple-50/50">
+        <section id="Howitworks" className="py-20 scroll-mt-14 bg-gradient-to-r from-white via-white to-[#F7F0FF]">
             <div className="max-w-7xl mx-auto px-6 lg:px-8">
                 {/* Header */}
                 <div className="text-center mb-16">
                     <h2 className="text-5xl text-gray-900 mb-4">
                         How It Works
                     </h2>
-                    <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+                    <p className="text-gray-600 max-w-2xl mx-auto">
                         Getting your clothes cleaned has never been easier. Our simple 3-step process ensures quality service from pickup to delivery.
                     </p>
                 </div>
@@ -67,10 +67,10 @@ export default function HowItWorks() {
                         <div key={step.number} className="text-center upperAnimation">
                             {/* Icon with Number Badge */}
                             <div className="relative inline-block mb-6">
-                                <div className="bg-purple-100 w-20 h-20 rounded-full flex items-center justify-center text-purple-600">
+                                <div className="bg-purple-100 w-20 h-20 rounded-full flex items-center justify-center text-[#5c2baa]">
                                     {step.icon}
                                 </div>
-                                <div className="absolute -top-2 -right-2 bg-purple-600 text-white w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold">
+                                <div className="absolute -top-2 -right-2 bg-[#5c2baa] text-white w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold">
                                     {step.number}
                                 </div>
                             </div>
@@ -111,7 +111,7 @@ export default function HowItWorks() {
                                 <div key={index} className="flex gap-1">
                                     {/* Icon */}
                                     <div className="flex-shrink-0">
-                                        <div className="w-6 h-6 bg-purple-600 rounded-full flex items-center justify-center flex-shrink-0 mt-1 text-white">
+                                        <div className="w-6 h-6 bg-[#5c2baa] rounded-full flex items-center justify-center flex-shrink-0 mt-1 text-white">
                                             {benefit.icon}
                                         </div>
                                     </div>

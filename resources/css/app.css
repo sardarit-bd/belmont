@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Platypi:ital,wght@0,300..800;1,300..800&display=swap');
+
 @import 'tailwindcss';
 
 @import 'tw-animate-css';
@@ -12,7 +14,7 @@
         'Instrument Sans', ui-sans-serif, system-ui, sans-serif,
         'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
         'Noto Color Emoji'; */
-    --font-sans: "Georgia", "Times New Roman", Times, serif;
+    --font-sans: "Platypi", "Times New Roman", Times, serif;
 
     --radius-lg: var(--radius);
     --radius-md: calc(var(--radius) - 2px);

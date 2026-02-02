@@ -45,7 +45,7 @@ export default function App() {
           {benefits.map((benefit, index) => (
             <div key={index} className="flex flex-col items-center text-center group">
               {/* Icon Container - Squircle Shape */}
-              <div className="w-20 h-20 bg-gradient-to-br from-purple-600 to-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-4 transform hover:scale-110 transition-transform">
+              <div className="w-20 h-20 bg-gradient-to-br from-[#5c2baa] to-[#361b6b] rounded-2xl flex items-center justify-center mx-auto mb-4 transform hover:scale-110 transition-transform">
                 {benefit.icon}
               </div>
               

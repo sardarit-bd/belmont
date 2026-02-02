@@ -150,7 +150,7 @@ export default function Pricing() {
                     <h2 className="text-5xl text-gray-900 mb-4">
                         Simple, Transparent Pricing
                     </h2>
-                    <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+                    <p className="text-gray-600 max-w-2xl mx-auto">
                         Pay only for what you need. All items include our quality guarantee and eco-friendly cleaning products.
                     </p>
                 </div>
@@ -159,8 +159,8 @@ export default function Pricing() {
                 <div className="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden">
                     {/* Card Header */}
                     <div className="bg-gray-50 px-6 py-5 border-b border-gray-200">
-                        <h3 className="text-lg text-gray-900">Price List by Item Type</h3>
-                        <p className="text-sm text-gray-600 mt-1">Click each category to view detailed pricing</p>
+                        <h3 className="text-xl text-gray-900">Price List by Item Type</h3>
+                        <p className="text-md text-gray-600 mt-1">Click each category to view detailed pricing</p>
                     </div>
 
                     {/* Accordion */}

@@ -23,7 +23,7 @@ export default function Testimonial() {
     ];
 
     return (
-        <section id="testimonials" className="py-20 bg-gradient-to-r from-purple-50 via-white to-purple-100/60">
+        <section id="testimonials" className="py-20 bg-gradient-to-r from-white via-[#FBF8FF] to-[#F7EEFF]">
             <div className="max-w-7xl mx-auto px-6 lg:px-8">
                 {/* Header */}
                 <div className="text-center mb-16">
@@ -45,7 +45,7 @@ export default function Testimonial() {
                             {/* Stars */}
                             <div className="flex gap-1 mb-6">
                                 {[...Array(testimonial.rating)].map((_, i) => (
-                                    <FaStar key={i} className="w-5 h-5 text-yellow-400" />
+                                    <FaStar key={i} className="w-5 h-5 text-[#361b6b]" />
                                 ))}
                             </div>
 
