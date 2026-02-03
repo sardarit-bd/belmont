@@ -3,11 +3,14 @@ import AppHeaderLayout from "@/layouts/app/app-header-layout";
 
 export default function PickupScheduler() {
     const [currentStep, setCurrentStep] = useState(1);
+    const [errors, setErrors] = useState({});
     const [formData, setFormData] = useState({
         // Step 1 - Contact
         fullName: '',
         phoneNumber: '',
-        pickupAddress: '',
+        street: '',
+        city: '',
+        zip: '',
         // Step 2 - Schedule
         pickupDate: '',
         preferredTime: '',
@@ -20,19 +23,122 @@ export default function PickupScheduler() {
     });
 
     const handleChange = (e) => {
+        const { name, value } = e.target;
         setFormData({
             ...formData,
-            [e.target.name]: e.target.value
+            [name]: value
         });
+        // Clear error for this field when user starts typing
+        if (errors[name]) {
+            setErrors({
+                ...errors,
+                [name]: ''
+            });
+        }
+    };
+
+    const validateStep1 = () => {
+        const newErrors = {};
+        
+        if (!formData.fullName.trim()) {
+            newErrors.fullName = 'Full name is required';
+        }
+        
+        if (!formData.phoneNumber.trim()) {
+            newErrors.phoneNumber = 'Phone number is required';
+        } else if (!/^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/.test(formData.phoneNumber.replace(/\s/g, ''))) {
+            newErrors.phoneNumber = 'Please enter a valid phone number';
+        }
+        
+        if (!formData.street.trim()) {
+            newErrors.street = 'Street address is required';
+        }
+        
+        if (!formData.city.trim()) {
+            newErrors.city = 'City/State is required';
+        }
+        
+        if (!formData.zip.trim()) {
+            newErrors.zip = 'Zip code is required';
+        } else if (!/^\d{5}(-\d{4})?$/.test(formData.zip)) {
+            newErrors.zip = 'Please enter a valid zip code';
+        }
+        
+        return newErrors;
+    };
+
+    const validateStep2 = () => {
+        const newErrors = {};
+        
+        if (!formData.pickupDate) {
+            newErrors.pickupDate = 'Pickup date is required';
+        } else {
+            const selectedDate = new Date(formData.pickupDate);
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            if (selectedDate < today) {
+                newErrors.pickupDate = 'Please select a future date';
+            }
+        }
+        
+        if (!formData.preferredTime) {
+            newErrors.preferredTime = 'Preferred time is required';
+        }
+        
+        if (!formData.cardholderName.trim()) {
+            newErrors.cardholderName = 'Cardholder name is required';
+        }
+        
+        if (!formData.cardNumber.trim()) {
+            newErrors.cardNumber = 'Card number is required';
+        } else if (!/^\d{13,19}$/.test(formData.cardNumber.replace(/\s/g, ''))) {
+            newErrors.cardNumber = 'Please enter a valid card number';
+        }
+        
+        if (!formData.expiryDate.trim()) {
+            newErrors.expiryDate = 'Expiry date is required';
+        } else if (!/^(0[1-9]|1[0-2])\/\d{2}$/.test(formData.expiryDate)) {
+            newErrors.expiryDate = 'Format: MM/YY';
+        }
+        
+        if (!formData.cvc.trim()) {
+            newErrors.cvc = 'CVC is required';
+        } else if (!/^\d{3,4}$/.test(formData.cvc)) {
+            newErrors.cvc = 'Please enter a valid CVC';
+        }
+        
+        return newErrors;
     };
 
     const nextStep = () => {
+        let validationErrors = {};
+        
+        if (currentStep === 1) {
+            validationErrors = validateStep1();
+        } else if (currentStep === 2) {
+            validationErrors = validateStep2();
+        }
+        
+        if (Object.keys(validationErrors).length > 0) {
+            setErrors(validationErrors);
+            // Scroll to first error
+            const firstErrorField = Object.keys(validationErrors)[0];
+            const element = document.getElementsByName(firstErrorField)[0];
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                element.focus();
+            }
+            return;
+        }
+        
+        setErrors({});
         if (currentStep < 3) {
             setCurrentStep(currentStep + 1);
         }
     };
 
     const prevStep = () => {
+        setErrors({});
         if (currentStep > 1) {
             setCurrentStep(currentStep - 1);
         }
@@ -40,8 +146,60 @@ export default function PickupScheduler() {
 
     const handleSubmit = () => {
         console.log('Form submitted:', formData);
-        alert('Pickup confirmed!');
+        alert('Pickup confirmed! We will contact you shortly.');
     };
+
+    const formatCardNumber = (value) => {
+        const v = value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+        const matches = v.match(/\d{4,16}/g);
+        const match = (matches && matches[0]) || '';
+        const parts = [];
+        for (let i = 0, len = match.length; i < len; i += 4) {
+            parts.push(match.substring(i, i + 4));
+        }
+        if (parts.length) {
+            return parts.join(' ');
+        } else {
+            return value;
+        }
+    };
+
+    const formatExpiryDate = (value) => {
+        const v = value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+        if (v.length >= 2) {
+            return v.slice(0, 2) + '/' + v.slice(2, 4);
+        }
+        return v;
+    };
+
+    const handleCardNumberChange = (e) => {
+        const formatted = formatCardNumber(e.target.value);
+        setFormData({
+            ...formData,
+            cardNumber: formatted
+        });
+        if (errors.cardNumber) {
+            setErrors({
+                ...errors,
+                cardNumber: ''
+            });
+        }
+    };
+
+    const handleExpiryDateChange = (e) => {
+        const formatted = formatExpiryDate(e.target.value);
+        setFormData({
+            ...formData,
+            expiryDate: formatted
+        });
+        if (errors.expiryDate) {
+            setErrors({
+                ...errors,
+                expiryDate: ''
+            });
+        }
+    };
+
     return (
         <AppHeaderLayout>
             <div className="min-h-screen bg-gradient-to-br from-purple-50 to-pink-50 py-12 px-4">
@@ -141,8 +299,13 @@ export default function PickupScheduler() {
                                             value={formData.fullName}
                                             onChange={handleChange}
                                             placeholder="John Doe"
-                                            className="w-full px-4 py-3 bg-gray-50 border-0 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none"
+                                            className={`w-full px-4 py-3 bg-gray-50 rounded-lg focus:outline-none ${
+                                                errors.fullName 
+                                                    ? 'border-2 border-red-500 focus:border-red-500 focus:ring-0' 
+                                                    : 'border-0 focus:ring-2 focus:ring-purple-500'
+                                            }`}
                                         />
+                                        {errors.fullName && <p className="mt-1 text-sm text-red-500">{errors.fullName}</p>}
                                     </div>
 
                                     <div>
@@ -155,22 +318,55 @@ export default function PickupScheduler() {
                                             value={formData.phoneNumber}
                                             onChange={handleChange}
                                             placeholder="(555) 123-4567"
-                                            className="w-full px-4 py-3 bg-gray-50 border-0 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none"
+                                            className={`w-full px-4 py-3 bg-gray-50 border-0 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none ${errors.phoneNumber ? 'ring-2 ring-red-500' : ''}`}
                                         />
+                                        {errors.phoneNumber && <p className="mt-1 text-sm text-red-500">{errors.phoneNumber}</p>}
                                     </div>
 
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-2">
-                                            Pickup Address <span className="text-red-500">*</span>
+                                            Street <span className="text-red-500">*</span>
                                         </label>
                                         <input
                                             type="text"
-                                            name="pickupAddress"
-                                            value={formData.pickupAddress}
+                                            name="street"
+                                            value={formData.street}
                                             onChange={handleChange}
-                                            placeholder="123 Main St, Brockton, MA 02301"
-                                            className="w-full px-4 py-3 bg-gray-50 border-0 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none"
+                                            placeholder="123 Main St"
+                                            className={`w-full px-4 py-3 bg-gray-50 border-0 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none ${errors.street ? 'ring-2 ring-red-500' : ''}`}
                                         />
+                                        {errors.street && <p className="mt-1 text-sm text-red-500">{errors.street}</p>}
+                                    </div>
+
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                            City/State <span className="text-red-500">*</span>
+                                        </label>
+                                        <input
+                                            type="text"
+                                            name="city"
+                                            value={formData.city}
+                                            onChange={handleChange}
+                                            placeholder="Brockton, MA"
+                                            className={`w-full px-4 py-3 bg-gray-50 border-0 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none ${errors.city ? 'ring-2 ring-red-500' : ''}`}
+                                        />
+                                        {errors.city && <p className="mt-1 text-sm text-red-500">{errors.city}</p>}
+                                    </div>
+
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                            Zip <span className="text-red-500">*</span>
+                                        </label>
+                                        <input
+                                            type="text"
+                                            name="zip"
+                                            value={formData.zip}
+                                            onChange={handleChange}
+                                            placeholder="02301"
+                                            maxLength="10"
+                                            className={`w-full px-4 py-3 bg-gray-50 border-0 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none ${errors.zip ? 'ring-2 ring-red-500' : ''}`}
+                                        />
+                                        {errors.zip && <p className="mt-1 text-sm text-red-500">{errors.zip}</p>}
                                     </div>
                                 </div>
 
@@ -211,8 +407,15 @@ export default function PickupScheduler() {
                                             name="pickupDate"
                                             value={formData.pickupDate}
                                             onChange={handleChange}
-                                            className="w-full px-4 py-3 text-black bg-gray-50 border-0 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none"
+                                            min={new Date().toISOString().split('T')[0]}
+                                            className={`w-full px-4 py-3 bg-gray-50 rounded-lg focus:outline-none ${
+                                                errors.pickupDate 
+                                                    ? 'border-2 border-red-500 focus:border-red-500 focus:ring-0' 
+                                                    : 'border-0 focus:ring-2 focus:ring-purple-500'
+                                            }`}
+                                            style={{ colorScheme: 'light' }}
                                         />
+                                        {errors.pickupDate && <p className="mt-1 text-sm text-red-500">{errors.pickupDate}</p>}
                                     </div>
 
                                     <div>
@@ -224,8 +427,14 @@ export default function PickupScheduler() {
                                             name="preferredTime"
                                             value={formData.preferredTime}
                                             onChange={handleChange}
-                                            className="w-full px-4 py-3 bg-gray-50 border-0 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none"
+                                            className={`w-full px-4 py-3 bg-gray-50 rounded-lg focus:outline-none ${
+                                                errors.preferredTime 
+                                                    ? 'border-2 border-red-500 focus:border-red-500 focus:ring-0' 
+                                                    : 'border-0 focus:ring-2 focus:ring-purple-500'
+                                            }`}
+                                            style={{ colorScheme: 'light' }}
                                         />
+                                        {errors.preferredTime && <p className="mt-1 text-sm text-red-500">{errors.preferredTime}</p>}
                                     </div>
                                 </div>
 
@@ -283,8 +492,9 @@ export default function PickupScheduler() {
                                             value={formData.cardholderName}
                                             onChange={handleChange}
                                             placeholder="John Doe"
-                                            className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none"
+                                            className={`w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none ${errors.cardholderName ? 'border-2 border-red-500 focus:border-red-500 focus:ring-0' : ''}`}
                                         />
+                                        {errors.cardholderName && <p className="mt-1 text-sm text-red-500">{errors.cardholderName}</p>}
                                     </div>
 
                                     <div>
@@ -295,11 +505,12 @@ export default function PickupScheduler() {
                                             type="text"
                                             name="cardNumber"
                                             value={formData.cardNumber}
-                                            onChange={handleChange}
+                                            onChange={handleCardNumberChange}
                                             placeholder="1234 5678 9012 3456"
                                             maxLength="19"
-                                            className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none"
+                                            className={`w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none ${errors.cardNumber ? 'border-2 border-red-500 focus:border-red-500 focus:ring-0' : ''}`}
                                         />
+                                        {errors.cardNumber && <p className="mt-1 text-sm text-red-500">{errors.cardNumber}</p>}
                                     </div>
 
                                     <div className="grid grid-cols-2 gap-4">
@@ -311,11 +522,12 @@ export default function PickupScheduler() {
                                                 type="text"
                                                 name="expiryDate"
                                                 value={formData.expiryDate}
-                                                onChange={handleChange}
+                                                onChange={handleExpiryDateChange}
                                                 placeholder="MM/YY"
                                                 maxLength="5"
-                                                className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none"
+                                                className={`w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none ${errors.expiryDate ? 'border-2 border-red-500 focus:border-red-500 focus:ring-0' : ''}`}
                                             />
+                                            {errors.expiryDate && <p className="mt-1 text-sm text-red-500">{errors.expiryDate}</p>}
                                         </div>
 
                                         <div>
@@ -328,9 +540,10 @@ export default function PickupScheduler() {
                                                 value={formData.cvc}
                                                 onChange={handleChange}
                                                 placeholder="123"
-                                                maxLength="3"
-                                                className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none"
+                                                maxLength="4"
+                                                className={`w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none ${errors.cvc ? 'border-2 border-red-500 focus:border-red-500 focus:ring-0' : ''}`}
                                             />
+                                            {errors.cvc && <p className="mt-1 text-sm text-red-500">{errors.cvc}</p>}
                                         </div>
                                     </div>
                                 </div>
@@ -361,7 +574,7 @@ export default function PickupScheduler() {
                             <div>
                                 <div className="flex items-center gap-3 mb-6 p-4 bg-gradient-to-r from-purple-50 to-indigo-50 rounded-xl">
                                     <div className="w-10 h-10 bg-[#361b6b] rounded-lg flex items-center justify-center">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="lucide lucide-circle-check-big w-6 h-6 text-white" aria-hidden="true"><path d="M21.801 10A10 10 0 1 1 17 3.335"></path><path d="m9 11 3 3L22 4"></path></svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-circle-check-big w-6 h-6 text-white" aria-hidden="true"><path d="M21.801 10A10 10 0 1 1 17 3.335"></path><path d="m9 11 3 3L22 4"></path></svg>
                                     </div>
                                     <div>
                                         <h2 className="mb-0">Almost There!</h2>
@@ -381,8 +594,18 @@ export default function PickupScheduler() {
                                     </div>
 
                                     <div className='bg-white rounded-lg px-4 py-2'>
-                                        <p className="text-purple-600 font-medium">Pickup Address</p>
-                                        <p className="text-black">{formData.pickupAddress || 'Not provided'}</p>
+                                        <p className="text-purple-600 font-medium">Street</p>
+                                        <p className="text-black">{formData.street || 'Not provided'}</p>
+                                    </div>
+
+                                    <div className='bg-white rounded-lg px-4 py-2'>
+                                        <p className="text-purple-600 font-medium">City/State</p>
+                                        <p className="text-black">{formData.city || 'Not provided'}</p>
+                                    </div>
+
+                                    <div className='bg-white rounded-lg px-4 py-2'>
+                                        <p className="text-purple-600 font-medium">Zip</p>
+                                        <p className="text-black">{formData.zip || 'Not provided'}</p>
                                     </div>
 
                                     <div className="grid grid-cols-2 gap-4">
@@ -397,8 +620,8 @@ export default function PickupScheduler() {
                                     </div>
 
                                     {formData.specialInstructions && (
-                                        <div>
-                                            <p className="text-sm text-purple-600 font-medium">Special Instructions</p>
+                                        <div className='bg-white rounded-lg px-4 py-2'>
+                                            <p className="text-purple-600 font-medium">Special Instructions</p>
                                             <p className="text-gray-900">{formData.specialInstructions}</p>
                                         </div>
                                     )}

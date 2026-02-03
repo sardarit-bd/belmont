@@ -83,26 +83,26 @@ export default function Services() {
             ],
             turnaround: "Standard 5-7 day turnaround"
         },
-        {
-            icon: (
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="lucide lucide-droplets w-8 h-8 text-[#5c2baa] group-hover:text-white transition-all duration-500 group-hover:scale-110" aria-hidden="true"><path d="M7 16.3c2.2 0 4-1.83 4-4.05 0-1.16-.57-2.26-1.71-3.19S7.29 6.75 7 5.3c-.29 1.45-1.14 2.84-2.29 3.76S3 11.1 3 12.25c0 2.22 1.8 4.05 4 4.05z"></path><path d="M12.56 6.6A10.97 10.97 0 0 0 14 3.02c.5 2.5 2 4.9 4 6.5s3 3.5 3 5.5a6.98 6.98 0 0 1-11.91 4.97"></path>
-                </svg>
-            ),
-            title: "Stain Removal",
-            description: "Advanced stain removal techniques for even the toughest stains on your garments.",
-            process: "Advanced stain removal techniques using specialized treatments for different stain types, ensuring maximum success while protecting fabric integrity.",
-            handles: {
-                column1: ["Oil & Grease", "Wine & Beverages", "Food Stains"],
-                column2: ["Ink & Dye", "Blood & Protein", "Grass & Dirt"]
-            },
-            benefits: [
-                "Advanced techniques",
-                "High success rate",
-                "Fabric-safe treatments",
-                "No damage guarantee"
-            ],
-            turnaround: "Standard 3-5 day turnaround"
-        },
+        // {
+        //     icon: (
+        //         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="lucide lucide-droplets w-8 h-8 text-[#5c2baa] group-hover:text-white transition-all duration-500 group-hover:scale-110" aria-hidden="true"><path d="M7 16.3c2.2 0 4-1.83 4-4.05 0-1.16-.57-2.26-1.71-3.19S7.29 6.75 7 5.3c-.29 1.45-1.14 2.84-2.29 3.76S3 11.1 3 12.25c0 2.22 1.8 4.05 4 4.05z"></path><path d="M12.56 6.6A10.97 10.97 0 0 0 14 3.02c.5 2.5 2 4.9 4 6.5s3 3.5 3 5.5a6.98 6.98 0 0 1-11.91 4.97"></path>
+        //         </svg>
+        //     ),
+        //     title: "Stain Removal",
+        //     description: "Advanced stain removal techniques for even the toughest stains on your garments.",
+        //     process: "Advanced stain removal techniques using specialized treatments for different stain types, ensuring maximum success while protecting fabric integrity.",
+        //     handles: {
+        //         column1: ["Oil & Grease", "Wine & Beverages", "Food Stains"],
+        //         column2: ["Ink & Dye", "Blood & Protein", "Grass & Dirt"]
+        //     },
+        //     benefits: [
+        //         "Advanced techniques",
+        //         "High success rate",
+        //         "Fabric-safe treatments",
+        //         "No damage guarantee"
+        //     ],
+        //     turnaround: "Standard 3-5 day turnaround"
+        // },
         {
             icon: (
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="lucide lucide-package w-8 h-8 text-[#5c2baa] group-hover:text-white transition-all duration-500 group-hover:scale-110" aria-hidden="true"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"></path><path d="M12 22V12"></path><polyline points="3.29 7 12 12 20.71 7"></polyline><path d="m7.5 4.27 9 5.15"></path></svg>
@@ -144,13 +144,13 @@ export default function Services() {
                             <div
                             key={index}
                             onClick={() => setSelectedService(service)}
-                            className="group relative bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 cursor-pointer overflow-hidden border border-gray-100 hover:border-purple-200"
+                            className="group relative bg-white rounded-2xl p-4 shadow-lg hover:shadow-2xl transition-all duration-500 cursor-pointer overflow-hidden border border-gray-100 hover:border-purple-200"
                             >
                             <div className="absolute inset-0 bg-[#5c2baa] opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
 
                             <div className="relative z-10">
                                 {/* Icon */}
-                                <div className="w-16 h-16 bg-purple-100 group-hover:bg-white/20 rounded-xl flex items-center justify-center mb-6 transition-all duration-500 group-hover:scale-110 group-hover:rotate-6 text-purple-600 group-hover:text-white">
+                                <div className="w-12 h-12 bg-purple-100 group-hover:bg-white/20 rounded-xl flex items-center justify-center mb-6 transition-all duration-500 group-hover:scale-110 group-hover:rotate-6 text-purple-600 group-hover:text-white">
                                 {service.icon}
                                 </div>
 
@@ -160,12 +160,12 @@ export default function Services() {
                                 </h3>
 
                                 {/* Description */}
-                                <p className="text-gray-600 group-hover:text-white/90 transition-colors duration-500 mb-4">
+                                <p className="text-gray-600 group-hover:text-white/90 transition-colors duration-500 mb-1">
                                 {service.description}
                                 </p>
 
                                 {/* Learn More Link */}
-                                <div class="mt-6 flex items-center gap-2 text-purple-600 group-hover:text-white opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-x-0 group-hover:translate-x-2"><span>Learn more</span><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                                <div class=" flex items-center gap-2 text-purple-600 group-hover:text-white opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-x-0 group-hover:translate-x-2"><span>Learn more</span><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                                 </div>
                             </div>
                             </div>
