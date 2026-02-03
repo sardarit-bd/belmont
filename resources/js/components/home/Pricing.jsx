@@ -5,142 +5,150 @@ import { Link } from '@inertiajs/react';
 
 export default function Pricing() {
     const [openCategory, setOpenCategory] = useState(null);
+    const [showFullList, setShowFullList] = useState(false);
 
     const pricingData = [
         {
             id: 'shirts',
             title: 'Shirts',
             items: [
-                { name: 'Shirt (Hanger)', price: '$5.50' },
-                { name: 'Shirt (Box)', price: '$6.00' }
+                { name: 'Shirt (Hanger)', price: '$5.45' },
+                { name: 'Shirt (Box)', price: '$6.00' },
+                { name: 'Shirt (Laundry)', price: '$4.45' },
+                { name: 'Shirt (Press only)', price: '$3.99' }
             ]
         },
         {
             id: 'polos',
-            title: 'Polos & T-Shirts',
+            title: 'Polos/T-Shirts',
             items: [
-                { name: 'Polo Shirt', price: '$5.50' },
-                { name: 'T-Shirt', price: '$4.50' }
+                { name: 'Polos/T-Shirts (Dry Clean)', price: '$6.25' },
+                { name: 'Polos/T-Shirts (Press Only)', price: '$4.50' }
+            ]
+        },
+        {
+            id: 'sports-jacket',
+            title: 'Sports Jacket',
+            items: [
+                { name: 'Dry Clean', price: '$8.75' },
+                { name: 'Press Only', price: '$7.49' }
             ]
         },
         {
             id: 'bottoms',
             title: 'Bottoms',
             items: [
-                { name: 'Pants', price: '$7.50' },
-                { name: 'Jeans', price: '$7.50' },
-                { name: 'Shorts', price: '$6.50' }
+                { name: 'Pants', price: '$7.75' },
+                { name: 'Jeans', price: '$8.00' },
+                { name: 'Shorts', price: '$7.25' },
+                { name: 'Press Only', price: '$5.50' }
+            ]
+        },
+        {
+            id: 'robes',
+            title: 'Robes',
+            items: [
+                { name: 'Dry Clean', price: '$20.00' },
+                { name: 'Press Only', price: '$15.00' }
+            ]
+        },
+        {
+            id: 'skirts',
+            title: 'Skirts',
+            items: [
+                { name: 'Dry Clean', price: '$7.00' },
+                { name: 'Press Only', price: '$4.50' }
             ]
         },
         {
             id: 'tops-blouses',
-            title: 'Tops & Blouses',
+            title: 'Blouses',
             items: [
-                { name: 'Blouse', price: '$7.50' },
-                { name: 'Sweater', price: '$8.50' }
+                { name: 'Dry Clean', price: '$7.00' },
+                { name: 'Press Only', price: '$5.45' }
             ]
         },
         {
             id: 'sweaters',
-            title: 'Sweaters',
+            title: 'Sweaters (Dry Clean)',
             items: [
-                { name: 'Sweater (Regular)', price: '$8.50' },
-                { name: 'Sweater (Cashmere)', price: '$12.00' }
+                { name: 'Light', price: '$7.25' },
+                { name: 'Long', price: '$9.75' },
+                { name: 'Hoodie', price: '$12.00' },
+                { name: 'Press Only', price: '$5.50/$7/$10' }
             ]
         },
         {
             id: 'jackets-coats',
-            title: 'Jackets & Coats',
+            title: 'Coats (Dry Clean)',
             items: [
-                { name: 'Jacket', price: '$12.00' },
-                { name: 'Coat', price: '$15.00' },
-                { name: 'Winter Coat', price: '$18.00' }
+                { name: 'Jacket', price: '$18.00' },
+                { name: 'Rain Coat', price: '$25.00' },
+                { name: 'Over Coat', price: '$25.00' },
+                { name: 'Down Coat', price: 'TBD' },
+                { name: 'Press Only', price: '$15/$17/$20' }
             ]
         },
         {
             id: 'suits-formal',
-            title: 'Suits & Formal',
+            title: 'Suits',
             items: [
-                { name: 'Suit (2-piece)', price: '$18.00' },
-                { name: 'Suit (3-piece)', price: '$24.00' },
-                { name: 'Tuxedo', price: '$20.00' }
+                { name: 'Suit (2-piece)', price: '$16.00' },
+                { name: 'Suit (3-piece)', price: '$22.00' },
+                { name: 'Press Only', price: '$13.50/$17.50' }
             ]
         },
         {
-            id: 'dresses-robes',
-            title: 'Dresses & Robes',
+            id: 'dresses',
+            title: 'Dresses (with Linen $0.75 extra)',
             items: [
-                { name: 'Dress (Simple)', price: '$12.00' },
-                { name: 'Dress (Fancy)', price: '$18.00' },
-                { name: 'Evening Gown', price: '$25.00' },
-                { name: 'Robe', price: '$10.00' }
+                { name: 'Dry Clean', price: '$15.00' },
+                { name: 'Long', price: '$17.25' },
+                { name: 'Fancy', price: '$55.00' },
+                { name: 'Press Only', price: '$13/$15/$30' }
+            ]
+        },
+        {
+            id: 'jogger-suit',
+            title: 'Joggers',
+            items: [
+                { name: '2 pc', price: '$18.00' },
+                { name: 'Press Only', price: '$15.00' }
             ]
         },
         {
             id: 'vests-specialty',
-            title: 'Vests & Specialty',
+            title: 'Vests (Dry Clean)',
             items: [
-                { name: 'Vest', price: '$7.50' },
-                { name: 'Tie', price: '$5.00' },
-                { name: 'Scarf', price: '$6.00' }
+                { name: 'Waist Coat', price: '$6.45' },
+                { name: 'Jacket', price: '$13.50' },
+                { name: 'Press Only', price: 'TBD' }
             ]
         },
         {
-            id: 'accessories',
-            title: 'Accessories',
+            id: 'lab-coat',
+            title: 'Lab Coat',
             items: [
-                { name: 'Hat/Cap', price: '$8.00' },
-                { name: 'Gloves', price: '$6.00' },
-                { name: 'Belt', price: '$5.00' }
+                { name: 'Dry Clean', price: '$18.50' },
+                { name: 'Press Only', price: '$14.00' }
             ]
         },
+
         {
-            id: 'comforters',
-            title: 'Comforters',
+            id: 'jump-suit',
+            title: 'Jump Suit',
             items: [
-                { name: 'Comforter (Twin)', price: '$25.00' },
-                { name: 'Comforter (Full/Queen)', price: '$30.00' },
-                { name: 'Comforter (King)', price: '$35.00' }
+                { name: 'Dry Clean', price: '$18.50' },
+                { name: 'Press Only', price: '$15.00' }
             ]
         },
-        {
-            id: 'down-comforters',
-            title: 'Down Comforters',
-            items: [
-                { name: 'Down Comforter (Twin)', price: '$30.00' },
-                { name: 'Down Comforter (Full/Queen)', price: '$35.00' },
-                { name: 'Down Comforter (King)', price: '$40.00' }
-            ]
-        },
-        {
-            id: 'blankets',
-            title: 'Blankets',
-            items: [
-                { name: 'Blanket (Regular)', price: '$15.00' },
-                { name: 'Blanket (Large)', price: '$20.00' }
-            ]
-        },
-        {
-            id: 'table-cloths',
-            title: 'Table Cloths',
-            items: [
-                { name: 'Table Cloth (Small)', price: '$12.00' },
-                { name: 'Table Cloth (Large)', price: '$18.00' }
-            ]
-        },
-        {
-            id: 'drapes',
-            title: 'Drapes',
-            items: [
-                { name: 'Drapes (per panel)', price: '$20.00' },
-                { name: 'Curtains (per panel)', price: '$15.00' }
-            ]
-        }
     ];
 
     const toggleCategory = (categoryId) => {
         setOpenCategory(openCategory === categoryId ? null : categoryId);
     };
+
+    const displayedData = showFullList ? pricingData : pricingData.slice(0, 5);
 
     return (
         <section id="pricing" className="py-20 scroll-mt-10 bg-gradient-to-l from-pink-50/50 to-white" animation="fade-up">
@@ -165,7 +173,7 @@ export default function Pricing() {
 
                     {/* Accordion */}
                     <div className="divide-y divide-gray-200">
-                        {pricingData.map((category) => (
+                        {displayedData.map((category) => (
                             <div key={category.id} className="overflow-hidden">
                                 {/* Accordion Header */}
                                 <button
@@ -215,6 +223,19 @@ export default function Pricing() {
                             </div>
                         ))}
                     </div>
+
+                    {/* Show Full Price List Button */}
+                    {!showFullList && (
+                        <div className="px-6 py-5 border-t border-gray-200 flex justify-center">
+                            <button
+                                onClick={() => setShowFullList(true)}
+                                className="px-4 py-2 text-sm text-white hover:bg-purple-700 font-medium rounded-lg transition-all duration-300 hover:opacity-90 transform"
+                                style={{ backgroundColor: '#361b6b' }}
+                            >
+                                Show Full Price List
+                            </button>
+                        </div>
+                    )}
 
                     {/* Footer Notes */}
                     <div className="bg-gray-50 px-6 py-5 border-t border-gray-200 space-y-2">

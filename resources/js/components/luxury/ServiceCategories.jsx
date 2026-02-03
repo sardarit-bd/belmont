@@ -59,7 +59,7 @@ export default function ServiceCategories() {
                         // Changed from hover:${cat.color} to explicit ${cat.hoverColor}
                         className={`group bg-white rounded-xl p-6 shadow hover:shadow-lg transition upperAnimation ${cat.hoverColor}`}
                     >
-                        <div className={`w-16 h-16 rounded-xl flex items-center justify-center mb-6 ${cat.color}`}>
+                        <div className={`w-16 h-16 rounded-xl flex items-center justify-center mb-6 ${cat.color} group-hover:border-white group-hover:border-2`}>
                             {cat.icon}
                         </div>
                         
