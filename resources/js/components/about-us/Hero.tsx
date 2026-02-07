@@ -7,7 +7,7 @@ export default function Hero() {
         
         {/* Header Text Section */}
         <div className="text-center max-w-3xl mx-auto space-y-4">
-          <h1 className="text-sm md:text-base font-medium text-gray-900 tracking-wide">
+          <h1 className="text-4xl font-serif font-medium text-gray-900 tracking-wide">
             About Belmont Dry Cleaners
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">

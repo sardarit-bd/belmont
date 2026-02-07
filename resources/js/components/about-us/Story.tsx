@@ -6,7 +6,7 @@ export default function Story() {
         {/* Our Story Text Card Component */}
         <div className="w-full bg-white rounded-2xl border border-gray-200 p-12">
           <div className="mx-auto space-y-8">
-            <h2 className="font-serif text-gray-900 text-center font-medium">
+            <h2 className="text-4xl font-serif text-gray-900 text-center">
               Our Story
             </h2>
             
