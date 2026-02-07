@@ -130,20 +130,20 @@ export default function Pricing() {
                         >
                             {/* Card Header */}
                             <div className="p-8 bg-[#fcfaff] border-b border-[#f3e9ff]">
-    <div className="flex items-center gap-4 mb-4">
-        <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center text-[#5c2baa] shadow-sm border border-[#f3e9ff] flex-shrink-0">
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.5">
-                {category.icon}
-            </svg>
-        </div>
-        <h3 className="text-2xl font-bold text-[#361b6b] leading-tight">
-            {category.title}
-        </h3>
-    </div>
-    <p className="text-sm text-[#5c2baa] font-medium leading-relaxed">
-        {category.description}
-    </p>
-</div>
+                                <div className="flex items-center gap-4 mb-4">
+                                    <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center text-[#5c2baa] shadow-sm border border-[#f3e9ff] flex-shrink-0">
+                                        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.5">
+                                            {category.icon}
+                                        </svg>
+                                    </div>
+                                    <h3 className="text-2xl font-bold text-[#361b6b] leading-tight">
+                                        {category.title}
+                                    </h3>
+                                </div>
+                                <p className="text-sm text-[#5c2baa] font-medium leading-relaxed">
+                                    {category.description}
+                                </p>
+                            </div>
 
                             {/* Static Pricing Content (No Scroll) */}
                             <div className="p-8 flex-grow space-y-8">
