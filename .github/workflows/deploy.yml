@@ -1,7 +1,8 @@
 name: Deploy to VPS
 
 on:
-  workflow_dispatch:
+  push:
+    branches: [ main ]
 
 jobs:
   deploy:
@@ -10,6 +11,8 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      # 1. Setup PHP and Install Backend Dependencies first
+      # This is required because Vite/Wayfinder calls 'php artisan'
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
@@ -17,12 +20,10 @@ jobs:
           extensions: mbstring, xml, curl, pdo_mysql
           tools: composer:v2
 
-      - name: Copy .env file
-        run: cp .env.example .env || echo "APP_KEY=" > .env
+      - name: Install backend dependencies
+        run: composer install --prefer-dist --no-dev --optimize-autoloader
 
-      - name: Install backend dependencies (with dev for build)
-        run: composer install --optimize-autoloader
-
+      # 2. Setup Node and Build Frontend
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -34,12 +35,14 @@ jobs:
       - name: Build frontend
         run: npm run build
 
-      - name: Run tests
+      # 3. Run Tests
+      - name: Run frontend tests
         run: npm test
 
       - name: Run Laravel tests
         run: php artisan test
 
+      # 4. Deploy to VPS
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v1.0.3
         with:
@@ -48,16 +51,30 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             cd /var/www/keen.sardarit.cloud
+            
+            # Maintenance mode on
+            php artisan down || true
+            
             git pull origin main
+            
+            # Install dependencies on server
             composer install --optimize-autoloader --no-dev
             npm ci
+            npm run build
+            
+            # Permissions
             sudo chown -R apache:apache .
             sudo find . -type d -exec chmod 755 {} \;
             sudo find . -type f -exec chmod 644 {} \;
             sudo chmod -R 775 storage bootstrap/cache
-            npm run build
+            
+            # Optimization
             php artisan optimize:clear
             php artisan config:cache
             php artisan route:cache
             php artisan view:cache
+            
+            # Maintenance mode off
+            php artisan up
+            
             sudo systemctl restart nginx
