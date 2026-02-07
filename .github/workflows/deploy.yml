@@ -41,32 +41,37 @@ jobs:
           script: |
             cd /var/www/keen.sardarit.cloud
             
-            # Maintenance mode on
-            php artisan down || true
+            # Fix ownership trust
+            git config --global --add safe.directory /var/www/keen.sardarit.cloud
             
-            git pull origin main
+            # Force code update
+            git fetch origin main
+            git reset --hard origin/main
             
-            # Install dependencies on server
+            # Clean old assets to ensure Vite generates fresh ones
+            rm -rf public/build
+            
+            # Install & Build
+            export COMPOSER_ALLOW_SUPERUSER=1
             composer install --optimize-autoloader --no-dev
             npm ci
             npm run build
             
-            # Permissions
-            sudo chown -R apache:apache .
-            sudo find . -type d -exec chmod 755 {} \;
-            sudo find . -type f -exec chmod 644 {} \;
-            sudo chmod -R 775 storage bootstrap/cache
-            
-            # Optimization
+            # Standard Laravel Optimization
             php artisan optimize:clear
             php artisan config:cache
             php artisan route:cache
             php artisan view:cache
             
-            # Maintenance mode off
-            php artisan up
+            # Permissions
+            sudo chown -R apache:apache .
+            sudo chmod -R 775 storage bootstrap/cache
             
+            sudo systemctl restart php-fpm || sudo systemctl restart php8.4-fpm || sudo systemctl restart httpd
+            
+            # Restart Nginx
             sudo systemctl restart nginx
+
 
 
 
