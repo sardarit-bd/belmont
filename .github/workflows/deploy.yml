@@ -1,8 +1,7 @@
 name: Deploy to VPS
 
 on:
-  push:
-    branches: [ main ]
+  workflow_dispatch:
 
 jobs:
   deploy:
@@ -10,6 +9,19 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: mbstring, xml, curl, pdo_mysql
+          tools: composer:v2
+
+      - name: Copy .env file
+        run: cp .env.example .env || echo "APP_KEY=" > .env
+
+      - name: Install backend dependencies (with dev for build)
+        run: composer install --optimize-autoloader
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -24,16 +36,6 @@ jobs:
 
       - name: Run tests
         run: npm test
-
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: '8.3'
-          extensions: mbstring, xml, curl, pdo_mysql
-          tools: composer:v2
-
-      - name: Install backend dependencies
-        run: composer install --prefer-dist --no-dev --optimize-autoloader
 
       - name: Run Laravel tests
         run: php artisan test
@@ -59,4 +61,3 @@ jobs:
             php artisan route:cache
             php artisan view:cache
             sudo systemctl restart nginx
-
