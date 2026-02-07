@@ -220,20 +220,6 @@ export default function App() {
           </button>
         </form>
 
-        {/* Footer Contact */}
-        <div className="mt-12 pt-10 border-t border-[#f3e9ff]">
-          <p className="text-center text-gray-800 mb-6 text-base italic">Prefer to speak with us directly?</p>
-          <div className="flex items-center justify-center">
-            <a 
-              href="tel:5085804610"
-              className="flex items-center gap-3 px-8 py-4 bg-[#fcfaff] text-[#5c2baa] border border-[#f3e9ff] rounded-full font-bold text-lg hover:shadow-lg transition-all"
-            >
-              <Phone className="w-5 h-5" />
-              <span>(508) 580-4610</span>
-            </a>
-          </div>
-        </div>
-
       </div>
     </div>
   );
