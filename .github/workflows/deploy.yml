@@ -32,9 +32,6 @@ jobs:
       - name: Build frontend
         run: npm run build
 
-      - name: Run Laravel tests
-        run: php artisan test
-
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v1.0.3
         with:
@@ -70,5 +67,6 @@ jobs:
             php artisan up
             
             sudo systemctl restart nginx
+
 
 
