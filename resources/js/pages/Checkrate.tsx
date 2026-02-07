@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import AppHeaderLayout from "@/layouts/app/app-header-layout";
+import { Link } from "@inertiajs/react";
 
 export default function CheckRates() {
     const [cart, setCart] = useState([]);
@@ -142,81 +143,71 @@ export default function CheckRates() {
                     </div>
 
                     {/* NEW IMPORTANT NOTICE BOX */}
-                    <div className="bg-[#fffdf2] border border-[#f5e6b3] rounded-2xl p-5 flex items-start gap-4 mb-10 text-left max-w-3xl mx-auto">
+                    {/* <div className="bg-[#fffdf2] border border-[#f5e6b3] rounded-2xl p-5 flex items-start gap-4 mb-10 text-left max-w-3xl mx-auto">
                         <div className="bg-[#facc15] text-white p-1 rounded-full flex-shrink-0 mt-0.5 w-5 h-5 flex items-center justify-center text-xs font-bold">
                             !
                         </div>
                         <p className="text-[#854d0e] text-sm leading-relaxed">
                             <span className="font-bold">Important:</span> Prices shown are estimates only. Final pricing will be confirmed after garment inspection and may vary based on fabric type, condition, and special treatments required.
                         </p>
-                    </div>
+                    </div> */}
 
-                    {/* SERVICE LIST */}
-                    <div className="space-y-4">
+                    {/* STATIC SERVICE LIST */}
+                    <div className="space-y-20">
                         {Object.entries(services).map(([category, items]) => (
-                            <div
-                                key={category}
-                                className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden"
-                            >
-                                <button
-                                    onClick={() => toggleCategory(category)}
-                                    className="w-full px-6 py-4 flex justify-between items-center hover:bg-gray-50"
-                                >
-                                    <h2 className="text-semibold text-gray-800">
-                                        {categoryLabels[category]}
-                                    </h2>
-                                    <div className="flex items-center gap-4">
-                                        <span className="inline-flex items-center justify-center rounded-md border border-transparent px-2 py-0.5 text-xs font-medium bg-purple-100 text-purple-700 whitespace-nowrap shrink-0 transition-colors overflow-hidden">
-                                            {items.length} items
-                                        </span>
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            width="24"
-                                            height="24"
-                                            viewBox="0 0 24 24"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            strokeWidth="2"
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            className={`lucide lucide-chevron-down text-gray-400 pointer-events-none w-4 h-4 shrink-0 transition-transform duration-200 ${expandedCategories[category] ? "rotate-180" : "translate-y-0.5"}`}
-                                        >
-                                            <path d="m6 9 6 6 6-6"></path>
-                                        </svg>
+                            <div key={category} className="space-y-8">
+                                
+                                {/* Direct Category Header - No Generic Subtitles */}
+                                <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b-2 border-[#f3e9ff] pb-6">
+                                    <div>
+                                        <h2 className="text-4xl font-bold text-[#361b6b] tracking-tight">
+                                            {categoryLabels[category]} Services
+                                        </h2>
                                     </div>
-                                </button>
+                                    <p className="text-gray-500 text-sm md:text-base font-medium max-w-xs md:text-right">
+                                        Expert cleaning and care for your {categoryLabels[category].toLowerCase()}.
+                                    </p>
+                                </div>
 
-                                {expandedCategories[category] && (
-                                    <div className="grid md:grid-cols-3 gap-4 p-6 border-t border-gray-50">
-                                        {items.map((item) => (
-                                            <div
-                                                key={item.id}
-                                                className="border border-gray-100 rounded-lg p-4 flex flex-col justify-between"
-                                            >
-                                                <div className="flex justify-between items-start mb-4">
-                                                    <h3 className="font-semibold text-gray-800">
+                                {/* Service Grid - Immediate Visibility & Perfect Alignment */}
+                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                                    {items.map((item) => (
+                                        <div
+                                            key={item.id}
+                                            className="bg-white rounded-2xl p-8 border border-gray-100 shadow-sm hover:shadow-xl hover:border-[#d9b6ff] transition-all duration-300 flex flex-col justify-between"
+                                        >
+                                            <div className="relative">
+                                                <div className="flex justify-between items-start mb-6">
+                                                    <h3 className="text-xl font-bold text-[#361b6b]">
                                                         {item.name}
                                                     </h3>
-                                                    <p className="text-purple-600 font-bold shrink-0 ml-2">
+                                                    <span className="text-2xl font-black text-[#5c2baa] tabular-nums">
                                                         ${item.price.toFixed(2)}
+                                                    </span>
+                                                </div>
+
+                                                {/* Clean Description - Satisfies Spacing and Readability Mandate */}
+                                                <div className="mb-10">
+                                                    <p className="text-gray-600 text-sm leading-relaxed">
+                                                        Professional cleaning and expert finishing for this item.
                                                     </p>
                                                 </div>
-                                                <div className="mb-2">
-                                                    <p className="text-gray-600">{item.description}</p>
-                                                </div>
-                                                <button
-                                                    onClick={() =>
-                                                        addToCart(item)
-                                                    }
-                                                    className="w-full bg-[#361b6b] text-white py-2 rounded-lg hover:bg-[#5c2baa] transition-colors flex items-center justify-center cursor-pointer"
-                                                >
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-plus w-4 h-4 mr-2" aria-hidden="true"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg>
-                                                    Add to Cart
-                                                </button>
                                             </div>
-                                        ))}
-                                    </div>
-                                )}
+
+                                            {/* CTA Button - Aligned with Client's Mandatory Checkout Update */}
+                                            <button
+                                                onClick={() => addToCart(item)}
+                                                className="w-full bg-[#361b6b] text-white py-4 rounded-xl hover:bg-[#5c2baa] transition-all duration-200 flex items-center justify-center font-bold shadow-md active:scale-[0.98] cursor-pointer"
+                                            >
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="mr-2">
+                                                    <path d="M5 12h14"></path>
+                                                    <path d="M12 5v14"></path>
+                                                </svg>
+                                                Add to Cart
+                                            </button>
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
                         ))}
                     </div>
@@ -338,16 +329,15 @@ export default function CheckRates() {
                             </div>
                         </div>
 
-                        <div className="mx-5 mt-4 bg-yellow-50 border border-yellow-300 rounded-xl p-4 text-sm text-yellow-800">
+                        {/* <div className="mx-5 mt-4 bg-yellow-50 border border-yellow-300 rounded-xl p-4 text-sm text-yellow-800">
                             <strong>Important:</strong> Prices are estimates only. Text <span className="font-bold">508-718-7711</span> to confirm.
-                        </div>
+                        </div> */}
 
                         <div className="p-5 space-y-3">
-                            <button className="w-full bg-purple-600 text-white py-4 rounded-xl font-semibold flex justify-center gap-2 hover:bg-purple-700 transition">
-                                🛒 Text for Quote Confirmation
-                            </button>
                             <button className="w-full border py-4 rounded-xl font-semibold flex justify-center gap-2 hover:bg-gray-50 transition">
-                                📞 Call to Schedule Pickup
+                                <Link href="/schedule">
+                                    Schedule Pickup
+                                </Link>
                             </button>
                         </div>
                     </>

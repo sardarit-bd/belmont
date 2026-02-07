@@ -31,7 +31,7 @@ export default function Value() {
         
         {/* Our Values Section */}
         <div className="space-y-10">
-          <h2 className="text-center text-xl font-serif font-medium text-gray-900">
+          <h2 className="text-center text-4xl font-serif font-medium text-gray-900">
             Our Values
           </h2>
           
@@ -55,7 +55,7 @@ export default function Value() {
         {/* The Peruvian Textile Tradition Section */}
         <div className="w-full bg-[#d9b6ff] rounded-2xl shadow-xl overflow-hidden text-gray-900 p-8 md:p-12 lg:p-16">
           <div className="max-w-5xl mx-auto space-y-8">
-            <h2 className="mb-6 text-center">
+            <h2 className="mb-6 text-center text-4xl font-serif">
               The Peruvian Textile Tradition
             </h2>
             

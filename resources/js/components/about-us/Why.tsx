@@ -21,7 +21,7 @@ export default function Why() {
       <div className="w-full max-w-6xl space-y-10">
         
         {/* Section Header */}
-        <h2 className="mb-8 text-center">
+        <h2 className="mb-8 text-center text-4xl font-serif">
           Why Choose Belmont Dry Cleaners?
         </h2>
         
@@ -35,7 +35,7 @@ export default function Why() {
               <h3 className="text-xl font-serif text-gray-900 mb-4">
                 {feature.title}
               </h3>
-              <p className="text-gray-600">
+              <p className="text-gray-600 text-lg leading-relaxed">
                 {feature.description}
               </p>
             </div>

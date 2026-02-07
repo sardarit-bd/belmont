@@ -39,12 +39,8 @@ export default function HowItWorks() {
             icon: "✓",
             title: "Expert Care",
             description: "Our trained professionals handle each garment with individual attention and care."
-        },
-        {
-            icon: "✓",
-            title: "Convenient Tracking",
-            description: "Track your order in real-time from pickup to delivery through our mobile app."
         }
+        // REMOVED "Convenient Tracking" as per client request
     ];
 
     return (
@@ -61,7 +57,6 @@ export default function HowItWorks() {
                 </div>
 
                 {/* Steps */}
-                {/* Changed gap-2 to gap-8 to ensure spacing on mobile view */}
                 <div className="grid md:grid-cols-3 gap-8 mb-20">
                     {steps.map((step) => (
                         <div key={step.number} className="text-center upperAnimation">
@@ -76,12 +71,12 @@ export default function HowItWorks() {
                             </div>
 
                             {/* Title */}
-                            <h3 className="mb-2">
+                            <h3 className="mb-2 text-xl font-bold text-gray-900">
                                 {step.title}
                             </h3>
 
                             {/* Description */}
-                            <p className="text-gray-600">
+                            <p className="text-gray-600 leading-relaxed">
                                 {step.description}
                             </p>
                         </div>
@@ -100,28 +95,28 @@ export default function HowItWorks() {
                     </div>
 
                     {/* Right Content */}
-                    <div className="order-1 lg:order-2 space-y-4">
-                        <h3 className="text-2xl text-gray-900">
+                    <div className="order-1 lg:order-2 space-y-6">
+                        <h3 className="text-3xl text-gray-900">
                             Why Choose Belmont Dry Cleaners?
                         </h3>
 
                         {/* Benefits List */}
-                        <div className="space-y-3">
+                        <div className="space-y-6">
                             {benefits.map((benefit, index) => (
-                                <div key={index} className="flex gap-1">
+                                <div key={index} className="flex items-start gap-4">
                                     {/* Icon */}
                                     <div className="flex-shrink-0">
-                                        <div className="w-6 h-6 bg-[#5c2baa] rounded-full flex items-center justify-center flex-shrink-0 mt-1 text-white">
+                                        <div className="w-8 h-8 bg-[#5c2baa] rounded-full flex items-center justify-center flex-shrink-0 text-white font-bold text-sm">
                                             {benefit.icon}
                                         </div>
                                     </div>
 
                                     {/* Content */}
-                                    <div className="pl-2">
-                                        <span className="text-md text-gray-900">
+                                    <div>
+                                        <span className="block text-lg font-bold text-gray-900 mb-1">
                                             {benefit.title}
                                         </span>
-                                        <p className="text-gray-700 leading-relaxed">
+                                        <p className="text-gray-700 leading-relaxed text-lg">
                                             {benefit.description}
                                         </p>
                                     </div>

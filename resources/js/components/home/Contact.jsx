@@ -6,7 +6,7 @@ export default function Contact() {
         email: '',
         phone: '',
         message: '',
-        namecaptcha: ''
+        numcaptcha: ''
     });
 
     const handleChange = (e) => {
@@ -19,13 +19,13 @@ export default function Contact() {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        //all input validation first not empty
+        // Validation: ensure all required fields are filled
         if (
             !formData.name ||
             !formData.email ||
             !formData.phone ||
             !formData.message ||
-            !formData.namecaptcha
+            !formData.numcaptcha
         ) {
             alert('Please fill out all required fields.');
             return;
@@ -57,26 +57,28 @@ export default function Contact() {
                         </p>
 
                         <form onSubmit={handleSubmit} className="space-y-4">
-                            <input
-                                type="text"
-                                name="name"
-                                placeholder="Your Name"
-                                value={formData.name}
-                                onChange={handleChange}
-                                className="w-full px-4 py-3 bg-gray-50 border-0 rounded-md focus:ring-2 focus:ring-purple-500 focus:outline-none text-gray-900 placeholder-gray-500"
-                            />
+                            {/* Side-by-Side Layout for Name and Email */}
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <input
+                                    type="text"
+                                    name="name"
+                                    placeholder="Your Name"
+                                    value={formData.name}
+                                    onChange={handleChange}
+                                    className="w-full px-4 py-3 bg-gray-50 border-0 rounded-md focus:ring-2 focus:ring-purple-500 focus:outline-none text-gray-900 placeholder-gray-500"
+                                />
+                                <input
+                                    type="email"
+                                    name="email"
+                                    placeholder="Your Email"
+                                    value={formData.email}
+                                    onChange={handleChange}
+                                    className="w-full px-4 py-3 bg-gray-50 border-0 rounded-md focus:ring-2 focus:ring-purple-500 focus:outline-none text-gray-900 placeholder-gray-500"
+                                />
+                            </div>
 
                             <input
-                                type="email"
-                                name="email"
-                                placeholder="Your Email"
-                                value={formData.email}
-                                onChange={handleChange}
-                                className="w-full px-4 py-3 bg-gray-50 border-0 rounded-md focus:ring-2 focus:ring-purple-500 focus:outline-none text-gray-900 placeholder-gray-500"
-                            />
-
-                            <input
-                                type="tel"
+                                type="number"
                                 name="phone"
                                 placeholder="Phone Number"
                                 value={formData.phone}
@@ -95,10 +97,10 @@ export default function Contact() {
 
                             {/* Captcha */}
                             <div className="flex items-center gap-2 text-gray-600 whitespace-nowrap text-sm sm:text-base">
-                                {/* Added shrink-0 to prevent icon from squishing on small screens */}
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-shield w-5 h-5 text-gray-500" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path></svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-shield w-5 h-5 text-gray-500" aria-hidden="true">
+                                    <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path>
+                                </svg>
                                 
-                                {/* Added flex items-center to align text and input perfectly */}
                                 <span className="flex items-center">
                                     Verify you're human: 8+13 =
                                     <input
@@ -122,7 +124,6 @@ export default function Contact() {
 
                     {/* Business Information */}
                     <div className="space-y-8">
-                        {/* Visit Us */}
                         <div className="flex gap-4">
                             <div className="flex-shrink-0">
                                 <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center">
@@ -139,7 +140,6 @@ export default function Contact() {
                             </div>
                         </div>
 
-                        {/* Call Us */}
                         <div className="flex gap-4">
                             <div className="flex-shrink-0">
                                 <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center">
@@ -154,7 +154,6 @@ export default function Contact() {
                             </div>
                         </div>
 
-                        {/* Business Hours */}
                         <div className="flex gap-4">
                             <div className="flex-shrink-0">
                                 <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center">
