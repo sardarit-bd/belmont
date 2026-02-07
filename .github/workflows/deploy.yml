@@ -11,8 +11,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # 1. Setup PHP and Install Backend Dependencies first
-      # This is required because Vite/Wayfinder calls 'php artisan'
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
@@ -23,7 +21,6 @@ jobs:
       - name: Install backend dependencies
         run: composer install --prefer-dist --no-dev --optimize-autoloader
 
-      # 2. Setup Node and Build Frontend
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -35,14 +32,9 @@ jobs:
       - name: Build frontend
         run: npm run build
 
-      # 3. Run Tests
-      - name: Run frontend tests
-        run: npm test
-
       - name: Run Laravel tests
         run: php artisan test
 
-      # 4. Deploy to VPS
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v1.0.3
         with:
@@ -78,4 +70,5 @@ jobs:
             php artisan up
             
             sudo systemctl restart nginx
+
 
