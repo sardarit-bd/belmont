@@ -11,6 +11,7 @@ export default function App() {
 
   const serviceOptions = ['Wedding Services', 'Corporate Uniforms', 'Hotel & Hospitality', 'Theatre & Costume'];
   const countOptions = ['40-99 items', '100-199 items', '200-499 items', '500+ items'];
+  const [phone, setPhone] = useState('');
 
   // Refs for managing focus and interactions
   const serviceRef = useRef(null);
@@ -37,6 +38,15 @@ export default function App() {
       }
     }
   };
+
+  const formatPhoneNumber = (value: string) => {
+  const phoneNumber = value.replace(/\D/g, '');
+  if (phoneNumber.length < 4) return phoneNumber;
+  if (phoneNumber.length < 7) {
+    return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3)}`;
+  }
+  return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3, 6)}-${phoneNumber.slice(6, 10)}`;
+};
 
   return (
     <div className="py-20 px-4 bg-[#fafafa] flex items-center justify-center font-sans" id="consultation">
@@ -86,10 +96,22 @@ export default function App() {
               />
             </div>
             <div className="space-y-3">
-              <label className="block text-[#361b6b] text-sm font-bold uppercase tracking-wider">Phone Number</label>
+              <label 
+                htmlFor="phone" 
+                className="block text-[#361b6b] text-sm font-bold uppercase tracking-wider"
+              >
+                Phone Number
+              </label>
               <input 
-                type="tel" 
+                type="tel"
+              value={phone}
+              onChange={(e) => setPhone(formatPhoneNumber(e.target.value))}
+                id="phone"
+                name="phone"
                 placeholder="(508) 555-0100"
+                autoComplete="tel"
+                inputMode="numeric"
+                pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
                 className="w-full px-5 py-3.5 border border-[#f3e9ff] rounded-2xl bg-[#fcfaff] focus:ring-2 focus:ring-[#b47bff] focus:bg-white outline-none transition-all placeholder:text-gray-400 text-gray-700"
               />
             </div>
