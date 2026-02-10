@@ -47,7 +47,7 @@ export default function App() {
           <h2 className="text-4xl md:text-5xl font-sans mb-4 tracking-tight">
             Request a Consultation
           </h2>
-          <p className="text-gray-500 text-lg md:text-xl leading-relaxed">
+          <p className="text-gray-500 text-md md:text-xl leading-relaxed">
             Let's discuss your luxury or enterprise dry cleaning needs
           </p>
         </div>
@@ -219,20 +219,6 @@ export default function App() {
             Submit Consultation Request
           </button>
         </form>
-
-        {/* Footer Contact */}
-        <div className="mt-12 pt-10 border-t border-[#f3e9ff]">
-          <p className="text-center text-gray-800 mb-6 text-base italic">Prefer to speak with us directly?</p>
-          <div className="flex items-center justify-center">
-            <a 
-              href="tel:5085804610"
-              className="flex items-center gap-3 px-8 py-4 bg-[#fcfaff] text-[#5c2baa] border border-[#f3e9ff] rounded-full font-bold text-lg hover:shadow-lg transition-all"
-            >
-              <Phone className="w-5 h-5" />
-              <span>(508) 580-4610</span>
-            </a>
-          </div>
-        </div>
 
       </div>
     </div>
