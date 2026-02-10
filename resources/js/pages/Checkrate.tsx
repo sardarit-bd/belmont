@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ShoppingCart, Plus, Minus, Trash2, X, Info, Briefcase, Shirt, Waves, Grid } from "lucide-react";
 import { Link } from "@inertiajs/react";
 import AppHeaderLayout from "@/layouts/app/app-header-layout";
@@ -7,6 +7,27 @@ export default function CheckRates() {
     const [cart, setCart] = useState([]);
     const [isCartOpen, setIsCartOpen] = useState(false);
     const [activeTab, setActiveTab] = useState("all");
+    const [isLoaded, setIsLoaded] = useState(false);
+
+    // Load cart from localStorage on mount
+    useEffect(() => {
+        const savedCart = localStorage.getItem('laundryServiceCart');
+        if (savedCart) {
+            try {
+                setCart(JSON.parse(savedCart));
+            } catch (error) {
+                console.error("Failed to parse cart from local storage:", error);
+            }
+        }
+        setIsLoaded(true);
+    }, []);
+
+    // Save cart to localStorage whenever it changes
+    useEffect(() => {
+        if (isLoaded) {
+            localStorage.setItem('laundryServiceCart', JSON.stringify(cart));
+        }
+    }, [cart, isLoaded]);
 
     // Images for Category Headers
     const categoryImages = {
