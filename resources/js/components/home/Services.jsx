@@ -47,25 +47,6 @@ export default function Services() {
         },
         {
             icon: (
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="lucide lucide-flame w-8 h-8 text-[#5c2baa] group-hover:text-white transition-all duration-500 group-hover:scale-110" aria-hidden="true"><path d="M12 3q1 4 4 6.5t3 5.5a1 1 0 0 1-14 0 5 5 0 0 1 1-3 1 1 0 0 0 5 0c0-2-1.5-3-1.5-5q0-2 2.5-4"></path></svg>
-            ),
-            title: "Pressing & Ironing",
-            description: "Professional pressing and ironing services to keep your clothes crisp and wrinkle-free.",
-            process: "Expert pressing using professional equipment to achieve crisp, wrinkle-free results that last longer than home ironing.",
-            handles: {
-                column1: ["Dress Shirts", "Blouses", "Pants & Trousers"],
-                column2: ["Skirts & Dresses", "Tablecloths", "Bed Linens"]
-            },
-            benefits: [
-                "Professional crisp finish",
-                "Wrinkle-free guarantee",
-                "Extended fabric life",
-                "Quick turnaround"
-            ],
-            turnaround: "Standard 1-2 day turnaround"
-        },
-        {
-            icon: (
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="lucide lucide-wind w-8 h-8 text-[#5c2baa] group-hover:text-white transition-all duration-500 group-hover:scale-110" aria-hidden="true"><path d="M12.8 19.6A2 2 0 1 0 14 16H2"></path><path d="M17.5 8a2.5 2.5 0 1 1 2 4H2"></path><path d="M9.8 4.4A2 2 0 1 1 11 8H2"></path></svg>
             ),
             title: "Alterations",

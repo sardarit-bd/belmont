@@ -58,7 +58,6 @@ export default function Footer() {
                             {[
                                 "Dry Cleaning",
                                 "Wash & Fold",
-                                "Pressing & Ironing",
                                 "Alterations",
                                 "Stain Removal",
                             ].map((service) => (
