@@ -155,8 +155,19 @@ export default function Services() {
                     <div class="text-center mt-16">
                         <p class="text-gray-600 mb-6">Need a custom service? We're here to help!</p>
 
-                        <a href="#contact" class="inline-flex items-center gap-2 bg-[#5c2baa] text-white px-8 py-3 rounded-lg hover:bg-purple-700 transition-colors duration-300 shadow-lg hover:shadow-xl"><span>Contact Us</span><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-                        </a>
+                        <Link 
+                            href="/#contact" 
+                            className="group relative inline-flex items-center justify-center px-8 py-3 bg-[#361b6b] text-white text-md rounded-2xl overflow-hidden transition-transform duration-300 active:scale-95 shadow-lg shadow-purple-900/20 hover:shadow-purple-900/30"
+                        >
+                            <span className="relative z-10 flex items-center gap-3">
+                                Contact Us
+                                <svg className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                                </svg>
+                            </span>
+                            {/* Button Hover Effect */}
+                            <div className="absolute inset-0 bg-[#5c2baa] transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-500 ease-out" />
+                        </Link>
                     </div>
                 </div>
             </section>
