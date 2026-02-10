@@ -4,7 +4,6 @@ import { Link } from '@inertiajs/react';
 import React from 'react';
 
 export default function Pricing() {
-    // 1. Main Service Headers (No Prices)
     const serviceCategories = [
         {
             title: 'Dry Cleaning',
@@ -36,9 +35,8 @@ export default function Pricing() {
         }
     ];
 
-    // 2. Sneak Peek Data (Dry Cleaning Only)
     const sneakPeekData = {
-        title: 'Sneak Peek: Dry Cleaning',
+        title: 'Dry Cleaning',
         description: 'Curious about our rates? Here is a glimpse of our most popular dry cleaning items. We use eco-friendly solvents that are tough on stains but gentle on your fabrics.',
         items: [
             { name: 'Suit (2-piece)', price: '$16.00' },
@@ -57,7 +55,7 @@ export default function Pricing() {
 
             <div className="max-w-7xl mx-auto px-6 lg:px-8">
                 
-                {/* --- PART 1: HEADER --- */}
+                {/* ---  HEADER --- */}
                 <div className="text-center max-w-3xl mx-auto mb-16">
                     <h2 className="text-5xl text-gray-900 mb-6 tracking-tight">
                         Simple, Transparent Pricing
@@ -67,7 +65,7 @@ export default function Pricing() {
                     </p>
                 </div>
 
-                {/* --- PART 2: SERVICES GRID (NO PRICES) --- */}
+                {/* --- SERVICES GRID (NO PRICES) --- */}
                 <div className="bg-white rounded-[2.5rem] border border-[#5c2baa]/20 shadow-xl shadow-[#361b6b]/5 overflow-hidden mb-16 relative">
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-[#361b6b]/10">
                         {serviceCategories.map((category, idx) => (
@@ -106,10 +104,6 @@ export default function Pricing() {
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
                             {/* Left: Text & Button */}
                             <div className="space-y-6">
-                                <div className="inline-flex items-center gap-2 text-[#5c2baa] font-bold uppercase tracking-wider text-xs">
-                                    <span className="w-2 h-2 rounded-full bg-[#5c2baa] animate-pulse" />
-                                    Featured Service
-                                </div>
                                 <h3 className="text-3xl font-bold text-[#361b6b]">
                                     {sneakPeekData.title}
                                 </h3>
