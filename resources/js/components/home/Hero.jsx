@@ -3,7 +3,7 @@ import { LuSparkles } from "react-icons/lu";
 
 export default function HeroSection() {
     return (
-        <section className="w-full py-10 lg:pb-24 pt-5 bg-gradient-to-l from-pink-50 via-white to-gray-50/10" animation="fade-up">
+        <section className="w-full py-10 lg:pb-24 pt-15 bg-gradient-to-l from-pink-50 via-white to-gray-50/10" animation="fade-up">
             <div className="max-w-7xl mx-auto px-6 lg:px-8">
                 <div className="absolute inset-0 overflow-hidden pointer-events-none">
                     <div className="absolute top-20 -left-20 w-96 h-96 bg-gradient-to-br from-purple-400/20 to-pink-400/20 rounded-full blur-3xl"></div>
