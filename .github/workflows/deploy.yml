@@ -1,0 +1,58 @@
+name: Deploy to VPS
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.HOST }} >> ~/.ssh/known_hosts
+
+      - name: Deploy to server
+        run: |
+          ssh ${{ secrets.USERNAME }}@${{ secrets.HOST }} << 'EOF'
+          
+          set -e
+
+          PROJECT_DIR="/var/www/keen.sardarit.cloud"
+
+          echo "🚀 Deploying to $PROJECT_DIR"
+          cd $PROJECT_DIR
+
+          echo "📥 Pull latest code"
+          git fetch origin
+          git reset --hard origin/main
+
+          echo "📦 Install PHP dependencies"
+          composer install --no-interaction --prefer-dist --optimize-autoloader
+
+          echo "📦 Install Node dependencies"
+          npm install
+
+          echo "⚙️ Build frontend"
+          npm run build
+
+          echo "🔐 Set permissions"
+          chown -R apache:apache $PROJECT_DIR
+          chmod -R 775 storage bootstrap/cache
+
+          echo "🧹 Laravel optimizations"
+          php artisan key:generate --force || true
+          php artisan migrate --force || true
+          php artisan optimize:clear
+          php artisan optimize
+
+          echo "✅ Deployment complete"
+          EOF
