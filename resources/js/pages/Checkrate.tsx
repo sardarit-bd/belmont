@@ -57,7 +57,7 @@ export default function CheckRates() {
         accessories: "Accessories",
         
         // Wash & Fold
-        laundry_by_lb: "Laundry (By Lb)",
+        laundry_by_lb: "Laundry",
         bulky_items: "Bulky Items",
 
         // Hang Dry
