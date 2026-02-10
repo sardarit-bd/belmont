@@ -55,5 +55,4 @@ jobs:
           php artisan optimize
 
           echo "✅ Deployment complete"
-
           EOF
