@@ -140,7 +140,7 @@ export default function Contact() {
                             </div>
                         </div>
 
-                        <div className="flex gap-4">
+                        {/* <div className="flex gap-4">
                             <div className="flex-shrink-0">
                                 <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center">
                                     <svg className="w-6 h-6 text-[#5c2baa]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -152,7 +152,7 @@ export default function Contact() {
                                 <h3 className="text-2xl text-gray-900 mb-2">Call Us</h3>
                                 <p className="text-gray-600">(508) 580-4610</p>
                             </div>
-                        </div>
+                        </div> */}
 
                         <div className="flex gap-4">
                             <div className="flex-shrink-0">
