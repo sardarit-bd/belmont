@@ -4,7 +4,7 @@ export default function Story() {
   return (
     <div className="bg-white max-w-6xl mx-auto py-5 flex justify-center">
         {/* Our Story Text Card Component */}
-        <div className="w-full bg-white rounded-2xl border border-gray-200 p-12">
+        <div className="w-full bg-white rounded-2xl p-12">
           <div className="mx-auto space-y-8">
             <h2 className="text-4xl font-serif text-gray-900 text-center">
               Our Story
