@@ -2,48 +2,28 @@ import React from 'react';
 
 export default function Hero() {
   return (
-    <div className="min-h-screen bg-white py-10 px-4 sm:px-6 lg:px-8 flex justify-center">
-      <div className="w-full max-w-6xl space-y-10">
-        
-        {/* Header Text Section */}
-        <div className="text-center max-w-3xl mx-auto space-y-4">
-          <h1 className="text-4xl font-serif font-medium text-gray-900 tracking-wide">
-            About Belmont Dry Cleaners
-          </h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            A family tradition rooted in Peruvian heritage, delivering exceptional garment
-            care with warmth and dedication to the Brockton community.
-          </p>
-        </div>
-
-        {/* Video Card Component */}
-        <div className="w-full bg-white rounded-2xl border border-gray-200 overflow-hidden">
-          
-          {/* Video Container (16:9 Aspect Ratio) */}
-          <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
-            <iframe 
-              className="absolute top-0 left-0 w-full h-full"
-              src="https://www.youtube.com/embed/dQw4w9WgXcQ?si=ad88k8s8w8s8s" 
-              title="Rick Astley - Never Gonna Give You Up"
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-              allowFullScreen
-            ></iframe>
-          </div>
-
-          {/* Card Footer Content */}
-          <div className="p-8 md:p-10 text-center space-y-3 bg-white">
-            <h3 className="text-2xl font-serif text-gray-900">
-              Discover Our Story
-            </h3>
-            <p className="text-gray-600 text-base md:text-lg font-serif mx-auto">
-              Watch how our Peruvian heritage shapes the exceptional care we provide to every garment.
-            </p>
-          </div>
-
-        </div>
-
+    <section className="relative text-white text-center pt-16 pb-20 px-4 overflow-hidden">
+      {/* Background Image & Overlay */}
+      <div className="absolute inset-0 z-0">
+        <img 
+          src="https://images.unsplash.com/photo-1635274605638-d44babc08a4f?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+          alt="Belmont Dry Cleaners" 
+          className="w-full h-full object-cover"
+        />
+        {/* Purple overlay */}
+        <div className="absolute inset-0 bg-[#361b6b]/85 mix-blend-normal" />
       </div>
-    </div>
+
+      <div className="relative z-10 max-w-4xl mx-auto text-center text-gray-900">
+        <h1 className="mb-6 text-5xl md:text-6xl text-gray-50 font-bold tracking-tight">
+          About Belmont Dry Cleaners
+        </h1>
+        
+        <p className="text-xl mb-8 text-purple-100/90 max-w-3xl mx-auto leading-relaxed">
+          A family tradition rooted in Peruvian heritage, delivering exceptional garment
+          care with warmth and dedication to the Brockton community.
+        </p>
+      </div>
+    </section>
   );
 }
