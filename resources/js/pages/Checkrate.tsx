@@ -39,9 +39,9 @@ export default function CheckRates() {
         household: "https://images.unsplash.com/photo-1760939151301-4f62a7998f0a?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
         accessories: "https://images.unsplash.com/photo-1621335829175-95f437384d7c?auto=format&fit=crop&w=800&q=80",
         repair: "https://images.unsplash.com/photo-1594848328162-90258f635e2e?q=80&w=735&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        laundry_by_lb: "https://images.unsplash.com/photo-1545173168-9f1947eebb7f?q=80&w=1171&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        bulky_items: "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=800&q=80",
-        activewear: "https://images.unsplash.com/photo-1518310383802-640c2de311b2?auto=format&fit=crop&w=800&q=80",
+        comforter: "https://images.unsplash.com/photo-1686828431244-405819565147?q=80&w=735&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        dawn_comforter: "https://plus.unsplash.com/premium_photo-1664284793025-c5183e2a4dc8?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        blanket: "https://images.unsplash.com/photo-1457545195570-67f207084966?auto=format&fit=crop&w=800&q=80",
         delicates: "https://images.unsplash.com/photo-1469334031218-e382a71b716b?auto=format&fit=crop&w=800&q=80"
     };
 
@@ -51,70 +51,76 @@ export default function CheckRates() {
         full_body: "Full body",
         household: "Household",
         accessories: "Accessories",
-        laundry_by_lb: "Laundry",
-        bulky_items: "Bulky Items",
-        activewear: "Activewear",
+        comforter: "Comforters",
+        dawn_comforter: "Dwan Comforters",
+        blanket: "Blankets",
         delicates: "Delicates"
     };
 
     const pricingData = {
         dry_cleaning: {
             tops: [
-                { id: 1, name: "All Shirts", price: 5.95 },
-                { id: 2, name: "Polo", price: 5.95 },
-                { id: 3, name: "Blouse", price: 11.95 },
-                { id: 4, name: "Sweater", price: 15.95 },
-                { id: 5, name: "Jacket/Blazer", price: 16.95 },
-                { id: 6, name: "Vest", price: 15.95 },
+                { id: 1, name: "Shirts", price: 5.50 },
+                { id: 2, name: "Polo", price: 6.50 },
+                { id: 3, name: "T-Shirt", price: 6.50 },
+                { id: 4, name: "Blouse", price: 8.00 },
+                { id: 5, name: "Sweater", price: 8.00 },
+                { id: 6, name: "Blazer", price: 9.00 },
+                { id: 7, name: "Vest", price: 6.50 },
+                { id: 8, name: "Hoodie", price: 12.00 },
+                { id: 9, name: "Jacket", price: 8.00 },
             ],
             bottoms: [
-                { id: 7, name: "Pants", price: 15.95 },
-                { id: 8, name: "Skirt", price: 11.95 },
-                { id: 9, name: "Shorts", price: 11.95 },
+                { id: 10, name: "Pants", price: 8.00 },
+                { id: 11, name: "Skirt", price: 7.50 },
+                { id: 12, name: "Shorts", price: 7.50 },
+                { id: 13, name: "Jeans", price: 8.00 },
+                { id: 14, name: "Sweat Pants", price: 8.50 },
             ],
             full_body: [
-                { id: 10, name: "Casual Dress", price: 22.95 },
-                { id: 11, name: "Formal Dress", price: 34.95 },
-                { id: 12, name: "Coat", price: 34.95 },
-                { id: 13, name: "Suit (Jacket & Pants)", price: 32.90 },
+                { id: 15, name: "Suit (Blazer & Pants)", price: 16.00 },
+                { id: 16, name: "Casual Dress", price: 20.00 },
+                { id: 17, name: "Formal Dress", price: 30.00 },
+                { id: 18, name: "Coat", price: 26.75 },
+                { id: 19, name: "Uniform", price: 16.00 },
+                { id: 20, name: "Jump Suit", price: 20.00 },
+                { id: 21, name: "Robe", price: 20.00 },
+                { id: 22, name: "Jogging Suit", price: 18.00 },
             ],
             household: [
-                { id: 14, name: "Bath Mat", price: 6.95 },
-                { id: 15, name: "Sheets", price: 19.95 },
-                { id: 16, name: "Comforter", price: 35.00 },
+                { id: 23, name: "Table Cloth", price: 18.00 },
             ],
             accessories: [
-                { id: 17, name: "Napkin", price: 6.95 },
-                { id: 18, name: "Pillowcase", price: 6.95 },
-                { id: 19, name: "Tie/Scarf", price: 8.95 },
+                { id: 24, name: "Tie", price: 6.50 },
+                { id: 25, name: "Pillowcase", price: 5.00 },
+                { id: 26, name: "Scarves", price: 6.50 },
             ]
         },
         wash_fold: {
-            laundry_by_lb: [
-                { id: 101, name: "Wash & Fold (Min 15lbs)", price: 2.25 },
-                { id: 102, name: "Towels (per lb)", price: 2.25 },
+            comforter: [
+                { id: 27, name: "Comforter (Twin)", price: 20.00 },
+                { id: 28, name: "Comforter (King)", price: 25.00 },
+                { id: 39, name: "Comforter (Queen)", price: 40.00 },
+                { id: 30, name: "Comforter (Full)", price: 35.00 },
+                
             ],
-            bulky_items: [
-                { id: 103, name: "Comforter (Twin)", price: 25.00 },
-                { id: 104, name: "Comforter (King)", price: 35.00 },
-                { id: 105, name: "Pillows", price: 10.00 },
-                { id: 106, name: "Sleeping Bag", price: 20.00 }
+            dawn_comforter: [
+                { id: 31, name: "Comforter (Twin)", price: 30.00 },
+                { id: 32, name: "Comforter (King)", price: 35.00 },
+                { id: 33, name: "Comforter (Queen)", price: 50.00 },
+                { id: 34, name: "Comforter (Full)", price: 40.00 },
+                
             ]
         },
         hang_dry: {
-            activewear: [
-                { id: 201, name: "Yoga Pants", price: 10.00 },
-                { id: 202, name: "Gym Shorts", price: 8.00 },
-                { id: 203, name: "Sports Bra", price: 8.00 },
-                { id: 204, name: "Technical Shirt", price: 9.00 }
+            blanket: [
+                { id: 35, name: "Blanket (Short)", price: 16.50 },
+                { id: 36, name: "Blanket (Full)", price: 20.00 },
+                { id: 37, name: "Blanket (Queen)", price: 27.00 },
             ],
-            delicates: [
-                { id: 205, name: "Silk Blouse", price: 15.00 },
-                { id: 206, name: "Linen Shirt", price: 15.00 },
-                { id: 207, name: "Lingerie", price: 8.00 }
-            ]
         }
     };
+
 
     const currentServices = activeTab === 'all'
         ? { ...pricingData.dry_cleaning, ...pricingData.wash_fold, ...pricingData.hang_dry }
@@ -290,33 +296,6 @@ export default function CheckRates() {
                                 </div>
                             );
                         })}
-
-                        {/* BUTTON REPAIR CARD — no accordion needed, static content */}
-                        {(activeTab === 'dry_cleaning' || activeTab === 'all') && (
-                            <div className="break-inside-avoid bg-white rounded-[0.75rem] overflow-hidden shadow-[0_2px_20px_rgba(0,0,0,0.04)] border border-gray-100 flex flex-col hover:shadow-[0_8px_30px_rgba(0,0,0,0.08)] transition-shadow duration-300">
-                                <div className="relative h-24 overflow-hidden">
-                                    <img
-                                        src={categoryImages.repair}
-                                        alt="Button Repair"
-                                        className="w-full h-full object-cover"
-                                    />
-                                    <div className="absolute inset-0 bg-gradient-to-r from-gray-900/80 to-transparent" />
-                                    <div className="absolute inset-y-0 left-0 p-5 flex items-center">
-                                        <h2 className="text-2xl font-bold text-white tracking-wide">
-                                            Button repair
-                                        </h2>
-                                    </div>
-                                </div>
-                                <div className="p-6 flex-1 flex flex-col items-start">
-                                    <span className="inline-block bg-[#E0F2F1] text-[#00695C] text-xs font-bold px-3 py-1 rounded-full mb-4">
-                                        Free!
-                                    </span>
-                                    <p className="text-gray-600 text-sm leading-relaxed">
-                                        Repair service for missing or broken buttons is complimentary with any Rinse Dry Cleaning order.
-                                    </p>
-                                </div>
-                            </div>
-                        )}
                     </div>
                 </div>
             </div>
