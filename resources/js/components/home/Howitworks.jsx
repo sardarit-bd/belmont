@@ -1,7 +1,10 @@
+import React, { useState, useEffect } from 'react';
 import { FaCalendarAlt, FaBox, FaTruck, FaCheckCircle, FaStar, FaMobileAlt } from 'react-icons/fa';
 import { motion } from "framer-motion";
 
 export default function HowItWorks() {
+    const [currentStep, setCurrentStep] = useState(0);
+
     const steps = [
         {
             number: 1,
@@ -39,9 +42,16 @@ export default function HowItWorks() {
             icon: "✓",
             title: "Expert Care",
             description: "Our trained professionals handle each garment with individual attention and care."
-        }
-        // REMOVED "Convenient Tracking" as per client request
+        },
     ];
+
+    // Automatic slider logic for mobile
+    useEffect(() => {
+        const timer = setInterval(() => {
+            setCurrentStep((prev) => (prev + 1) % steps.length);
+        }, 3000);
+        return () => clearInterval(timer);
+    }, [steps.length]);
 
     return (
         <section id="Howitworks" className="py-20 scroll-mt-14 bg-gradient-to-r from-white via-white to-[#F7F0FF]">
@@ -56,31 +66,36 @@ export default function HowItWorks() {
                     </p>
                 </div>
 
-                {/* Steps */}
-                <div className="grid md:grid-cols-3 gap-8 mb-20">
-                    {steps.map((step) => (
-                        <div key={step.number} className="text-center upperAnimation">
-                            {/* Icon with Number Badge */}
-                            <div className="relative inline-block mb-6">
-                                <div className="bg-purple-100 w-20 h-20 rounded-full flex items-center justify-center text-[#5c2baa]">
-                                    {step.icon}
+                {/* Steps Slider Container */}
+                <div className="overflow-hidden md:overflow-visible mb-20 pt-4"> 
+                    <div 
+                        className="flex md:grid md:grid-cols-3 md:gap-8 transition-transform duration-500 ease-in-out md:!transform-none"
+                        style={{ transform: `translateX(-${currentStep * 100}%)` }}
+                    >
+                        {steps.map((step) => (
+                            <div key={step.number} className="w-full flex-shrink-0 md:w-auto text-center upperAnimation">
+                                {/* Icon with Number Badge */}
+                                <div className="relative inline-block mb-6">
+                                    <div className="bg-purple-100 w-20 h-20 rounded-full flex items-center justify-center text-[#5c2baa]">
+                                        {step.icon}
+                                    </div>
+                                    <div className="absolute -top-2 -right-2 bg-[#5c2baa] text-white w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold">
+                                        {step.number}
+                                    </div>
                                 </div>
-                                <div className="absolute -top-2 -right-2 bg-[#5c2baa] text-white w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold">
-                                    {step.number}
-                                </div>
+
+                                {/* Title */}
+                                <h3 className="mb-2 text-xl font-bold text-gray-900">
+                                    {step.title}
+                                </h3>
+
+                                {/* Description */}
+                                <p className="text-gray-600 leading-relaxed px-4 md:px-0">
+                                    {step.description}
+                                </p>
                             </div>
-
-                            {/* Title */}
-                            <h3 className="mb-2 text-xl font-bold text-gray-900">
-                                {step.title}
-                            </h3>
-
-                            {/* Description */}
-                            <p className="text-gray-600 leading-relaxed">
-                                {step.description}
-                            </p>
-                        </div>
-                    ))}
+                        ))}
+                    </div>
                 </div>
 
                 {/* Why Choose Section */}
