@@ -1,9 +1,10 @@
-import React, { useState, cloneElement } from "react";
+import React, { useState, useEffect, cloneElement } from "react";
 import { Shirt, Sparkles, Wind, Package, X, Check } from "lucide-react";
 import { Link } from "@inertiajs/react";
 
 export default function Services() {
     const [selectedService, setSelectedService] = useState(null);
+    const [currentIndex, setCurrentIndex] = useState(0);
 
     const services = [
         {
@@ -56,6 +57,14 @@ export default function Services() {
         }
     ];
 
+    // Automatic slider logic matching the HowItWorks component
+    useEffect(() => {
+        const timer = setInterval(() => {
+            setCurrentIndex((prev) => (prev + 1) % services.length);
+        }, 3000); // Changes slide every 3 seconds
+        return () => clearInterval(timer);
+    }, [services.length]);
+
     return (
         <section className="py-24 bg-[#fafafa] font-sans" id="services">
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1200px] h-[600px] bg-[#5c2baa]/5 blur-[120px] rounded-full pointer-events-none -z-10" />
@@ -71,39 +80,45 @@ export default function Services() {
                 <div className="bg-white rounded-[2.5rem] border border-[#5c2baa]/20 shadow-2xl shadow-[#361b6b]/5 overflow-hidden">
                     <div className="h-1.5 w-full bg-gradient-to-r from-[#361b6b] via-[#5c2baa] to-[#361b6b]" />
 
-                    {/* MOBILE: horizontal swipe. MD: 2-col grid. LG: 4-col grid. */}
-                    <div className="flex flex-row overflow-x-auto snap-x snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] md:grid md:grid-cols-2 md:overflow-visible lg:grid-cols-4 divide-x divide-[#361b6b]/10">
-                        {services.map((service, index) => (
-                            <div
-                                key={index}
-                                onClick={() => setSelectedService(service)}
-                                className="group relative cursor-pointer p-8 hover:bg-[#fcfaff] transition-all duration-300 flex flex-col min-w-[72vw] snap-start md:min-w-0 md:w-auto md:[&:nth-child(n+3)]:border-t md:[&:nth-child(n+3)]:border-[#361b6b]/10 lg:[&:nth-child(n+3)]:border-t-0"
-                            >
-                                <div className="absolute inset-0 bg-gradient-to-b from-[#f3e9ff]/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+                    {/* Outer overflow-hidden wrapper specifically for mobile */}
+                    <div className="overflow-hidden md:overflow-visible">
+                        {/* Flex track translating X on mobile.
+                            md:divide-x ensures the borders only appear on desktop.
+                        */}
+                        <div 
+                            className="flex md:grid md:grid-cols-2 lg:grid-cols-4 md:divide-x md:divide-[#361b6b]/10 transition-transform duration-500 ease-in-out md:!transform-none"
+                            style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+                        >
+                            {services.map((service, index) => (
+                                <div
+                                    key={index}
+                                    onClick={() => setSelectedService(service)}
+                                    // w-full and flex-shrink-0 ensure it perfectly fits the container width on mobile
+                                    className="group relative cursor-pointer p-6 md:p-8 hover:bg-[#fcfaff] transition-all duration-300 flex flex-col h-full w-full flex-shrink-0 md:w-auto md:[&:nth-child(n+3)]:border-t md:[&:nth-child(n+3)]:border-[#361b6b]/10 lg:[&:nth-child(n+3)]:border-t-0"
+                                >
+                                    <div className="absolute inset-0 bg-gradient-to-b from-[#f3e9ff]/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
 
-                                <div className="relative z-10 flex-grow">
-                                    <div className="w-16 h-16 bg-[#fcfaff] border border-[#5c2baa]/10 rounded-2xl flex items-center justify-center mb-6 text-[#5c2baa] group-hover:bg-[#361b6b] group-hover:text-white transition-all duration-300 group-hover:scale-110 shadow-sm group-hover:shadow-lg group-hover:shadow-[#361b6b]/20">
-                                        {cloneElement(service.icon, { className: "w-8 h-8 transition-transform duration-300 group-hover:rotate-6" })}
+                                    <div className="relative z-10 flex-grow">
+                                        <div className="w-14 h-14 md:w-16 md:h-16 bg-[#fcfaff] border border-[#5c2baa]/10 rounded-2xl flex items-center justify-center mb-5 md:mb-6 text-[#5c2baa] group-hover:bg-[#361b6b] group-hover:text-white transition-all duration-300 group-hover:scale-110 shadow-sm group-hover:shadow-lg group-hover:shadow-[#361b6b]/20">
+                                            {cloneElement(service.icon, { className: "w-7 h-7 md:w-8 md:h-8 transition-transform duration-300 group-hover:rotate-6" })}
+                                        </div>
+                                        <h3 className="text-lg md:text-xl font-bold text-[#361b6b] mb-2 md:mb-3 group-hover:text-[#5c2baa] transition-colors">{service.title}</h3>
+                                        <p className="text-gray-500 text-sm leading-relaxed mb-4 md:mb-6">{service.description}</p>
                                     </div>
-                                    <h3 className="text-xl font-bold text-[#361b6b] mb-3 group-hover:text-[#5c2baa] transition-colors">{service.title}</h3>
-                                    <p className="text-gray-500 text-sm leading-relaxed mb-6">{service.description}</p>
-                                </div>
 
-                                <div className="relative z-10 mt-auto pt-4 border-t border-transparent group-hover:border-[#361b6b]/10 transition-colors">
-                                    <span className="inline-flex items-center gap-2 text-sm font-bold text-[#5c2baa] group-hover:translate-x-2 transition-transform duration-300">
-                                        Learn more
-                                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" /></svg>
-                                    </span>
+                                    <div className="relative z-10 mt-auto pt-4 border-t border-transparent group-hover:border-[#361b6b]/10 transition-colors">
+                                        <span className="inline-flex items-center gap-2 text-sm font-bold text-[#5c2baa] group-hover:translate-x-2 transition-transform duration-300">
+                                            Learn more
+                                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" /></svg>
+                                        </span>
+                                    </div>
                                 </div>
-                            </div>
-                        ))}
+                            ))}
+                        </div>
                     </div>
                 </div>
 
-                {/* Swipe hint — mobile only */}
-                <p className="mt-4 text-center text-xs text-[#361b6b]/40 font-medium md:hidden">
-                    Swipe to see more services →
-                </p>
+                {/* Removed the "swipe hint" since it slides automatically now */}
 
                 <div className="text-center mt-16">
                     <p className="text-[#361b6b]/60 font-medium mb-6">Need a custom service or specific requirement?</p>
@@ -150,7 +165,7 @@ export default function Services() {
                             <div className="bg-[#fcfaff] p-6 rounded-2xl border border-[#f3e9ff]">
                                 <h3 className="text-[#5c2baa] font-bold text-sm uppercase tracking-wider mb-3 flex items-center gap-2">
                                     <Sparkles className="w-4 h-4" /> Our Process
-                                </h3>
+                               </h3>
                                 <p className="text-gray-600 leading-relaxed text-lg">{selectedService.process}</p>
                             </div>
 
