@@ -1,10 +1,11 @@
-import React, { useState, useEffect, cloneElement } from "react";
+import React, { useState, cloneElement, useRef } from "react";
 import { Shirt, Sparkles, Wind, Package, X, Check } from "lucide-react";
 import { Link } from "@inertiajs/react";
 
 export default function Services() {
     const [selectedService, setSelectedService] = useState(null);
-    const [currentIndex, setCurrentIndex] = useState(0);
+    const [activeDot, setActiveDot] = useState(0);
+    const scrollRef = useRef(null);
 
     const services = [
         {
@@ -57,16 +58,17 @@ export default function Services() {
         }
     ];
 
-    // Automatic slider logic matching the HowItWorks component
-    useEffect(() => {
-        const timer = setInterval(() => {
-            setCurrentIndex((prev) => (prev + 1) % services.length);
-        }, 3000); // Changes slide every 3 seconds
-        return () => clearInterval(timer);
-    }, [services.length]);
+    // Updates the active dot based on scroll position
+    const handleScroll = (e) => {
+        const container = e.target;
+        const width = container.offsetWidth;
+        const scrollLeft = container.scrollLeft;
+        const index = Math.round(scrollLeft / width);
+        setActiveDot(index);
+    };
 
     return (
-        <section className="py-24 bg-[#fafafa] font-sans" id="services">
+        <section className="py-24 bg-[#fafafa] font-sans relative" id="services">
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1200px] h-[600px] bg-[#5c2baa]/5 blur-[120px] rounded-full pointer-events-none -z-10" />
 
             <div className="max-w-7xl mx-auto px-6 lg:px-8">
@@ -80,21 +82,18 @@ export default function Services() {
                 <div className="bg-white rounded-[2.5rem] border border-[#5c2baa]/20 shadow-2xl shadow-[#361b6b]/5 overflow-hidden">
                     <div className="h-1.5 w-full bg-gradient-to-r from-[#361b6b] via-[#5c2baa] to-[#361b6b]" />
 
-                    {/* Outer overflow-hidden wrapper specifically for mobile */}
-                    <div className="overflow-hidden md:overflow-visible">
-                        {/* Flex track translating X on mobile.
-                            md:divide-x ensures the borders only appear on desktop.
-                        */}
-                        <div 
-                            className="flex md:grid md:grid-cols-2 lg:grid-cols-4 md:divide-x md:divide-[#361b6b]/10 transition-transform duration-500 ease-in-out md:!transform-none"
-                            style={{ transform: `translateX(-${currentIndex * 100}%)` }}
-                        >
+                    {/* Scrollable Container for Mobile */}
+                    <div 
+                        ref={scrollRef}
+                        onScroll={handleScroll}
+                        className="overflow-x-auto snap-x snap-mandatory scrollbar-hide md:overflow-visible"
+                    >
+                        <div className="flex md:grid md:grid-cols-2 lg:grid-cols-4 md:divide-x md:divide-[#361b6b]/10">
                             {services.map((service, index) => (
                                 <div
                                     key={index}
                                     onClick={() => setSelectedService(service)}
-                                    // w-full and flex-shrink-0 ensure it perfectly fits the container width on mobile
-                                    className="group relative cursor-pointer p-6 md:p-8 hover:bg-[#fcfaff] transition-all duration-300 flex flex-col h-full w-full flex-shrink-0 md:w-auto md:[&:nth-child(n+3)]:border-t md:[&:nth-child(n+3)]:border-[#361b6b]/10 lg:[&:nth-child(n+3)]:border-t-0"
+                                    className="group relative cursor-pointer p-6 md:p-8 hover:bg-[#fcfaff] transition-all duration-300 flex flex-col h-full w-full flex-shrink-0 snap-center md:w-auto md:[&:nth-child(n+3)]:border-t md:[&:nth-child(n+3)]:border-[#361b6b]/10 lg:[&:nth-child(n+3)]:border-t-0"
                                 >
                                     <div className="absolute inset-0 bg-gradient-to-b from-[#f3e9ff]/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
 
@@ -118,7 +117,19 @@ export default function Services() {
                     </div>
                 </div>
 
-                {/* Removed the "swipe hint" since it slides automatically now */}
+                {/* Brand-Colored Slider Dots (Mobile Only) */}
+                <div className="flex justify-center items-center gap-2 mt-8 md:hidden">
+                    {services.map((_, i) => (
+                        <div 
+                            key={i} 
+                            className={`transition-all duration-500 rounded-full ${
+                                activeDot === i 
+                                ? "w-8 h-2 bg-gradient-to-r from-[#361b6b] to-[#5c2baa] shadow-md shadow-[#5c2baa]/20" 
+                                : "w-2 h-2 bg-gray-300"
+                            }`} 
+                        />
+                    ))}
+                </div>
 
                 <div className="text-center mt-16">
                     <p className="text-[#361b6b]/60 font-medium mb-6">Need a custom service or specific requirement?</p>
@@ -137,6 +148,7 @@ export default function Services() {
                 </div>
             </div>
 
+            {/* Modal Detail View */}
             {selectedService && (
                 <div
                     className="fixed inset-0 bg-[#C4C4C4]/60 backdrop-blur-xs flex items-center justify-center z-[100] p-4 animate-in fade-in duration-200"

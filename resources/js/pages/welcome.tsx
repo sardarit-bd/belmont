@@ -12,7 +12,7 @@ export default function welcome() {
         <AppHeaderLayout>
             <Hero />
             <Services />
-            <Pricing />
+            {/* <Pricing /> */}
             <Howitworks />
             <Testimonial />
             <Contactme/>
