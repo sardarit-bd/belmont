@@ -112,13 +112,13 @@ export default function Pricing() {
                                 </p>
                                 
                                 {/* Specific "Learn More" for Sneak Peek - UPDATED TO LINK */}
-                                <Link 
+                                {/* <Link 
                                     href="/checkrate" 
                                     className="group inline-flex items-center gap-2 text-[#361b6b] font-bold border-b-2 border-[#5c2baa]/30 hover:border-[#5c2baa] pb-1 transition-all"
                                 >
                                     Learn more about Dry Cleaning
                                     <svg className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-                                </Link>
+                                </Link> */}
                             </div>
 
                             {/* Right: Price List */}
