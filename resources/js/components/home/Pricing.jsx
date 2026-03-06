@@ -65,38 +65,6 @@ export default function Pricing() {
                     </p>
                 </div>
 
-                {/* --- SERVICES GRID (NO PRICES) --- */}
-                <div className="bg-white rounded-[2.5rem] border border-[#5c2baa]/20 shadow-xl shadow-[#361b6b]/5 overflow-hidden mb-16 relative">
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-[#361b6b]/10">
-                        {serviceCategories.map((category, idx) => (
-                            <div 
-                                key={idx} 
-                                className="group relative p-8 flex flex-col items-center text-center transition-all duration-500 hover:bg-[#fcfaff]"
-                            >
-                                {/* Hover Gradient Overlay */}
-                                <div className="absolute inset-0 bg-gradient-to-b from-[#f3e9ff]/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
-
-                                {/* Icon */}
-                                <div className="relative z-10 w-14 h-14 mb-5 rounded-2xl bg-[#fcfaff] border border-[#5c2baa]/20 flex items-center justify-center text-[#5c2baa] shadow-sm group-hover:bg-[#361b6b] group-hover:text-white group-hover:scale-110 group-hover:-rotate-3 transition-all duration-300">
-                                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.5">
-                                        {category.icon}
-                                    </svg>
-                                </div>
-
-                                {/* Content */}
-                                <div className="relative z-10">
-                                    <h3 className="text-lg font-bold text-[#361b6b] mb-2 group-hover:text-[#5c2baa] transition-colors">
-                                        {category.title}
-                                    </h3>
-                                    <p className="text-[#361b6b]/60 text-sm leading-relaxed font-medium">
-                                        {category.description}
-                                    </p>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-
                 <div className="relative max-w-4xl mx-auto mb-16">
                     <div className="absolute -inset-1 bg-gradient-to-r from-[#5c2baa] to-[#361b6b] rounded-[2.5rem] opacity-20 blur-lg" />
                     <div className="relative bg-white/60 backdrop-blur-xl rounded-[2.5rem] border border-white/80 p-8 md:p-12 overflow-hidden">
