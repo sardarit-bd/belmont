@@ -2,18 +2,22 @@
 
 namespace App\Models;
 
+use App\Concerns\Translatable;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Concerns\HasUuids;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Service extends Model
 {
-    use HasUuids;
+    use Translatable;
 
-    protected $fillable = ['name', 'slug', 'description', 'image_path', 'is_active'];
+    protected $fillable = [
+        'name', 'description', 'price_note', 'is_active'
+    ];
 
-    public function products(): HasMany
-    {
-        return $this->hasMany(Product::class);
-    }
+    protected array $translatable = ['name', 'description', 'price_note'];
+
+    protected array $translatableTypes = [
+        'name'        => 'text',
+        'description' => 'textarea',
+        'price_note'  => 'text',
+    ];
 }

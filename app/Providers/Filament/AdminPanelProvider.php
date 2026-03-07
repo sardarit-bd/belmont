@@ -33,6 +33,7 @@ class AdminPanelProvider extends PanelProvider
             ->viteTheme('resources/css/filament/admin/theme.css')
             ->login()
             ->darkMode(false)
+            ->favicon('/favicon.png')
             ->colors([
                 'primary' => Color::Purple,
             ])
