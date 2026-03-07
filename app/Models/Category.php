@@ -2,18 +2,21 @@
 
 namespace App\Models;
 
+use App\Concerns\Translatable;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Concerns\HasUuids;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Category extends Model
 {
-    use HasUuids;
+    use Translatable;
 
-    protected $fillable = ['name', 'slug', 'sort_order'];
+    protected $fillable = [
+        'name', 'description', 'slug', 'is_active'
+    ];
 
-    public function products(): HasMany
-    {
-        return $this->hasMany(Product::class);
-    }
+    protected array $translatable = ['name', 'description'];
+
+    protected array $translatableTypes = [
+        'name'        => 'text',
+        'description' => 'textarea',
+    ];
 }

@@ -2,25 +2,21 @@
 
 namespace App\Models;
 
+use App\Concerns\Translatable;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Concerns\HasUuids;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Product extends Model
 {
-    use HasUuids;
+    use Translatable;
 
     protected $fillable = [
-        'category_id', 'service_id', 'name', 'description', 'price', 'is_active'
+        'name', 'description', 'is_active'
     ];
 
-    public function category(): BelongsTo
-    {
-        return $this->belongsTo(Category::class);
-    }
+    protected array $translatable = ['name', 'description'];
 
-    public function service(): BelongsTo
-    {
-        return $this->belongsTo(Service::class);
-    }
+    protected array $translatableTypes = [
+        'name'        => 'text',
+        'description' => 'textarea',
+    ];
 }
