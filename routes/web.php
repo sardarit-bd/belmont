@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\LanguageController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Laravel\Fortify\Features;
@@ -45,5 +46,8 @@ Route::get('/refund', function () {
 Route::get('dashboard', function () {
     return Inertia::render('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+// language switch
+Route::post('/language/switch', [LanguageController::class, 'switch'])->name('language.switch');
 
 require __DIR__.'/settings.php';

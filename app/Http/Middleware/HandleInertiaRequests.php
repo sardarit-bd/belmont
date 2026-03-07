@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Inertia\Middleware;
 
 class HandleInertiaRequests extends Middleware
@@ -35,6 +36,8 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+        $locale = App::getLocale();
+        
         return [
             ...parent::share($request),
             'name' => config('app.name'),
@@ -42,6 +45,31 @@ class HandleInertiaRequests extends Middleware
                 'user' => $request->user(),
             ],
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
+
+            'locale' => $locale,
+            'languages' => config('languages.supported'),
+            'translations' => $this->loadTranslations($locale),
         ];
+    }
+
+    private function loadTranslations(string $locale): array
+    {
+        $path = lang_path("{$locale}");
+        $translations = [];
+        
+        if (is_dir($path)) {
+            foreach (glob("{$path}/*.php") as $file) {
+                $group = basename($file, '.php');
+                $translations[$group] = require $file;
+            }
+        }
+        
+        // Also load JSON translations
+        $jsonPath = lang_path("{$locale}.json");
+        if (file_exists($jsonPath)) {
+            $translations['_json'] = json_decode(file_get_contents($jsonPath), true);
+        }
+        
+        return $translations;
     }
 }
