@@ -3,21 +3,32 @@
 namespace App\Models;
 
 use App\Concerns\Translatable;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 
 class Service extends Model
 {
-    use Translatable;
+    use HasUuids, Translatable;
 
     protected $fillable = [
-        'name', 'description', 'price_note', 'is_active'
+        'name', 'slug', 'description',
+        'media_id', 'is_active',
     ];
 
-    protected array $translatable = ['name', 'description', 'price_note'];
+    protected array $translatable = ['name', 'description'];
 
     protected array $translatableTypes = [
         'name'        => 'text',
         'description' => 'textarea',
-        'price_note'  => 'text',
     ];
+
+    public function media()
+    {
+        return $this->belongsTo(Media::class);
+    }
+
+    public function products()
+    {
+        return $this->hasMany(Product::class);
+    }
 }
