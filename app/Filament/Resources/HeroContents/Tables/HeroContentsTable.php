@@ -43,11 +43,11 @@ class HeroContentsTable
                     ->label('Active')
                     ->boolean(),
 
-                TextColumn::make('updated_at')
-                    ->label('Last Updated')
-                    ->dateTime()
-                    ->sortable()
-                    ->since(),
+                // TextColumn::make('updated_at')
+                //     ->label('Last Updated')
+                //     ->dateTime()
+                //     ->sortable()
+                //     ->since(),
             ])
             ->filters([
                 TernaryFilter::make('is_active')
