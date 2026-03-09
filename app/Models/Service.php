@@ -10,10 +10,7 @@ class Service extends Model
 {
     use HasUuids, Translatable;
 
-    protected $fillable = [
-        'name', 'slug', 'description',
-        'media_id', 'is_active',
-    ];
+    protected $fillable = ['name', 'slug', 'description', 'is_active', 'sort_order'];
 
     protected array $translatable = ['name', 'description'];
 
@@ -27,8 +24,8 @@ class Service extends Model
         return $this->belongsTo(Media::class);
     }
 
-    public function products()
+    public function categories()
     {
-        return $this->hasMany(Product::class);
+        return $this->hasMany(Category::class);
     }
 }

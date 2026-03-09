@@ -13,8 +13,10 @@ return new class extends Migration
     {
         Schema::create('categories', function (Blueprint $table) {
             $table->uuid('id')->primary();
+            $table->foreignUuid('service_id')->constrained('services')->cascadeOnDelete();
             $table->string('name');
             $table->string('slug')->unique();
+            $table->text('description')->nullable();
             $table->integer('sort_order')->default(0);
             $table->timestamps();
         });

@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\LanguageController;
 use App\Models\ContentBlock;
+use App\Models\Service;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Laravel\Fortify\Features;
@@ -18,7 +20,42 @@ Route::get('/schedule', function () {
 });
 
 Route::get('/checkrate', function () {
-    return Inertia::render('Checkrate');
+    $locale   = App::getLocale();
+    $fallback = config('languages.fallback', 'en');
+
+    $services = Service::where('is_active', true)
+    ->with([
+        'translations',                   
+        'categories' => fn($q) => $q
+            ->orderBy('sort_order')
+            ->with([
+                'translations',            
+                'products' => fn($q) => $q
+                    ->where('is_active', true)
+                    ->orderBy('sort_order')
+                    ->with('translations'), 
+            ]),
+    ])
+    ->orderBy('sort_order')
+    ->get()
+    ->map(fn($service) => [
+        'slug' => $service->slug,
+        'name' => $service->getTranslation('name', $locale),
+        'categories' => $service->categories->map(fn($category) => [
+            'slug' => $category->slug,
+            'name' => $category->getTranslation('name', $locale),
+            'products' => $category->products->map(fn($product) => [
+                'id'    => $product->id,
+                'name'  => $product->getTranslation('name', $locale),
+                'price' => (float) $product->price,
+            ]),
+        ]),
+    ]);
+
+    // 2. Pass to Inertia → becomes React prop
+    return Inertia::render('Checkrate', [
+        'services' => $services,
+    ]);
 });
 
 Route::get('/luxury', function () {
