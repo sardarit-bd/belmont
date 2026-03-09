@@ -10,7 +10,7 @@ class Category extends Model
 {
     use HasUuids, Translatable;
 
-    protected $fillable = ['name', 'slug', 'description', 'sort_order'];
+    protected $fillable = ['service_id', 'name', 'slug', 'description', 'sort_order'];
 
     protected array $translatable = ['name', 'description'];
 
@@ -22,5 +22,10 @@ class Category extends Model
     public function products()
     {
         return $this->hasMany(Product::class);
+    }
+
+    public function service()
+    {
+        return $this->belongsTo(Service::class);
     }
 }

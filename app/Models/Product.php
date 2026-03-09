@@ -11,9 +11,9 @@ class Product extends Model
     use HasUuids, Translatable;
 
     protected $fillable = [
-        'category_id', 'service_id',
+        'category_id',
         'name', 'description',
-        'price', 'is_active',
+        'price', 'is_active', 'sort_order',
     ];
 
     protected array $translatable = ['name', 'description'];
@@ -28,8 +28,8 @@ class Product extends Model
         return $this->belongsTo(Category::class);
     }
 
-    public function service()
+    public function getServiceAttribute()
     {
-        return $this->belongsTo(Service::class);
+        return $this->category?->service;
     }
 }

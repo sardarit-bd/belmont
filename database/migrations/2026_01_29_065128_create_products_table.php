@@ -14,13 +14,13 @@ return new class extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->foreignUuid('category_id')->constrained('categories')->cascadeOnDelete();
-            $table->foreignUuid('service_id')->nullable()->constrained('services')->nullOnDelete();
             $table->string('name');
             $table->text('description')->nullable();
-            $table->decimal('price', 10, 2); 
+            $table->decimal('price', 10, 2);
             $table->boolean('is_active')->default(true);
+            $table->integer('sort_order')->default(0);
             $table->timestamps();
-            
+
             $table->index(['category_id', 'is_active']);
         });
     }
