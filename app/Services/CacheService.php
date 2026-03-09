@@ -44,7 +44,7 @@ class CacheService
     {
         return $this->redisAvailable
             ? Cache::store('redis')
-            : Cache::store('file');
+            : Cache::store(config('cache.default')); 
     }
 
     /**
