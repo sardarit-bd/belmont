@@ -63,7 +63,7 @@ export default function HowItWorks() {
     }, [steps.length]);
 
     return (
-        <section id="Howitworks" className="py-20 scroll-mt-14 bg-gradient-to-r from-white via-white to-[#F7F0FF]">
+        <section id="howitworks" className="py-20 scroll-mt-14 bg-gradient-to-r from-white via-white to-[#F7F0FF]">
             <div className="max-w-7xl mx-auto px-6 lg:px-8">
 
                 {/* Header */}
