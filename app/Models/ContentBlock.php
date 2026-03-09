@@ -44,7 +44,7 @@ class ContentBlock extends Model
                 ->where('is_active', true)
                 ->with([
                     'translations' => fn($q) => $q->whereIn('locale', [$locale, $fallback]),
-                    'media.translations' => fn($q) => $q->whereIn('locale', [$locale, $fallback]),
+                    'media',
                 ])
                 ->orderBy('order')
                 ->get()
