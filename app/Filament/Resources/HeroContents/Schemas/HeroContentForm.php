@@ -62,13 +62,9 @@ class HeroContentForm
                         ->image()
                         ->disk('public')
                         ->directory('hero')
-                        ->imageResizeMode('cover')
-                        ->imageCropAspectRatio('16:9')
-                        ->imageResizeTargetWidth('1920')
-                        ->imageResizeTargetHeight('1080')
-                        ->maxSize(5120)
+                        ->maxSize(10000)
                         ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
-                        ->helperText('Recommended: 1920×1080px, max 5MB. JPG, PNG or WebP.')
+                        ->helperText('Max 10MB. JPG, PNG or WebP.')
                         ->columnSpanFull(),
                 ])
                 ->visible(fn($record) => $record?->type === 'image'), 
