@@ -3,7 +3,6 @@
 namespace App\Filament\Resources\Products\Schemas;
 
 use App\Filament\Schemas\TranslationRepeaterSchema;
-use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -14,8 +13,8 @@ class ProductForm
 {
     public static function configure(Schema $schema): Schema
     {
-        return $schema
-            ->components([
+        return $schema->components(array_merge(
+            [
                 Select::make('category_id')
                     ->relationship('category', 'name')
                     ->required(),
@@ -32,10 +31,11 @@ class ProductForm
                     ->default(0),
                 Toggle::make('is_active')
                     ->default(true),
-                TranslationRepeaterSchema::make([
-                    'name'        => 'text',
-                    'description' => 'textarea',
-                ]),
-            ]);
+            ],
+            TranslationRepeaterSchema::make([
+                'name'        => 'text',
+                'description' => 'textarea',
+            ])
+        ));
     }
 }
