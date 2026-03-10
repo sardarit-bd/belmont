@@ -87,9 +87,13 @@ Route::get('/refund', function () {
     return Inertia::render('Refund');
 });
 
-Route::get('dashboard', function () {
-    return Inertia::render('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+// Route::get('dashboard', function () {
+//     return Inertia::render('dashboard');
+// })->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::middleware(['auth', 'role:customer'])->group(function () {
+    Route::get('/dashboard', fn() => Inertia::render('Dashboard'));
+});
 
 // language switch
 Route::post('/language/switch', [LanguageController::class, 'switch'])->name('language.switch');

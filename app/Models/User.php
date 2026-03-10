@@ -71,8 +71,23 @@ class User extends Authenticatable implements FilamentUser
         return $this->hasMany(Order::class);
     }
 
+    // public function canAccessPanel(Panel $panel): bool
+    // {
+    //     return $this->role->name === 'admin';
+    // }
+
+    public function hasRole(string $role): bool
+    {
+        return $this->role?->name === $role;
+    }
+
+    public function hasAnyRole(array $roles): bool
+    {
+        return in_array($this->role?->name, $roles);
+    }
+
     public function canAccessPanel(Panel $panel): bool
     {
-        return $this->role->name === 'admin';
+        return $this->hasAnyRole(['admin', 'driver', 'cleaner']);
     }
 }
