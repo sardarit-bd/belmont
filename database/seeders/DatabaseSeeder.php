@@ -18,7 +18,8 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             // CatalogSeeder::class,
             HeroContentSeeder::class,
-            PricingSeeder::class, 
+            PricingSeeder::class,
+            TranslationSeeder::class,
         ]);
     }
 }

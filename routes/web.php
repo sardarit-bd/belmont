@@ -24,35 +24,40 @@ Route::get('/checkrate', function () {
     $fallback = config('languages.fallback', 'en');
 
     $services = Service::where('is_active', true)
-    ->with([
-        'translations',                   
-        'categories' => fn($q) => $q
-            ->orderBy('sort_order')
-            ->with([
-                'translations',            
-                'products' => fn($q) => $q
-                    ->where('is_active', true)
-                    ->orderBy('sort_order')
-                    ->with('translations'), 
+        ->with([
+            'translations',
+            'categories' => fn($q) => $q
+                ->orderBy('sort_order')
+                ->with([
+                    'translations',
+                    'products' => fn($q) => $q
+                        ->where('is_active', true)
+                        ->orderBy('sort_order')
+                        ->with('translations'),
+                ]),
+        ])
+        ->orderBy('sort_order')
+        ->get()
+        ->map(fn($service) => [
+            'slug' => $service->slug,
+            'name' => $service->translations->where('locale', $locale)->first()?->value
+                      ?? $service->translations->where('locale', $fallback)->first()?->value
+                      ?? $service->getRawOriginal('name'),
+            'categories' => $service->categories->map(fn($category) => [
+                'slug' => $category->slug,
+                'name' => $category->translations->where('locale', $locale)->first()?->value
+                          ?? $category->translations->where('locale', $fallback)->first()?->value
+                          ?? $category->getRawOriginal('name'),
+                'products' => $category->products->map(fn($product) => [
+                    'id'    => $product->id,
+                    'name'  => $product->translations->where('locale', $locale)->first()?->value
+                               ?? $product->translations->where('locale', $fallback)->first()?->value
+                               ?? $product->getRawOriginal('name'),
+                    'price' => (float) $product->price,
+                ]),
             ]),
-    ])
-    ->orderBy('sort_order')
-    ->get()
-    ->map(fn($service) => [
-        'slug' => $service->slug,
-        'name' => $service->getTranslation('name', $locale),
-        'categories' => $service->categories->map(fn($category) => [
-            'slug' => $category->slug,
-            'name' => $category->getTranslation('name', $locale),
-            'products' => $category->products->map(fn($product) => [
-                'id'    => $product->id,
-                'name'  => $product->getTranslation('name', $locale),
-                'price' => (float) $product->price,
-            ]),
-        ]),
-    ]);
+        ]);
 
-    // 2. Pass to Inertia → becomes React prop
     return Inertia::render('Checkrate', [
         'services' => $services,
     ]);

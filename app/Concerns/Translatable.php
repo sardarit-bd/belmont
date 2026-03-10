@@ -39,6 +39,7 @@ trait Translatable
         $locale   ??= App::getLocale();
         $fallback   = config('languages.fallback', 'en');
 
+
         return $this->translations
             ->where('locale', $locale)
             ->where('key', $key)
@@ -47,7 +48,7 @@ trait Translatable
                 ->where('locale', $fallback)
                 ->where('key', $key)
                 ->first()?->value
-            ?? $this->{$key}
+            ?? $this->getRawOriginal($key) 
             ?? '';
     }
 
