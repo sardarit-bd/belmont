@@ -3,9 +3,10 @@
 return [
     'services'   => 'Sèvis',
     'pricing'    => 'Pri',
-    'howitworks' => 'Kijan Li Fonksyone',
-    'schedule'   => 'Pwograme Ranmase',
+    'howitworks' => 'Kijan Sa Fonksyone',
+    'schedule'   => 'Pwograme Ranmasaj',
     'checkrates' => 'Tcheke Pri',
-    'luxury'     => 'Liksyè',
+    'luxury'     => 'Liks',
     'contact'    => 'Kontak',
+    'login'      => 'Konekte',
 ];

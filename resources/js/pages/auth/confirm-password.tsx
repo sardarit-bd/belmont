@@ -1,4 +1,4 @@
-import { Form, Head } from '@inertiajs/react';
+import { Head, useForm } from '@inertiajs/react';
 import InputError from '@/components/input-error';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -6,6 +6,15 @@ import { Spinner } from '@/components/ui/spinner';
 import { store } from '@/routes/password/confirm';
 
 export default function ConfirmPassword() {
+    const { data, setData, post, processing, errors, reset } = useForm({ password: '' });
+
+    const submit = (e: React.FormEvent) => {
+        e.preventDefault();
+        post(store.url(), {
+            onFinish: () => reset('password'),
+        });
+    };
+
     return (
         <>
             <Head title="Confirm Password — Belmont Dry Cleaners" />
@@ -47,18 +56,10 @@ export default function ConfirmPassword() {
                         <div className="absolute -bottom-20 -left-20 w-72 h-72 rounded-full border border-white/5" />
                     </div>
 
-                    {/* Brand */}
                     <div className="relative z-10 flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-xl bg-white/10 border border-white/15 flex items-center justify-center">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5">
-                                <path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96-.46L5.5 8A2.5 2.5 0 0 1 8 5.5h1.5" />
-                                <path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96-.46L18.5 8A2.5 2.5 0 0 0 16 5.5h-1.5" />
-                            </svg>
-                        </div>
                         <span className="text-white/90 font-semibold text-[15px] tracking-tight">Belmont Dry Cleaners</span>
                     </div>
 
-                    {/* Hero */}
                     <div className="relative z-10 flex flex-col flex-1 justify-center py-16">
                         <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-500/15 border border-blue-500/30 w-fit mb-7">
                             <span className="w-1.5 h-1.5 rounded-full bg-blue-400" />
@@ -74,12 +75,11 @@ export default function ConfirmPassword() {
                             You're accessing a protected area. Please confirm your password to continue securely.
                         </p>
 
-                        {/* Security badges */}
                         <div className="flex flex-col gap-4">
                             {[
                                 { icon: '🔒', title: 'End-to-end encrypted', desc: 'Your data is always protected' },
                                 { icon: '🛡️', title: 'Secure session', desc: 'Activity monitored for your safety' },
-                                { icon: '✅', title: 'Identity verified', desc: 'Confirms it\'s you before proceeding' },
+                                { icon: '✅', title: 'Identity verified', desc: "Confirms it's you before proceeding" },
                             ].map((item) => (
                                 <div key={item.title} className="flex items-start gap-4">
                                     <div className="w-9 h-9 rounded-lg bg-white/7 border border-white/8 flex items-center justify-center shrink-0 text-sm">
@@ -101,14 +101,12 @@ export default function ConfirmPassword() {
                 <div className="flex items-center justify-center p-8 lg:p-12">
                     <div className="w-full max-w-[400px]">
 
-                        {/* Security icon */}
                         <div className="w-14 h-14 rounded-2xl bg-[#1a0a2e]/8 border border-[#1a0a2e]/10 flex items-center justify-center mb-8">
                             <svg className="w-6 h-6 text-[#9007EE]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                                 <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
                             </svg>
                         </div>
 
-                        {/* Header */}
                         <div className="mb-8">
                             <p className="text-[11px] font-semibold tracking-[0.1em] uppercase text-[#9007EE] mb-2">Security check</p>
                             <h2 className="text-[26px] font-bold text-[#0f0a1a] tracking-tight leading-snug mb-2">Confirm your password</h2>
@@ -117,43 +115,38 @@ export default function ConfirmPassword() {
                             </p>
                         </div>
 
-                        <Form {...store.form()} resetOnSuccess={['password']} className="flex flex-col">
-                            {({ processing, errors }) => (
-                                <>
-                                    <div className="flex flex-col gap-1.5 mb-6">
-                                        <Label htmlFor="password" className="text-[13px] font-medium text-gray-600">
-                                            Password
-                                        </Label>
-                                        <Input
-                                            id="password"
-                                            type="password"
-                                            name="password"
-                                            required
-                                            autoFocus
-                                            autoComplete="current-password"
-                                            placeholder="••••••••"
-                                        />
-                                        <InputError message={errors.password} />
-                                    </div>
+                        <form onSubmit={submit} className="flex flex-col">
+                            <div className="flex flex-col gap-1.5 mb-6">
+                                <Label htmlFor="password" className="text-[13px] font-medium text-gray-600">Password</Label>
+                                <Input
+                                    id="password"
+                                    type="password"
+                                    name="password"
+                                    value={data.password}
+                                    onChange={(e) => setData('password', e.target.value)}
+                                    required
+                                    autoFocus
+                                    autoComplete="current-password"
+                                    placeholder="••••••••"
+                                />
+                                <InputError message={errors.password} />
+                            </div>
 
-                                    {/* Submit */}
-                                    <button
-                                        type="submit"
-                                        disabled={processing}
-                                        data-test="confirm-password-button"
-                                        className="w-full h-11 rounded-xl bg-[#1a0a2e] text-white text-[14px] font-semibold flex items-center justify-center gap-2 transition-all hover:bg-[#2d1249] hover:-translate-y-px hover:shadow-xl hover:shadow-[#1a0a2e]/25 active:translate-y-0 disabled:opacity-60 disabled:cursor-not-allowed disabled:transform-none cursor-pointer"
-                                    >
-                                        {processing && <Spinner />}
-                                        {processing ? 'Confirming...' : 'Confirm password'}
-                                        {!processing && (
-                                            <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                                <path d="M5 12h14M12 5l7 7-7 7" />
-                                            </svg>
-                                        )}
-                                    </button>
-                                </>
-                            )}
-                        </Form>
+                            <button
+                                type="submit"
+                                disabled={processing}
+                                data-test="confirm-password-button"
+                                className="w-full h-11 rounded-xl bg-[#1a0a2e] text-white text-[14px] font-semibold flex items-center justify-center gap-2 transition-all hover:bg-[#2d1249] hover:-translate-y-px hover:shadow-xl hover:shadow-[#1a0a2e]/25 active:translate-y-0 disabled:opacity-60 disabled:cursor-not-allowed disabled:transform-none cursor-pointer"
+                            >
+                                {processing && <Spinner />}
+                                {processing ? 'Confirming...' : 'Confirm password'}
+                                {!processing && (
+                                    <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                        <path d="M5 12h14M12 5l7 7-7 7" />
+                                    </svg>
+                                )}
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>

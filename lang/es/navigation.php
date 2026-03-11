@@ -5,7 +5,8 @@ return [
     'pricing'    => 'Precios',
     'howitworks' => 'Cómo Funciona',
     'schedule'   => 'Programar Recogida',
-    'checkrates' => 'Ver Tarifas',
+    'checkrates' => 'Consultar Tarifas',
     'luxury'     => 'Lujo',
     'contact'    => 'Contacto',
+    'login'      => 'Iniciar sesión',
 ];
