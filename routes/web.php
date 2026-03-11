@@ -92,7 +92,7 @@ Route::get('/refund', function () {
 // })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware(['auth', 'role:customer'])->group(function () {
-    Route::get('/dashboard', fn() => Inertia::render('Dashboard'));
+    Route::get('/dashboard', fn() => Inertia::render('Dashboard'))->name('dashboard');
 });
 
 // language switch

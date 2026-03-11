@@ -8,4 +8,5 @@ return [
     'checkrates' => 'Check Rates',
     'luxury'     => 'Luxury',
     'contact'    => 'Contact',
+    'login'      => 'Login',
 ];

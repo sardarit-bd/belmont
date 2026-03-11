@@ -8,4 +8,5 @@ return [
     'checkrates' => 'Ver Tarifas',
     'luxury'     => 'Luxo',
     'contact'    => 'Contato',
+    'login'      => 'Entrar',
 ];
