@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\LanguageController;
+use App\Http\Controllers\PickupScheduleController;
 use App\Models\ContentBlock;
 use App\Models\Service;
 use Illuminate\Support\Facades\App;
@@ -15,9 +16,9 @@ Route::get('/', function () {
     ]);
 })->name('home');
 
-Route::get('/schedule', function () {
-    return Inertia::render('schedule');
-});
+// pickup schedule
+Route::get('/schedule', fn() => Inertia::render('schedule'));
+Route::post('/schedule', [PickupScheduleController::class, 'store']);
 
 Route::get('/checkrate', function () {
     $locale   = App::getLocale();

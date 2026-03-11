@@ -113,11 +113,11 @@ export default function Register() {
                             Back to home
                         </a>
 
-                        <div className="flex items-center gap-1.5 mb-8">
+                        {/* <div className="flex items-center gap-1.5 mb-8">
                             <div className="w-5 h-1.5 rounded-full bg-[#9007EE]" />
                             <div className="w-1.5 h-1.5 rounded-full bg-gray-200" />
                             <div className="w-1.5 h-1.5 rounded-full bg-gray-200" />
-                        </div>
+                        </div> */}
 
                         <div className="mb-8">
                             <p className="text-[11px] font-semibold tracking-[0.1em] uppercase text-[#9007EE] mb-2">Get started</p>

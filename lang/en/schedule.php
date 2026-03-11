@@ -29,6 +29,19 @@ return [
     'special_instructions_hint'=> 'Optional',
     'special_instructions_placeholder' => 'Gate code, parking instructions...',
 
+    // Step 3
+    'review_title'    => 'Almost There!',
+    'review_subtitle' => 'Review your details and confirm',
+    'label_name'      => 'Name',
+    'label_phone'     => 'Phone',
+    'label_address'   => 'Address',
+    'label_date'      => 'Date',
+    'label_time'      => 'Time',
+    'confirm_pickup'  => 'Confirm Pickup',
+    'success_title'   => 'Pickup Confirmed!',
+    'success_message' => 'Your pickup has been successfully scheduled. You\'ll receive a confirmation email shortly.',
+    'schedule_another'=> 'Schedule Another Pickup',
+
     // Payment
     'payment_title'    => 'Payment Information',
     'payment_subtitle' => 'Secure payment - Card charged only after service completion',
