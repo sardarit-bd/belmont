@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import AppHeaderLayout from "@/layouts/app/app-header-layout";
 import { useI18n, I18nProvider  } from '@/contexts/I18nContext';
+import { usePage, router } from '@inertiajs/react';
 
 export default function PickupScheduler() {
     return (
@@ -11,6 +12,8 @@ export default function PickupScheduler() {
 }
 
 function PickupSchedulerInner() {
+    const { props } = usePage();
+    const flash = props.flash?.success;
     const { t } = useI18n();
     const [currentStep, setCurrentStep] = useState(1);
     const [errors, setErrors] = useState({});
@@ -20,6 +23,7 @@ function PickupSchedulerInner() {
         cardholderName: '', cardNumber: '', expiryDate: '', cvc: '',
         cardConsent: false
     });
+    const [isSubmitted, setIsSubmitted] = useState(false);
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
@@ -75,7 +79,37 @@ function PickupSchedulerInner() {
     };
 
     const prevStep = () => { setErrors({}); if (currentStep > 1) setCurrentStep(currentStep - 1); };
-    const handleSubmit = () => { console.log('Form submitted:', formData); alert('Pickup confirmed!'); };
+    
+
+    const handleSubmit = () => {
+        router.post('/schedule', {
+            full_name:            formData.fullName,
+            phone_number:         formData.phoneNumber,
+            street:               formData.street,
+            city:                 formData.city,
+            zip:                  formData.zip,
+            pickup_date:          formData.pickupDate,
+            preferred_time:       formData.preferredTime,
+            special_instructions: formData.specialInstructions,
+            cardholder_name:      formData.cardholderName,
+            card_number:          formData.cardNumber.replace(/\s/g, ''),
+            expiry_date:          formData.expiryDate,
+            cvc:                  formData.cvc,
+        }, {
+            onSuccess: () => {
+                setIsSubmitted(true);
+            },
+            onError: (errors) => {
+                setErrors(errors);
+                const firstKey = Object.keys(errors)[0];
+                const first = document.getElementsByName(firstKey)[0];
+                if (first) {
+                    first.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    first.focus();
+                }
+            },
+        });
+    };
 
     const formatCardNumber = (value) => {
         const v = value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
@@ -284,6 +318,23 @@ function PickupSchedulerInner() {
                         {/* Step 3 — Review */}
                         {currentStep === 3 && (
                             <div className="space-y-6">
+
+                                {/* Success Banner */}
+                                {isSubmitted && (
+                                    <div className="bg-green-50 border border-green-200 rounded-xl p-6 flex items-start gap-4">
+                                        <div className="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0">
+                                            <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <h3 className="font-semibold text-green-800">{t('schedule.success_title')}</h3>
+                                            <p className="text-sm text-green-700 mt-1">{t('schedule.success_message')}</p>
+                                        </div>
+                                    </div>
+                                )}
+
+                                {/* Review Header */}
                                 <div className="flex items-center gap-3 p-4 bg-gradient-to-r from-purple-50 to-indigo-50 rounded-xl">
                                     <div className="w-10 h-10 bg-[#361b6b] rounded-lg flex items-center justify-center">
                                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6 text-white">
@@ -296,24 +347,68 @@ function PickupSchedulerInner() {
                                     </div>
                                 </div>
 
+                                {/* Review Details */}
                                 <div className="space-y-3 bg-purple-50 rounded-2xl p-6 border-2 border-purple-100">
-                                    <div className="bg-white rounded-lg px-4 py-2"><p className="text-purple-600 font-medium text-xs">{t('schedule.label_name')}</p><p className="text-black">{formData.fullName}</p></div>
-                                    <div className="bg-white rounded-lg px-4 py-2"><p className="text-purple-600 font-medium text-xs">{t('schedule.label_phone')}</p><p className="text-black">{formData.phoneNumber}</p></div>
-                                    <div className="bg-white rounded-lg px-4 py-2"><p className="text-purple-600 font-medium text-xs">{t('schedule.label_address')}</p><p className="text-black">{formData.street}, {formData.city} {formData.zip}</p></div>
+                                    <div className="bg-white rounded-lg px-4 py-2">
+                                        <p className="text-purple-600 font-medium text-xs">{t('schedule.label_name')}</p>
+                                        <p className="text-black">{formData.fullName}</p>
+                                    </div>
+                                    <div className="bg-white rounded-lg px-4 py-2">
+                                        <p className="text-purple-600 font-medium text-xs">{t('schedule.label_phone')}</p>
+                                        <p className="text-black">{formData.phoneNumber}</p>
+                                    </div>
+                                    <div className="bg-white rounded-lg px-4 py-2">
+                                        <p className="text-purple-600 font-medium text-xs">{t('schedule.label_address')}</p>
+                                        <p className="text-black">{formData.street}, {formData.city} {formData.zip}</p>
+                                    </div>
                                     <div className="grid grid-cols-2 gap-4">
-                                        <div className="bg-white rounded-lg px-4 py-2"><p className="text-purple-600 font-medium text-xs">{t('schedule.label_date')}</p><p className="text-black">{formData.pickupDate}</p></div>
-                                        <div className="bg-white rounded-lg px-4 py-2"><p className="text-purple-600 font-medium text-xs">{t('schedule.label_time')}</p><p className="text-black">{formData.preferredTime}</p></div>
+                                        <div className="bg-white rounded-lg px-4 py-2">
+                                            <p className="text-purple-600 font-medium text-xs">{t('schedule.label_date')}</p>
+                                            <p className="text-black">{formData.pickupDate}</p>
+                                        </div>
+                                        <div className="bg-white rounded-lg px-4 py-2">
+                                            <p className="text-purple-600 font-medium text-xs">{t('schedule.label_time')}</p>
+                                            <p className="text-black">{formData.preferredTime}</p>
+                                        </div>
                                     </div>
                                 </div>
 
+                                {/* Actions */}
                                 <div className="space-y-3">
-                                    <button onClick={handleSubmit} className="h-10 px-6 w-full bg-[#361b6b] text-white rounded-md shadow-lg hover:scale-105 transition-all">
-                                        {t('schedule.confirm_pickup')}
-                                    </button>
-                                    <button onClick={prevStep} className="h-10 px-6 w-full border-2 rounded-md hover:bg-gray-50 transition-all">
-                                        {t('schedule.back')}
-                                    </button>
+                                    {!isSubmitted ? (
+                                        <>
+                                            <button
+                                                onClick={handleSubmit}
+                                                className="h-10 px-6 w-full bg-[#361b6b] text-white rounded-md shadow-lg hover:scale-105 transition-all"
+                                            >
+                                                {t('schedule.confirm_pickup')}
+                                            </button>
+                                            <button
+                                                onClick={prevStep}
+                                                className="h-10 px-6 w-full border-2 rounded-md hover:bg-gray-50 transition-all"
+                                            >
+                                                {t('schedule.back')}
+                                            </button>
+                                        </>
+                                    ) : (
+                                        <button
+                                            onClick={() => {
+                                                setIsSubmitted(false);
+                                                setCurrentStep(1);
+                                                setFormData({
+                                                    fullName: '', phoneNumber: '', street: '', city: '', zip: '',
+                                                    pickupDate: '', preferredTime: '', specialInstructions: '',
+                                                    cardholderName: '', cardNumber: '', expiryDate: '', cvc: '',
+                                                    cardConsent: false,
+                                                });
+                                            }}
+                                            className="h-10 px-6 w-full bg-[#361b6b] text-white rounded-md shadow-lg hover:scale-105 transition-all"
+                                        >
+                                            {t('schedule.schedule_another')}
+                                        </button>
+                                    )}
                                 </div>
+
                             </div>
                         )}
                     </div>

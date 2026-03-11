@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Repositories\Contracts\PickupScheduleRepositoryInterface;
+use App\Repositories\PickupScheduleRepository;
 use App\Services\CacheService;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\Date;
@@ -20,6 +22,12 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(CacheService::class, function () {
             return new CacheService();
         });
+
+        // pickup schedule
+        $this->app->bind(
+            PickupScheduleRepositoryInterface::class,
+            PickupScheduleRepository::class,
+        );
     }
 
     /**

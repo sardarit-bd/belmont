@@ -23,7 +23,7 @@ class PasswordResetService
 
         if ($user) {
             $token = Password::broker()->createToken($user);
-            SendPasswordResetEmail::dispatch($user, $token);
+            SendPasswordResetEmail::dispatch($user, $token)->onQueue('emails');
         }
 
         // Always increment hits regardless of whether user exists

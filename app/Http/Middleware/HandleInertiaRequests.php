@@ -49,6 +49,10 @@ class HandleInertiaRequests extends Middleware
             'locale' => $locale,
             'languages' => config('languages.supported'),
             'translations' => $this->loadTranslations($locale),
+            'flash' => [
+                'success' => $request->session()->get('success'),
+                'error'   => $request->session()->get('error'),
+            ],
         ];
     }
 
