@@ -142,7 +142,7 @@ export default function Register() {
                                 <div className="flex flex-col gap-1.5">
                                     <Label htmlFor="password" className="text-[13px] font-medium text-gray-600">Password</Label>
                                     <Input id="password" type="password" name="password" value={data.password} onChange={(e) => setData('password', e.target.value)} required tabIndex={3} autoComplete="new-password" placeholder="At least 8 characters" />
-                                    <p className="text-[11px] text-gray-400 mt-1">Use 8+ characters with a mix of letters and numbers</p>
+                                    <p className="text-[11px] text-gray-400 mt-1">Use minimum 8 characters with a mix of letters and numbers</p>
                                     <InputError message={errors.password} />
                                 </div>
 
