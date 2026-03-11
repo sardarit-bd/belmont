@@ -35,7 +35,7 @@ return [
     'confirm_pickup' => 'Confirmer le ramassage',
 
     'success_title' => 'Ramassage confirmé !',
-    'success_message' => 'Votre ramassage a été planifié avec succès. Vous recevrez un e-mail de confirmation.',
+    'success_message' => 'Votre ramassage a été programmé avec succès.',
     'schedule_another'=> 'Planifier un autre ramassage',
 
     'payment_title' => 'Informations de paiement',

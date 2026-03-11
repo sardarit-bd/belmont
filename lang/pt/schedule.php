@@ -34,7 +34,7 @@ return [
     'label_time'      => 'Hora',
     'confirm_pickup'  => 'Confirmar coleta',
     'success_title'   => 'Coleta confirmada!',
-    'success_message' => 'Sua coleta foi agendada com sucesso. Você receberá um e-mail de confirmação em breve.',
+    'success_message' => 'Sua coleta foi agendada com sucesso.',
     'schedule_another'=> 'Agendar outra coleta',
 
     'payment_title'    => 'Informações de pagamento',

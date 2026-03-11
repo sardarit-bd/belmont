@@ -35,7 +35,7 @@ return [
     'confirm_pickup'  => '确认取件',
 
     'success_title'   => '取件已确认！',
-    'success_message' => '您的取件已经成功预约，我们很快会发送确认邮件。',
+    'success_message' => '您的取件已成功预约。',
     'schedule_another'=> '再次预约取件',
 
     'payment_title'    => '支付信息',
