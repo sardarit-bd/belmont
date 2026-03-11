@@ -39,7 +39,7 @@ return [
     'label_time'      => 'Time',
     'confirm_pickup'  => 'Confirm Pickup',
     'success_title'   => 'Pickup Confirmed!',
-    'success_message' => 'Your pickup has been successfully scheduled. You\'ll receive a confirmation email shortly.',
+    'success_message' => 'Your pickup has been successfully scheduled.',
     'schedule_another'=> 'Schedule Another Pickup',
 
     // Payment

@@ -12,7 +12,10 @@ class PickupConfirmedAdmin extends Notification implements ShouldQueue
 {
     use Queueable;
 
-    public function __construct(private readonly PickupSchedule $schedule) {}
+    public function __construct(private readonly PickupSchedule $schedule) 
+    {
+        $this->onQueue('notifications');
+    }
 
     public function via(object $notifiable): array { return ['mail']; }
 

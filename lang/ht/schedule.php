@@ -35,7 +35,7 @@ return [
     'confirm_pickup'  => 'Konfime ranmasaj',
 
     'success_title'   => 'Ranmasaj konfime!',
-    'success_message' => 'Ranmasaj ou a pwograme avèk siksè. Ou pral resevwa yon imèl konfimasyon byento.',
+    'success_message' => 'Ranmasaj ou a pwograme avèk siksè.',
     'schedule_another'=> 'Pwograme yon lòt ranmasaj',
 
     'payment_title'    => 'Enfòmasyon peman',

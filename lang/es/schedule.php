@@ -34,7 +34,7 @@ return [
     'label_time'      => 'Hora',
     'confirm_pickup'  => 'Confirmar recogida',
     'success_title'   => '¡Recogida confirmada!',
-    'success_message' => 'Tu recogida ha sido programada correctamente. Recibirás un correo de confirmación en breve.',
+    'success_message' => 'Su recogida ha sido programada con éxito.',
     'schedule_another'=> 'Programar otra recogida',
 
     'payment_title'    => 'Información de pago',

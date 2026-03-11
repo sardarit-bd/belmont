@@ -16,15 +16,11 @@ class PickupScheduleService
         private readonly PickupScheduleRepositoryInterface $repository,
     ) {}
 
+    // app/Services/PickupScheduleService.php
     public function book(PickupScheduleData $data): PickupSchedule
     {
         $schedule = $this->repository->create($data);
 
-        // Notify customer
-        Notification::route('mail', $data->phoneNumber) // swap for email field if added
-            ->notify(new PickupConfirmedUser($schedule));
-
-        // Notify admin
         Notification::route('mail', config('app.admin_email'))
             ->notify(new PickupConfirmedAdmin($schedule));
 
