@@ -66,6 +66,25 @@ Route::post('/schedule', [PickupScheduleController::class, 'store']);
 //     ]);
 // });
 
+
+Route::get('/debug-locale', function () {
+    $locale = App::getLocale();
+    
+    $product = \App\Models\Product::with('translations')->first();
+    
+    return response()->json([
+        'app_locale'        => $locale,
+        'session_locale'    => session('locale'),
+        'config_locale'     => config('app.locale'),
+        'config_fallback'   => config('app.fallback_locale'),
+        'translations_raw'  => $product?->translations,
+        'translation_hit'   => $product?->translations
+                                ->where('locale', $locale)
+                                ->where('key', 'name')
+                                ->first(),
+    ]);
+});
+
 Route::get('/checkrate', function () {
     $locale   = App::getLocale();
     $fallback = config('languages.fallback', 'en');
