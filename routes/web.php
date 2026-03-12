@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\ConsultationRequestController;
+use App\Http\Controllers\ContactMessageController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\PickupScheduleController;
 use App\Models\ContentBlock;
@@ -64,9 +66,13 @@ Route::get('/checkrate', function () {
     ]);
 });
 
+
+// luxury
 Route::get('/luxury', function () {
     return Inertia::render('Luxury');
 });
+Route::post('/luxury/consultation', [ConsultationRequestController::class, 'store']);
+Route::post('/contact',             [ContactMessageController::class, 'store']);
 
 Route::get('/about-us', function () {
     return Inertia::render('AboutUs');

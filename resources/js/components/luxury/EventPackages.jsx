@@ -1,4 +1,5 @@
 import { useI18n } from '@/contexts/I18nContext';
+import { router } from '@inertiajs/react';
 
 const PACKAGE_DEFINITIONS = [
     {
@@ -72,7 +73,10 @@ export default function EventPackages() {
                             <div className="pt-6 border-t">
                                 <p className="text-[#361b6b] mb-4">{t(pkg.ctaKey)}</p>
                             </div>
-                            <button className="w-full bg-[#361b6b] text-white py-2 rounded-lg font-semibold hover:bg-[#5c2baa] transition">
+                            <button
+                                onClick={() => router.visit(`/luxury?package=${pkg.id}#consultation`)}
+                                className="w-full bg-[#361b6b] text-white py-2 rounded-lg font-semibold hover:bg-[#5c2baa] transition"
+                            >
                                 {t('luxury.packages_get_quote')}
                             </button>
                         </div>

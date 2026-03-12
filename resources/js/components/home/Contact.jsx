@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useI18n } from '@/contexts/I18nContext';
+import { router } from '@inertiajs/react';
 
 function generateCaptcha() {
     const a = Math.floor(Math.random() * 15) + 1;
@@ -13,17 +14,14 @@ export default function Contact() {
     const [formData, setFormData] = useState({
         name: '', email: '', phone: '', message: '', numcaptcha: ''
     });
-    const [captcha, setCaptcha]     = useState(() => generateCaptcha());
+    const [captcha, setCaptcha]     = useState(generateCaptcha);
     const [errors, setErrors]       = useState({});
     const [submitted, setSubmitted] = useState(false);
 
-    useEffect(() => {
-        setCaptcha(generateCaptcha());
-    }, []);
-
     const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
-        if (errors[e.target.name]) setErrors({ ...errors, [e.target.name]: null });
+        const { name, value } = e.target;
+        setFormData((prev) => ({ ...prev, [name]: value }));
+        if (errors[name]) setErrors((prev) => ({ ...prev, [name]: '' }));
     };
 
     const validate = () => {
@@ -31,7 +29,6 @@ export default function Contact() {
 
         if (!formData.name.trim())    newErrors.name    = t('contact.error_name');
         if (!formData.email.trim())   newErrors.email   = t('contact.error_email');
-        if (!formData.phone.trim())   newErrors.phone   = t('contact.error_phone');
         if (!formData.message.trim()) newErrors.message = t('contact.error_message');
 
         if (!formData.numcaptcha.trim()) {
@@ -52,20 +49,33 @@ export default function Contact() {
             setErrors(newErrors);
             return;
         }
-        setSubmitted(true);
-        setErrors({});
+
+        router.post('/contact', {
+            name:    formData.name,
+            email:   formData.email,
+            phone:   formData.phone    || null,
+            message: formData.message,
+        }, {
+            preserveScroll: true,
+            onSuccess: () => {
+                setSubmitted(true);
+                setErrors({});
+            },
+            onError: (errs) => setErrors(errs),
+        });
     };
 
     const refreshCaptcha = () => {
         setCaptcha(generateCaptcha());
         setFormData((prev) => ({ ...prev, numcaptcha: '' }));
-        setErrors((prev) => ({ ...prev, numcaptcha: null }));
+        setErrors((prev) => ({ ...prev, numcaptcha: '' }));
     };
 
     const resetForm = () => {
         setSubmitted(false);
         setFormData({ name: '', email: '', phone: '', message: '', numcaptcha: '' });
         setCaptcha(generateCaptcha());
+        setErrors({});
     };
 
     if (submitted) {
@@ -114,8 +124,9 @@ export default function Contact() {
                                         placeholder={t('contact.name')}
                                         value={formData.name}
                                         onChange={handleChange}
-                                        className={`w-full px-4 py-3 bg-gray-50 border rounded-md focus:ring-2 focus:ring-purple-500 focus:outline-none text-gray-900 placeholder-gray-500
-                                            ${errors.name ? 'border-red-400 bg-red-50' : 'border-0'}`}
+                                        className={`w-full px-4 py-3 bg-gray-50 border rounded-md focus:ring-2 focus:ring-purple-500 focus:outline-none text-gray-900 placeholder-gray-500 ${
+                                            errors.name ? 'border-red-400 bg-red-50' : 'border-0'
+                                        }`}
                                     />
                                     {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name}</p>}
                                 </div>
@@ -126,13 +137,15 @@ export default function Contact() {
                                         placeholder={t('contact.email')}
                                         value={formData.email}
                                         onChange={handleChange}
-                                        className={`w-full px-4 py-3 bg-gray-50 border rounded-md focus:ring-2 focus:ring-purple-500 focus:outline-none text-gray-900 placeholder-gray-500
-                                            ${errors.email ? 'border-red-400 bg-red-50' : 'border-0'}`}
+                                        className={`w-full px-4 py-3 bg-gray-50 border rounded-md focus:ring-2 focus:ring-purple-500 focus:outline-none text-gray-900 placeholder-gray-500 ${
+                                            errors.email ? 'border-red-400 bg-red-50' : 'border-0'
+                                        }`}
                                     />
                                     {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
                                 </div>
                             </div>
 
+                            {/* Phone — optional, no required indicator */}
                             <div>
                                 <input
                                     type="tel"
@@ -140,8 +153,9 @@ export default function Contact() {
                                     placeholder={t('contact.phone')}
                                     value={formData.phone}
                                     onChange={handleChange}
-                                    className={`w-full px-4 py-3 bg-gray-50 border rounded-md focus:ring-2 focus:ring-purple-500 focus:outline-none text-gray-900 placeholder-gray-500
-                                        ${errors.phone ? 'border-red-400 bg-red-50' : 'border-0'}`}
+                                    className={`w-full px-4 py-3 bg-gray-50 border rounded-md focus:ring-2 focus:ring-purple-500 focus:outline-none text-gray-900 placeholder-gray-500 ${
+                                        errors.phone ? 'border-red-400 bg-red-50' : 'border-0'
+                                    }`}
                                 />
                                 {errors.phone && <p className="text-red-500 text-xs mt-1">{errors.phone}</p>}
                             </div>
@@ -153,13 +167,14 @@ export default function Contact() {
                                     value={formData.message}
                                     onChange={handleChange}
                                     rows="4"
-                                    className={`w-full px-4 py-3 bg-gray-50 border rounded-md focus:ring-2 focus:ring-purple-500 focus:outline-none text-gray-900 placeholder-gray-500 resize-none
-                                        ${errors.message ? 'border-red-400 bg-red-50' : 'border-0'}`}
+                                    className={`w-full px-4 py-3 bg-gray-50 border rounded-md focus:ring-2 focus:ring-purple-500 focus:outline-none text-gray-900 placeholder-gray-500 resize-none ${
+                                        errors.message ? 'border-red-400 bg-red-50' : 'border-0'
+                                    }`}
                                 />
                                 {errors.message && <p className="text-red-500 text-xs mt-1">{errors.message}</p>}
                             </div>
 
-                            {/* Dynamic Captcha */}
+                            {/* Captcha */}
                             <div className="space-y-1">
                                 <div className="flex items-center gap-2 text-gray-600 text-sm sm:text-base">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5 text-gray-500 flex-shrink-0">
@@ -173,8 +188,9 @@ export default function Contact() {
                                         onChange={handleChange}
                                         name="numcaptcha"
                                         type="number"
-                                        className={`w-16 px-2 py-1 bg-gray-50 border rounded-md focus:ring-2 focus:ring-purple-500 focus:outline-none text-gray-900
-                                            ${errors.numcaptcha ? 'border-red-400 bg-red-50' : 'border-gray-200'}`}
+                                        className={`w-16 px-2 py-1 bg-gray-50 border rounded-md focus:ring-2 focus:ring-purple-500 focus:outline-none text-gray-900 ${
+                                            errors.numcaptcha ? 'border-red-400 bg-red-50' : 'border-gray-200'
+                                        }`}
                                     />
                                     <button
                                         type="button"
@@ -201,7 +217,7 @@ export default function Contact() {
                         </form>
                     </div>
 
-                    {/* Business Information */}
+                    {/* Business Information — unchanged */}
                     <div className="space-y-8">
                         <div className="flex gap-4">
                             <div className="flex-shrink-0">
@@ -218,7 +234,6 @@ export default function Contact() {
                                 <p className="text-gray-600">Brockton, MA 02301</p>
                             </div>
                         </div>
-
                         <div className="flex gap-4">
                             <div className="flex-shrink-0">
                                 <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center">
@@ -235,6 +250,7 @@ export default function Contact() {
                             </div>
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>

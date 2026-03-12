@@ -113,6 +113,9 @@ return [
     // Consultation Form
     'consultation_title'    => 'Request a Consultation',
     'consultation_subtitle' => 'Let\'s discuss your luxury or enterprise dry cleaning needs',
+    'consultation_success_title'    => 'Request Received!',
+    'consultation_success_subtitle' => 'We\'ll be in touch shortly to discuss your needs.',
+    'consultation_submit_another'   => 'Submit another request',
 
     'form_first_name'        => 'First Name',
     'form_last_name'         => 'Last Name',
