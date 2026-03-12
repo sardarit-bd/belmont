@@ -1,35 +1,50 @@
 import { Head } from '@inertiajs/react';
-import { PlaceholderPattern } from '@/components/ui/placeholder-pattern';
 import AppLayout from '@/layouts/app-layout';
 import { dashboard } from '@/routes';
 import type { BreadcrumbItem } from '@/types';
 
+import WelcomeBanner   from '@/pages/dashboard/welcome-banner';
+import StatsGrid       from '@/pages/dashboard/stats-grid';
+import ActiveOrders    from '@/pages/dashboard/active-orders';
+import OrderTracker    from '@/pages/dashboard/order-tracker';
+import SchedulePickup  from '@/pages/dashboard/schedule-pickup';
+import MyGarments      from '@/pages/dashboard/my-garments';
+import Notifications   from '@/pages/dashboard/notifications';
+
 const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: 'Dashboard',
-        href: dashboard().url,
-    },
+    { title: 'Dashboard', href: dashboard().url },
 ];
 
 export default function Dashboard() {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Dashboard" />
-            <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
-                <div className="grid auto-rows-min gap-4 md:grid-cols-3">
-                    <div className="relative aspect-video overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border">
-                        <PlaceholderPattern className="absolute inset-0 size-full stroke-neutral-900/20 dark:stroke-neutral-100/20" />
+
+            <div className="flex h-full flex-1 flex-col gap-5 overflow-x-auto p-4 md:p-6">
+
+                {/* Welcome + loyalty */}
+                <WelcomeBanner />
+
+                {/* KPI stats */}
+                <StatsGrid />
+
+                {/* Active orders + tracker */}
+                <div className="grid grid-cols-1 gap-5 lg:grid-cols-5">
+                    <div className="lg:col-span-3">
+                        <ActiveOrders />
                     </div>
-                    <div className="relative aspect-video overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border">
-                        <PlaceholderPattern className="absolute inset-0 size-full stroke-neutral-900/20 dark:stroke-neutral-100/20" />
-                    </div>
-                    <div className="relative aspect-video overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border">
-                        <PlaceholderPattern className="absolute inset-0 size-full stroke-neutral-900/20 dark:stroke-neutral-100/20" />
+                    <div className="lg:col-span-2">
+                        <OrderTracker />
                     </div>
                 </div>
-                <div className="relative min-h-[100vh] flex-1 overflow-hidden rounded-xl border border-sidebar-border/70 md:min-h-min dark:border-sidebar-border">
-                    <PlaceholderPattern className="absolute inset-0 size-full stroke-neutral-900/20 dark:stroke-neutral-100/20" />
+
+                {/* Bottom row */}
+                <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
+                    <SchedulePickup />
+                    <MyGarments />
+                    <Notifications />
                 </div>
+
             </div>
         </AppLayout>
     );

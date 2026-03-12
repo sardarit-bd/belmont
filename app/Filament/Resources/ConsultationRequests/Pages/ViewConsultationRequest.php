@@ -3,15 +3,9 @@
 namespace App\Filament\Resources\ConsultationRequests\Pages;
 
 use App\Filament\Resources\ConsultationRequests\ConsultationRequestResource;
-use Filament\Resources\Pages\CreateRecord;
+use Filament\Resources\Pages\ViewRecord;
 
-class CreateConsultationRequest extends CreateRecord
+class ViewConsultationRequest extends ViewRecord
 {
     protected static string $resource = ConsultationRequestResource::class;
-
-    protected function getRedirectUrl(): string
-    {
-        return $this->getResource()::getUrl('index');
-    }
-
 }

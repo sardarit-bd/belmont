@@ -1,29 +1,149 @@
 <?php
 
-// app/Services/PickupScheduleService.php
 namespace App\Services;
 
+use App\Contracts\PaymentGatewayInterface;
 use App\DTOs\PickupScheduleData;
 use App\Models\PickupSchedule;
 use App\Notifications\PickupConfirmedAdmin;
 use App\Notifications\PickupConfirmedUser;
 use App\Repositories\Contracts\PickupScheduleRepositoryInterface;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Notification;
 
 class PickupScheduleService
 {
     public function __construct(
         private readonly PickupScheduleRepositoryInterface $repository,
+        private readonly PaymentGatewayInterface $paymentGateway,
     ) {}
 
-    // app/Services/PickupScheduleService.php
-    public function book(PickupScheduleData $data): PickupSchedule
+    /**
+     * Book a pickup and initiate immediate payment.
+     *
+     * ACID guarantee:
+     *  - Schedule row created inside DB::transaction().
+     *  - If Stripe throws at any point, transaction rolls back — no orphaned records.
+     *  - Booking is only marked 'confirmed' by the webhook, never here.
+     *
+     * Returns client_secret so frontend can handle 3DS if Stripe requires it.
+     */
+    public function book(PickupScheduleData $data): array
     {
-        $schedule = $this->repository->create($data);
+        return DB::transaction(function () use ($data) {
 
-        Notification::route('mail', config('app.admin_email'))
-            ->notify(new PickupConfirmedAdmin($schedule));
+            // 1. Persist schedule as 'pending' — not confirmed until webhook fires
+            $schedule = $this->repository->create($data);
 
-        return $schedule;
+            // 2. Vault customer + payment method in Stripe
+            $customerId = $this->paymentGateway->createCustomer($data);
+            $this->paymentGateway->attachPaymentMethod($customerId, $data->paymentMethodId);
+
+            // 3. Charge immediately.
+            //    Idempotency key ties this specific schedule to exactly one charge.
+            //    If the network drops and we retry, Stripe returns the existing intent
+            //    instead of creating a new one — prevents double-charging.
+            $result = $this->paymentGateway->createAndConfirmPaymentIntent(
+                customerId:      $customerId,
+                paymentMethodId: $data->paymentMethodId,
+                amountInCents:   $this->resolveAmount($schedule),
+                currency:        'usd',
+                idempotencyKey:  "schedule-{$schedule->id}",
+                metadata: [
+                    'schedule_id' => (string) $schedule->id,
+                    'customer'    => $data->fullName,
+                    'pickup_date' => $data->pickupDate,
+                ]
+            );
+
+            // 4. Persist Stripe identifiers — safe to store, not sensitive
+            $this->repository->updatePaymentIntent(
+                scheduleId:      $schedule->id,
+                intentId:        $result->paymentIntentId,
+                customerId:      $customerId,
+                paymentMethodId: $data->paymentMethodId,
+            );
+
+            return [
+                'schedule_id'   => $schedule->id,
+                'client_secret' => $result->clientSecret,
+                'status'        => $result->status,
+            ];
+        });
+    }
+
+    /**
+     * Confirm a booking after Stripe fires payment_intent.succeeded.
+     *
+     * Idempotent — safe to call multiple times for the same intent.
+     * Atomic — uses WHERE payment_status = 'pending' so only one
+     * concurrent webhook delivery can commit the state change.
+     */
+    public function confirmBooking(string $paymentIntentId): void
+    {
+        DB::transaction(function () use ($paymentIntentId) {
+            $schedule = $this->repository->findByPaymentIntentId($paymentIntentId);
+
+            if (!$schedule) {
+                Log::warning('Webhook: no schedule found for intent', [
+                    'payment_intent_id' => $paymentIntentId,
+                ]);
+                return;
+            }
+
+            // markConfirmed returns false if already paid (idempotency guard)
+            $updated = $this->repository->markConfirmed($schedule->id);
+
+            if (!$updated) {
+                Log::info('Webhook: schedule already confirmed, skipping', [
+                    'schedule_id'       => $schedule->id,
+                    'payment_intent_id' => $paymentIntentId,
+                ]);
+                return;
+            }
+
+            $fresh = $schedule->fresh();
+
+            // Dispatch notifications via queue — mail failure won't roll back DB
+            Notification::route('mail', config('app.admin_email'))
+                ->notify(new PickupConfirmedAdmin($fresh));
+
+            Notification::route('mail', $fresh->phone_number)
+                ->notify(new PickupConfirmedUser($fresh));
+        });
+    }
+
+    /**
+     * Mark a booking as payment-failed.
+     * Called when Stripe fires payment_intent.payment_failed.
+     */
+    public function markPaymentFailed(string $paymentIntentId): void
+    {
+        DB::transaction(function () use ($paymentIntentId) {
+            $schedule = $this->repository->findByPaymentIntentId($paymentIntentId);
+
+            if (!$schedule) {
+                return;
+            }
+
+            $updated = $this->repository->markPaymentFailed($schedule->id);
+
+            if ($updated) {
+                Log::info('Payment failed: schedule cancelled', [
+                    'schedule_id'       => $schedule->id,
+                    'payment_intent_id' => $paymentIntentId,
+                ]);
+            }
+        });
+    }
+
+    /**
+     * Resolve the booking amount in cents.
+     * Replace with real pricing logic per service type, zone, etc.
+     */
+    private function resolveAmount(PickupSchedule $schedule): int
+    {
+        return (int) config('services.payment.pickup_fee_cents', 2000);
     }
 }
