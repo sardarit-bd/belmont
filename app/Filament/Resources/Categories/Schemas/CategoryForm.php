@@ -26,7 +26,7 @@ class CategoryForm
                 TextInput::make('sort_order')
                     ->numeric()
                     ->default(0),
-                TranslationRepeaterSchema::make([
+                ...TranslationRepeaterSchema::make([  
                     'name'        => 'text',
                     'description' => 'textarea',
                 ]),
