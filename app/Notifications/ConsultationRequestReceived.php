@@ -35,6 +35,6 @@ class ConsultationRequestReceived extends Notification implements ShouldQueue
             ->when($this->request->details, fn($mail) =>
                 $mail->line("**Details:** {$this->request->details}")
             )
-            ->action('View Dashboard', url('/admin/consultations'));
+            ->action('View Dashboard', url('/admin/consultation-requests'));
     }
 }
