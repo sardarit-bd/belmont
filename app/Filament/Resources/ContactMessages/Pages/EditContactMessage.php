@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Filament\Resources\Addresses\Pages;
+namespace App\Filament\Resources\ContactMessages\Pages;
 
-use App\Filament\Resources\Addresses\AddressResource;
+use App\Filament\Resources\ContactMessages\ContactMessageResource;
 use Filament\Actions\DeleteAction;
 use Filament\Resources\Pages\EditRecord;
 
-class EditAddress extends EditRecord
+class EditContactMessage extends EditRecord
 {
-    protected static string $resource = AddressResource::class;
+    protected static string $resource = ContactMessageResource::class;
 
     protected function getHeaderActions(): array
     {

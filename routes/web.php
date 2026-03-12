@@ -4,6 +4,7 @@ use App\Http\Controllers\ConsultationRequestController;
 use App\Http\Controllers\ContactMessageController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\PickupScheduleController;
+use App\Http\Controllers\StripeWebhookController;
 use App\Models\ContentBlock;
 use App\Models\Service;
 use Illuminate\Support\Facades\App;
@@ -149,5 +150,18 @@ Route::middleware(['auth', 'role:customer'])->group(function () {
 
 // language switch
 Route::post('/language/switch', [LanguageController::class, 'switch'])->name('language.switch');
+
+
+// ── Booking endpoint ──────────────────────────────────────────────────────────
+// throttle:10,1 → max 10 booking attempts per IP per minute
+Route::post('/schedule', [PickupScheduleController::class, 'store'])
+    ->middleware('throttle:10,1');
+ 
+// ── Stripe webhook ────────────────────────────────────────────────────────────
+// Excluded from CSRF in VerifyCsrfToken — Stripe signs the payload instead.
+// throttle:60,1 → Stripe sends retries; allow bursts but block abuse.
+Route::post('/webhooks/stripe', [StripeWebhookController::class, 'handle'])
+    ->name('webhooks.stripe')
+    ->middleware('throttle:60,1');
 
 require __DIR__.'/settings.php';
