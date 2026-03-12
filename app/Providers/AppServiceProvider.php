@@ -2,6 +2,10 @@
 
 namespace App\Providers;
 
+use App\Repositories\ConsultationRequestRepository;
+use App\Repositories\ContactMessageRepository;
+use App\Repositories\Contracts\ConsultationRequestRepositoryInterface;
+use App\Repositories\Contracts\ContactMessageRepositoryInterface;
 use App\Repositories\Contracts\PickupScheduleRepositoryInterface;
 use App\Repositories\PickupScheduleRepository;
 use App\Services\CacheService;
@@ -28,6 +32,10 @@ class AppServiceProvider extends ServiceProvider
             PickupScheduleRepositoryInterface::class,
             PickupScheduleRepository::class,
         );
+
+        // contact message
+        $this->app->bind(ConsultationRequestRepositoryInterface::class, ConsultationRequestRepository::class);
+        $this->app->bind(ContactMessageRepositoryInterface::class, ContactMessageRepository::class);
     }
 
     /**
