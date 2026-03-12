@@ -9,4 +9,5 @@ return [
     'luxury'     => 'Luxury',
     'contact'    => 'Contact',
     'login'      => 'Login',
+    'dashboard' => 'Dashboard',
 ];
