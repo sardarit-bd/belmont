@@ -9,4 +9,5 @@ return [
     'luxury'     => '高端服务',
     'contact'    => '联系我们',
     'login'      => '登录',
+    'dashboard'  => '仪表盘',
 ];
