@@ -64,4 +64,11 @@ class PickupScheduleRepository implements PickupScheduleRepositoryInterface
                 'status'         => 'cancelled',
             ]);
     }
+
+    public function transitionStatus(string $scheduleId, string $fromStatus, string $toStatus): bool
+    {
+        return (bool) PickupSchedule::where('id', $scheduleId)
+            ->where('status', $fromStatus)
+            ->update(['status' => $toStatus]);
+    }
 }

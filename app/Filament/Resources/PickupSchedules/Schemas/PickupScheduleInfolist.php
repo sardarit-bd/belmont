@@ -51,13 +51,18 @@ class PickupScheduleInfolist
                     ->icon(\Filament\Support\Icons\Heroicon::OutlinedCheckBadge)
                     ->schema([
                         TextEntry::make('status')
-                            ->label('Booking Status')
+                            ->label('Operational Status')
                             ->badge()
                             ->color(fn ($state) => match ($state) {
-                                'confirmed' => 'success',
-                                'cancelled' => 'danger',
-                                default     => 'warning',
-                            }),
+                                'confirmed'        => 'info',
+                                'picked_up'        => 'warning',
+                                'being_cleaned'    => 'warning',
+                                'out_for_delivery' => 'primary',
+                                'delivered'        => 'success',
+                                'cancelled'        => 'danger',
+                                default            => 'gray',
+                            })
+                            ->formatStateUsing(fn ($record) => $record->getStatusLabel()),
 
                         TextEntry::make('payment_status')
                             ->label('Payment Status')
@@ -66,6 +71,36 @@ class PickupScheduleInfolist
                                 'confirmed' => 'success',
                                 'failed'    => 'danger',
                                 default     => 'warning',
+                            })
+                            ->formatStateUsing(fn ($state) => ucfirst($state)),
+
+                        TextEntry::make('status')
+                            ->label('Progress')
+                            ->columnSpanFull()
+                            ->formatStateUsing(function ($record) {
+                                $stages = [
+                                    'pending'          => '⏳ Pending',
+                                    'confirmed'        => '✅ Confirmed',
+                                    'picked_up'        => '🚗 Picked Up',
+                                    'being_cleaned'    => '🧺 Being Cleaned',
+                                    'out_for_delivery' => '🚚 Out for Delivery',
+                                    'delivered'        => '🎉 Delivered',
+                                ];
+
+                                $currentIndex = array_search($record->status, array_keys($stages));
+                                $output = '';
+
+                                foreach ($stages as $key => $label) {
+                                    $index = array_search($key, array_keys($stages));
+                                    if ($index < $currentIndex) {
+                                        $output .= "{$label} → ";
+                                    } elseif ($key === $record->status) {
+                                        $output .= "{$label}";
+                                        if (!$record->isTerminal()) $output .= ' → ...';
+                                    }
+                                }
+
+                                return $output ?: '⏳ Pending';
                             }),
                     ])
                     ->columns(2),

@@ -29,9 +29,13 @@ class PickupScheduleForm
                         Select::make('status')
                             ->label('Booking Status')
                             ->options([
-                                'pending'   => 'Pending',
-                                'confirmed' => 'Confirmed',
-                                'cancelled' => 'Cancelled',
+                                'pending'          => 'Pending',
+                                'confirmed'        => 'Confirmed',
+                                'picked_up'        => 'Picked Up',
+                                'being_cleaned'    => 'Being Cleaned',
+                                'out_for_delivery' => 'Out for Delivery',
+                                'delivered'        => 'Delivered',
+                                'cancelled'        => 'Cancelled',
                             ])
                             ->required()
                             ->native(false),

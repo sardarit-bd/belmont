@@ -7,6 +7,7 @@ use App\DTOs\PickupScheduleData;
 use App\Models\PickupSchedule;
 use App\Notifications\PickupConfirmedAdmin;
 use App\Notifications\PickupConfirmedUser;
+use App\Notifications\PickupStatusUpdated;
 use App\Repositories\Contracts\OrderItemRepositoryInterface;
 use App\Repositories\Contracts\PickupScheduleRepositoryInterface;
 use Illuminate\Support\Facades\DB;
@@ -116,6 +117,98 @@ class PickupScheduleService
 
             Notification::route('mail', $fresh->phone_number)
                 ->notify(new PickupConfirmedUser($fresh));
+        });
+    }
+
+    /**
+     * Advance the operational status to the next stage.
+     *
+     * Transition map:
+     *   confirmed → picked_up → being_cleaned → out_for_delivery → delivered
+     *
+     * Guards:
+     *  - Cannot advance a cancelled or delivered schedule.
+     *  - Cannot advance if no next stage exists.
+     *  - Atomic — only one concurrent call can commit the transition.
+     */
+    public function advanceStatus(PickupSchedule $schedule): void
+    {
+        if ($schedule->isTerminal()) {
+            Log::warning('AdvanceStatus: attempted to advance terminal schedule', [
+                'schedule_id' => $schedule->id,
+                'status'      => $schedule->status,
+            ]);
+            return;
+        }
+
+        $nextStatus = $schedule->getNextStatus();
+
+        if (!$nextStatus) {
+            Log::warning('AdvanceStatus: no next status available', [
+                'schedule_id' => $schedule->id,
+                'status'      => $schedule->status,
+            ]);
+            return;
+        }
+
+        DB::transaction(function () use ($schedule, $nextStatus) {
+            $updated = $this->scheduleRepository->transitionStatus(
+                scheduleId: $schedule->id,
+                fromStatus: $schedule->status,
+                toStatus:   $nextStatus,
+            );
+
+            if (!$updated) {
+                Log::info('AdvanceStatus: transition already applied or concurrent update', [
+                    'schedule_id' => $schedule->id,
+                    'from'        => $schedule->status,
+                    'to'          => $nextStatus,
+                ]);
+                return;
+            }
+
+            $fresh = $schedule->fresh();
+
+            // Only notify on meaningful customer-facing stages
+            $notifiableStages = ['picked_up', 'delivered'];
+
+            if (in_array($nextStatus, $notifiableStages)) {
+                Notification::route('mail', $fresh->phone_number)
+                    ->notify(new PickupStatusUpdated($fresh));
+            }
+
+            Log::info('AdvanceStatus: status transitioned', [
+                'schedule_id' => $schedule->id,
+                'from'        => $schedule->status,
+                'to'          => $nextStatus,
+            ]);
+        });
+    }
+
+    /**
+     * Cancel a booking from any non-terminal stage.
+     * Admin-initiated only.
+     */
+    public function cancelBooking(PickupSchedule $schedule): void
+    {
+        if ($schedule->isTerminal()) {
+            Log::warning('CancelBooking: attempted to cancel terminal schedule', [
+                'schedule_id' => $schedule->id,
+                'status'      => $schedule->status,
+            ]);
+            return;
+        }
+
+        DB::transaction(function () use ($schedule) {
+            $this->scheduleRepository->transitionStatus(
+                scheduleId: $schedule->id,
+                fromStatus: $schedule->status,
+                toStatus:   'cancelled',
+            );
+
+            Log::info('CancelBooking: schedule cancelled', [
+                'schedule_id' => $schedule->id,
+            ]);
         });
     }
 

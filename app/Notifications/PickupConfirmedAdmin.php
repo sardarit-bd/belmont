@@ -33,6 +33,6 @@ class PickupConfirmedAdmin extends Notification implements ShouldQueue
             ->when($this->schedule->special_instructions, fn($mail) =>
                 $mail->line("**Notes:** {$this->schedule->special_instructions}")
             )
-            ->action('View Dashboard', url('/admin/pickups'));
+            ->action('View Booking', route('filament.admin.resources.pickup-schedules.view', $this->schedule));
     }
 }

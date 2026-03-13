@@ -24,15 +24,87 @@ class PickupSchedule extends Model
         'pickup_date' => 'date',
     ];
 
-    public function getFullAddressAttribute(): string
-    {
-        return "{$this->street}, {$this->city} {$this->zip}";
-    }
+    // ── Relationships ─────────────────────────────────────────────────────────
 
     public function orderItems(): HasMany
     {
         return $this->hasMany(OrderItem::class);
     }
+
+    // ── Accessors ─────────────────────────────────────────────────────────────
+
+    public function getFullAddressAttribute(): string
+    {
+        return "{$this->street}, {$this->city} {$this->zip}";
+    }
+
+    // ── Status helpers ────────────────────────────────────────────────────────
+
+    public function getNextStatus(): ?string
+    {
+        return match ($this->status) {
+            'confirmed'        => 'picked_up',
+            'picked_up'        => 'being_cleaned',
+            'being_cleaned'    => 'out_for_delivery',
+            'out_for_delivery' => 'delivered',
+            default            => null,
+        };
+    }
+
+    public function getNextStatusLabel(): ?string
+    {
+        return match ($this->getNextStatus()) {
+            'picked_up'        => 'Mark Picked Up',
+            'being_cleaned'    => 'Mark Being Cleaned',
+            'out_for_delivery' => 'Mark Out for Delivery',
+            'delivered'        => 'Mark Delivered',
+            default            => null,
+        };
+    }
+
+    public function getStatusColor(): string
+    {
+        return match ($this->status) {
+            'confirmed'        => 'info',
+            'picked_up'        => 'warning',
+            'being_cleaned'    => 'warning',
+            'out_for_delivery' => 'primary',
+            'delivered'        => 'success',
+            'cancelled'        => 'danger',
+            default            => 'gray',
+        };
+    }
+
+    public function getStatusLabel(): string
+    {
+        return match ($this->status) {
+            'pending'          => 'Pending',
+            'confirmed'        => 'Confirmed',
+            'picked_up'        => 'Picked Up',
+            'being_cleaned'    => 'Being Cleaned',
+            'out_for_delivery' => 'Out for Delivery',
+            'delivered'        => 'Delivered',
+            'cancelled'        => 'Cancelled',
+            default            => ucfirst($this->status),
+        };
+    }
+
+    public function isCancelled(): bool
+    {
+        return $this->status === 'cancelled';
+    }
+
+    public function isDelivered(): bool
+    {
+        return $this->status === 'delivered';
+    }
+
+    public function isTerminal(): bool
+    {
+        return in_array($this->status, ['delivered', 'cancelled']);
+    }
+
+    // ── Routing ───────────────────────────────────────────────────────────────
 
     public function getRouteKeyName(): string
     {
