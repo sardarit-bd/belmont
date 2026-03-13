@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ConsultationRequestController;
 use App\Http\Controllers\ContactMessageController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\PickupScheduleController;
 use App\Http\Controllers\StripeWebhookController;
@@ -96,7 +97,18 @@ Route::get('/refund', function () {
 });
 
 Route::middleware(['auth', 'role:customer'])->group(function () {
-    Route::get('/dashboard', fn() => Inertia::render('Dashboard'))->name('dashboard');
+    // dashboard
+    Route::get('/dashboard', DashboardController::class)->name('dashboard');
+
+    // notifications
+    Route::post('/notifications/{id}/read', function ($id) {
+        auth()->user()->notifications()->findOrFail($id)->markAsRead();
+        return response()->noContent();
+    })->name('notifications.read');
+    Route::post('/notifications/read-all', function () {
+        auth()->user()->unreadNotifications->markAsRead();
+        return response()->noContent();
+    })->name('notifications.read-all');
 });
 
 // language switch

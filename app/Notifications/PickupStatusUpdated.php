@@ -18,7 +18,18 @@ class PickupStatusUpdated extends Notification implements ShouldQueue
 
     public function via(): array
     {
-        return ['mail'];
+        return ['mail', 'database'];
+    }
+
+    public function toDatabase(): array
+    {
+        return [
+            'schedule_id'  => $this->schedule->id,
+            'status'       => $this->schedule->status,
+            'status_label' => $this->schedule->getStatusLabel(),
+            'message'      => $this->getStatusMessage(),
+            'pickup_date'  => $this->schedule->pickup_date->format('M d, Y'),
+        ];
     }
 
     public function toMail(): MailMessage

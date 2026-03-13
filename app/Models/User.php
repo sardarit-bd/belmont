@@ -67,9 +67,9 @@ class User extends Authenticatable implements FilamentUser
         return $this->hasMany(Address::class);
     }
 
-    public function orders(): HasMany
+    public function pickupSchedules(): HasMany
     {
-        return $this->hasMany(Order::class);
+        return $this->hasMany(PickupSchedule::class);
     }
 
     // public function canAccessPanel(Panel $panel): bool
