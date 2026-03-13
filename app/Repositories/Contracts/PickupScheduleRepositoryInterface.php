@@ -23,4 +23,10 @@ interface PickupScheduleRepositoryInterface
     public function markConfirmed(string $scheduleId): bool;
 
     public function markPaymentFailed(string $scheduleId): bool;
+
+    public function transitionStatus(
+        string $scheduleId,
+        string $fromStatus,
+        string $toStatus,
+    ): bool;
 }

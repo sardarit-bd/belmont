@@ -102,30 +102,30 @@ class PickupSchedulesTable
                 ActionGroup::make([
                     ViewAction::make(),
                     EditAction::make(),
-                    \Filament\Actions\Action::make('confirm')
-                        ->label('Mark Confirmed')
-                        ->icon(\Filament\Support\Icons\Heroicon::OutlinedCheckCircle)
-                        ->color('success')
+
+                    \Filament\Actions\Action::make('advance')
+                        ->label(fn ($record) => $record->getNextStatusLabel() ?? 'No Next Stage')
+                        ->icon(\Filament\Support\Icons\Heroicon::OutlinedArrowRight)
+                        ->color('primary')
                         ->requiresConfirmation()
-                        ->modalHeading('Confirm Pickup')
-                        ->modalDescription('Are you sure you want to mark this booking as confirmed?')
-                        ->visible(fn ($record) => $record->status !== 'confirmed')
-                        ->action(fn ($record) => $record->update([
-                            'status'         => 'confirmed',
-                            'payment_status' => 'confirmed',
-                        ])),
+                        ->modalHeading(fn ($record) => "Advance to: {$record->getNextStatusLabel()}")
+                        ->modalDescription(fn ($record) => "This will update the booking status and notify the customer.")
+                        ->visible(fn ($record) => !$record->isTerminal() && $record->getNextStatus() !== null && $record->payment_status === 'confirmed')
+                        ->action(function ($record) {
+                            app(\App\Services\PickupScheduleService::class)->advanceStatus($record);
+                        }),
+
                     \Filament\Actions\Action::make('cancel')
-                        ->label('Mark Cancelled')
+                        ->label('Cancel Booking')
                         ->icon(\Filament\Support\Icons\Heroicon::OutlinedXCircle)
                         ->color('danger')
                         ->requiresConfirmation()
-                        ->modalHeading('Cancel Pickup')
-                        ->modalDescription('Are you sure you want to cancel this booking?')
-                        ->visible(fn ($record) => $record->status !== 'cancelled')
-                        ->action(fn ($record) => $record->update([
-                            'status'         => 'cancelled',
-                            'payment_status' => 'failed',
-                        ])),
+                        ->modalHeading('Cancel Booking')
+                        ->modalDescription('Are you sure? This cannot be undone. The customer will not be automatically refunded.')
+                        ->visible(fn ($record) => !$record->isTerminal())
+                        ->action(function ($record) {
+                            app(\App\Services\PickupScheduleService::class)->cancelBooking($record);
+                        }),
                 ]),
             ])
             ->toolbarActions([
