@@ -27,12 +27,6 @@ class AppServiceProvider extends ServiceProvider
             return new CacheService();
         });
 
-        // pickup schedule
-        $this->app->bind(
-            PickupScheduleRepositoryInterface::class,
-            PickupScheduleRepository::class,
-        );
-
         // contact message
         $this->app->bind(ConsultationRequestRepositoryInterface::class, ConsultationRequestRepository::class);
         $this->app->bind(ContactMessageRepositoryInterface::class, ContactMessageRepository::class);

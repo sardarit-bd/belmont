@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import AppHeaderLayout from "@/layouts/app/app-header-layout";
 import { useI18n, I18nProvider } from '@/contexts/I18nContext';
 import { usePage } from '@inertiajs/react';
@@ -12,23 +12,25 @@ import {
     useElements,
 } from '@stripe/react-stripe-js';
 
-const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_KEY);
 
 // Matches your existing bg-white border border-gray-200 input style exactly
 const STRIPE_STYLE = {
     style: {
         base: {
             fontSize: '16px',
+            lineHeight: '1.5',
             color: '#374151',
             fontFamily: 'ui-sans-serif, system-ui, sans-serif',
             '::placeholder': { color: '#9CA3AF' },
-            backgroundColor: '#ffffff',
         },
         invalid: { color: '#EF4444' },
     },
 };
 
 export default function PickupScheduler() {
+    const { stripe_key } = usePage().props;
+    const stripePromise = useMemo(() => loadStripe(stripe_key), [stripe_key]);
+
     return (
         <I18nProvider>
             <Elements stripe={stripePromise}>
@@ -39,6 +41,17 @@ export default function PickupScheduler() {
 }
 
 function PickupSchedulerInner() {
+
+    // Read cart from localStorage
+    const [cart, setCart] = useState(() => {
+        try {
+            const saved = localStorage.getItem('laundryServiceCart');
+            return saved ? JSON.parse(saved) : [];
+        } catch {
+            return [];
+        }
+    });
+
     const { props } = usePage();
     const { t } = useI18n();
     const stripe   = useStripe();
@@ -197,6 +210,11 @@ function PickupSchedulerInner() {
     const handleSubmit = async () => {
         if (!stripe || isProcessing) return;
 
+        if (cart.length === 0) {
+            setPaymentError(t('schedule.error_no_items'));
+            return;
+        }
+
         setIsProcessing(true);
         setPaymentError('');
 
@@ -221,6 +239,12 @@ function PickupSchedulerInner() {
                     payment_method_id:    paymentMethodId,
                     card_last_four:       cardMeta.last4,
                     card_expiry:          cardMeta.expiry,
+                    items:                cart.map(item => ({
+                        id:       item.id,
+                        name:     item.name,
+                        price:    item.price,
+                        quantity: item.quantity,
+                    })),
                 }),
             });
 
@@ -233,7 +257,6 @@ function PickupSchedulerInner() {
                 return;
             }
 
-            // Handle 3DS authentication if Stripe requires it
             if (data.status === 'requires_action' || data.status === 'requires_confirmation') {
                 const { error: confirmError, paymentIntent } = await stripe.confirmCardPayment(data.client_secret);
                 if (confirmError) {
@@ -248,6 +271,9 @@ function PickupSchedulerInner() {
                 }
             }
 
+            // Clear cart on success
+            localStorage.removeItem('laundryServiceCart');
+            setCart([]);
             setIsSubmitted(true);
 
         } catch (err) {
@@ -265,7 +291,7 @@ function PickupSchedulerInner() {
 
     // Same as your card inputs (bg-white border) — used as wrapper for Stripe iframes
     const stripeWrapperClass = (field) =>
-        `w-full px-4 py-3 bg-white border rounded-lg focus-within:ring-2 focus-within:ring-purple-500 focus-within:outline-none ${
+        `w-full px-4 py-3 bg-white border rounded-lg focus-within:ring-2 focus-within:ring-purple-500 focus-within:outline-none transition-all ${
             stripeErrors[field] ? 'border-2 border-red-500' : 'border-gray-200'
         }`;
 
@@ -415,31 +441,31 @@ function PickupSchedulerInner() {
                                                 {errors.cardholderName && <p className="mt-1 text-sm text-red-500">{errors.cardholderName}</p>}
                                             </div>
 
-                                            {/* Card Number — Stripe iframe, same visual as original */}
-                                            <div>
-                                                <label className="block text-sm font-medium text-gray-700 mb-2">{t('schedule.card_number')} <span className="text-red-500">*</span></label>
-                                                <div className={stripeWrapperClass('cardNumber')}>
-                                                    <CardNumberElement options={STRIPE_STYLE} onChange={handleStripeChange('cardNumber')} />
-                                                </div>
-                                                {stripeErrors.cardNumber && <p className="mt-1 text-sm text-red-500">{stripeErrors.cardNumber}</p>}
+                                            {/* Card Number */}
+                                            <div className={stripeWrapperClass('cardNumber')}>
+                                                <CardNumberElement
+                                                    options={{
+                                                        ...STRIPE_STYLE,
+                                                        showIcon: true,
+                                                    }}
+                                                    onChange={handleStripeChange('cardNumber')}
+                                                />
                                             </div>
 
-                                            {/* Expiry + CVC — same grid as original */}
-                                            <div className="grid grid-cols-2 gap-4">
-                                                <div>
-                                                    <label className="block text-sm font-medium text-gray-700 mb-2">{t('schedule.expiry_date')} <span className="text-red-500">*</span></label>
-                                                    <div className={stripeWrapperClass('cardExpiry')}>
-                                                        <CardExpiryElement options={STRIPE_STYLE} onChange={handleStripeChange('cardExpiry')} />
-                                                    </div>
-                                                    {stripeErrors.cardExpiry && <p className="mt-1 text-sm text-red-500">{stripeErrors.cardExpiry}</p>}
-                                                </div>
-                                                <div>
-                                                    <label className="block text-sm font-medium text-gray-700 mb-2">{t('schedule.cvc')} <span className="text-red-500">*</span></label>
-                                                    <div className={stripeWrapperClass('cardCvc')}>
-                                                        <CardCvcElement options={STRIPE_STYLE} onChange={handleStripeChange('cardCvc')} />
-                                                    </div>
-                                                    {stripeErrors.cardCvc && <p className="mt-1 text-sm text-red-500">{stripeErrors.cardCvc}</p>}
-                                                </div>
+                                            {/* Expiry */}
+                                            <div className={stripeWrapperClass('cardExpiry')}>
+                                                <CardExpiryElement
+                                                    options={STRIPE_STYLE}
+                                                    onChange={handleStripeChange('cardExpiry')}
+                                                />
+                                            </div>
+
+                                            {/* CVC */}
+                                            <div className={stripeWrapperClass('cardCvc')}>
+                                                <CardCvcElement
+                                                    options={STRIPE_STYLE}
+                                                    onChange={handleStripeChange('cardCvc')}
+                                                />
                                             </div>
 
                                         </div>

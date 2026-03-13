@@ -23,51 +23,6 @@ Route::get('/', function () {
 Route::get('/schedule', fn() => Inertia::render('schedule'));
 Route::post('/schedule', [PickupScheduleController::class, 'store']);
 
-// Route::get('/checkrate', function () {
-//     $locale   = App::getLocale();
-//     $fallback = config('languages.fallback', 'en');
-
-//     $services = Service::where('is_active', true)
-//         ->with([
-//             'translations',
-//             'categories' => fn($q) => $q
-//                 ->orderBy('sort_order')
-//                 ->with([
-//                     'translations',
-//                     'products' => fn($q) => $q
-//                         ->where('is_active', true)
-//                         ->orderBy('sort_order')
-//                         ->with('translations'),
-//                 ]),
-//         ])
-//         ->orderBy('sort_order')
-//         ->get()
-//         ->map(fn($service) => [
-//             'slug' => $service->slug,
-//             'name' => $service->translations->where('locale', $locale)->first()?->value
-//                       ?? $service->translations->where('locale', $fallback)->first()?->value
-//                       ?? $service->getRawOriginal('name'),
-//             'categories' => $service->categories->map(fn($category) => [
-//                 'slug' => $category->slug,
-//                 'name' => $category->translations->where('locale', $locale)->first()?->value
-//                           ?? $category->translations->where('locale', $fallback)->first()?->value
-//                           ?? $category->getRawOriginal('name'),
-//                 'products' => $category->products->map(fn($product) => [
-//                     'id'    => $product->id,
-//                     'name'  => $product->translations->where('locale', $locale)->first()?->value
-//                                ?? $product->translations->where('locale', $fallback)->first()?->value
-//                                ?? $product->getRawOriginal('name'),
-//                     'price' => (float) $product->price,
-//                 ]),
-//             ]),
-//         ]);
-
-//     return Inertia::render('Checkrate', [
-//         'services' => $services,
-//     ]);
-// });
-
-
 
 Route::get('/checkrate', function () {
     $locale   = App::getLocale();
@@ -140,10 +95,6 @@ Route::get('/refund', function () {
     return Inertia::render('Refund');
 });
 
-// Route::get('dashboard', function () {
-//     return Inertia::render('dashboard');
-// })->middleware(['auth', 'verified'])->name('dashboard');
-
 Route::middleware(['auth', 'role:customer'])->group(function () {
     Route::get('/dashboard', fn() => Inertia::render('Dashboard'))->name('dashboard');
 });
@@ -153,13 +104,10 @@ Route::post('/language/switch', [LanguageController::class, 'switch'])->name('la
 
 
 // ── Booking endpoint ──────────────────────────────────────────────────────────
-// throttle:10,1 → max 10 booking attempts per IP per minute
 Route::post('/schedule', [PickupScheduleController::class, 'store'])
     ->middleware('throttle:10,1');
  
 // ── Stripe webhook ────────────────────────────────────────────────────────────
-// Excluded from CSRF in VerifyCsrfToken — Stripe signs the payload instead.
-// throttle:60,1 → Stripe sends retries; allow bursts but block abuse.
 Route::post('/webhooks/stripe', [StripeWebhookController::class, 'handle'])
     ->name('webhooks.stripe')
     ->middleware('throttle:60,1');

@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             HeroContentSeeder::class,
             PricingSeeder::class,
             TranslationSeeder::class,
+            PaymentGatewaySettingSeeder::class,
         ]);
     }
 }
