@@ -19,9 +19,20 @@ class PickupConfirmedUser extends Notification implements ShouldQueue
         private readonly PickupSchedule $schedule
     ) {}
 
-    public function via(object $notifiable): array
+    public function via(): array
     {
-        return ['mail'];
+        return ['mail', 'database'];
+    }
+
+    public function toDatabase(): array
+    {
+        return [
+            'schedule_id'  => $this->schedule->id,
+            'status'       => 'confirmed',
+            'status_label' => 'Confirmed',
+            'message'      => 'Your pickup has been confirmed and payment received.',
+            'pickup_date'  => $this->schedule->pickup_date->format('M d, Y'),
+        ];
     }
 
     public function toMail(object $notifiable): MailMessage

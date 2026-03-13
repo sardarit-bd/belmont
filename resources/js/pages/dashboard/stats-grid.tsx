@@ -1,17 +1,18 @@
-interface StatItem {
-    icon: string;
-    value: string;
-    label: string;
-    change: string;
-    up: boolean;
+import { usePage } from '@inertiajs/react';
+
+interface Stats {
+    total:     number;
+    completed: number;
+    pending:   number;
 }
 
-const stats: StatItem[] = [
-    { icon: '📦', value: '3',       label: 'Active Orders',        change: '↑ 1 new today',            up: true  },
-    { icon: '👔', value: '12',      label: 'Items Being Cleaned',  change: 'Across 3 orders',          up: false },
-    { icon: '💰', value: '৳2,840',  label: 'Spent This Month',     change: '↑ Saved ৳300 via rewards', up: true  },
-    { icon: '🚚', value: '18',      label: 'Total Orders Ever',    change: '↑ Member since Jan 2024',  up: true  },
-];
+interface StatItem {
+    icon:   string;
+    value:  string | number;
+    label:  string;
+    change: string;
+    up:     boolean;
+}
 
 function StatCard({ icon, value, label, change, up }: StatItem) {
     return (
@@ -29,9 +30,35 @@ function StatCard({ icon, value, label, change, up }: StatItem) {
 }
 
 export default function StatsGrid() {
+    const { stats } = usePage<{ stats: Stats }>().props;
+
+    const cards: StatItem[] = [
+        {
+            icon:   '📦',
+            value:  stats.pending,
+            label:  'Active Orders',
+            change: stats.pending > 0 ? `↑ ${stats.pending} in progress` : 'No active orders',
+            up:     stats.pending > 0,
+        },
+        {
+            icon:   '🎉',
+            value:  stats.completed,
+            label:  'Completed Orders',
+            change: stats.completed > 0 ? `↑ ${stats.completed} delivered` : 'No completed orders yet',
+            up:     stats.completed > 0,
+        },
+        {
+            icon:   '🚚',
+            value:  stats.total,
+            label:  'Total Orders',
+            change: stats.total > 0 ? `All time bookings` : 'No orders yet',
+            up:     stats.total > 0,
+        },
+    ];
+
     return (
-        <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
-            {stats.map((s) => (
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+            {cards.map((s) => (
                 <StatCard key={s.label} {...s} />
             ))}
         </div>

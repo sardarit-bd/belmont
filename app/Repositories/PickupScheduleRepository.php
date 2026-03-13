@@ -11,6 +11,7 @@ class PickupScheduleRepository implements PickupScheduleRepositoryInterface
     public function create(PickupScheduleData $data): PickupSchedule
     {
         return PickupSchedule::create([
+            'user_id'              => auth()->id(),
             'full_name'            => $data->fullName,
             'phone_number'         => $data->phoneNumber,
             'street'               => $data->street,
