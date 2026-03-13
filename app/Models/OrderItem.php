@@ -11,12 +11,12 @@ class OrderItem extends Model
     use HasUuids;
 
     protected $fillable = [
-        'order_id', 'product_id', 'quantity', 'unit_price', 'total_price'
+        'pickup_schedule_id', 'product_id', 'quantity', 'unit_price', 'total_price'
     ];
 
-    public function order(): BelongsTo
+    public function pickupSchedule(): BelongsTo
     {
-        return $this->belongsTo(Order::class);
+        return $this->belongsTo(PickupSchedule::class);
     }
 
     public function product(): BelongsTo

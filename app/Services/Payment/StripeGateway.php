@@ -14,9 +14,11 @@ final class StripeGateway implements PaymentGatewayInterface
 {
     private StripeClient $client;
 
-    public function __construct()
-    {
-        $this->client = new StripeClient(config('services.stripe.secret'));
+    public function __construct(
+        string $secretKey,
+        private readonly string $webhookSecret,
+    ) {
+        $this->client = new StripeClient($secretKey);
     }
 
     /**
@@ -108,14 +110,11 @@ final class StripeGateway implements PaymentGatewayInterface
      */
     public function constructWebhookEvent(string $payload, string $signature): object
     {
-        // Stripe's SDK verifies the signature AND checks the timestamp is within
-        // DEFAULT_TOLERANCE (300 seconds = 5 minutes) automatically.
-        // Passing DEFAULT_TOLERANCE explicitly makes this contract clear.
         return Webhook::constructEvent(
             $payload,
             $signature,
-            config('services.stripe.webhook_secret'),
-            Webhook::DEFAULT_TOLERANCE  // 300 seconds — rejects replayed events
+            $this->webhookSecret,
+            Webhook::DEFAULT_TOLERANCE
         );
     }
 }

@@ -13,12 +13,12 @@ class PickupScheduleController extends Controller
         private readonly PickupScheduleService $service,
     ) {}
 
-    public function store(StorePickupScheduleRequest $request)
+    public function store(StorePickupScheduleRequest $request): JsonResponse
     {
-        $this->service->book(
+        $result = $this->service->book(
             PickupScheduleData::fromRequest($request->validated())
         );
 
-        return redirect()->back();
+        return response()->json($result);
     }
 }

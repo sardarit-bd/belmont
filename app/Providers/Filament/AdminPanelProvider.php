@@ -53,10 +53,12 @@ class AdminPanelProvider extends PanelProvider
                 // FilamentInfoWidget::class,
             ])
             ->navigationGroups([
-                'Orders Section',
+                'Orders',
                 'Products Section',
-                'User Section',
-                'Services Section',
+                'Content Section',
+                'User\'s Query',
+                'Users Section',
+                'Settings',
             ])
             ->middleware([
                 EncryptCookies::class,

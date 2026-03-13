@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\PaymentGatewaySetting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Inertia\Middleware;
@@ -53,6 +54,13 @@ class HandleInertiaRequests extends Middleware
                 'success' => $request->session()->get('success'),
                 'error'   => $request->session()->get('error'),
             ],
+
+            'stripe_key' => cache()->rememberForever('stripe_public_key', function () {
+                $setting = PaymentGatewaySetting::where('gateway', 'stripe')
+                    ->where('is_active', true)
+                    ->first();
+                return $setting?->getCredential('public_key');
+            }),
         ];
     }
 

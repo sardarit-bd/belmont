@@ -5,17 +5,20 @@ namespace App\DTOs;
 readonly class PickupScheduleData
 {
     public function __construct(
-        public string $fullName,
-        public string $phoneNumber,
-        public string $street,
-        public string $city,
-        public string $zip,
-        public string $pickupDate,
-        public string $preferredTime,
+        public string  $fullName,
+        public string  $phoneNumber,
+        public string  $street,
+        public string  $city,
+        public string  $zip,
+        public string  $pickupDate,
+        public string  $preferredTime,
         public ?string $specialInstructions,
-        public string $cardholderName,
-        public string $cardLastFour,
-        public string $cardExpiry,
+        public string  $cardholderName,
+        public string  $cardLastFour,
+        public string  $cardExpiry,
+        public string  $paymentMethodId,
+        public string  $gateway,
+        public array   $items,
     ) {}
 
     public static function fromRequest(array $data): self
@@ -30,8 +33,11 @@ readonly class PickupScheduleData
             preferredTime:       $data['preferred_time'],
             specialInstructions: $data['special_instructions'] ?? null,
             cardholderName:      $data['cardholder_name'],
-            cardLastFour:        substr(str_replace(' ', '', $data['card_number']), -4),
-            cardExpiry:          $data['expiry_date'],
+            cardLastFour:        $data['card_last_four'],
+            cardExpiry:          $data['card_expiry'],
+            paymentMethodId:     $data['payment_method_id'],
+            gateway:             config('payment.default'),
+            items:               $data['items'] ?? [],
         );
     }
 }
