@@ -1,9 +1,16 @@
 import { ShoppingCart, Plus, Minus, Trash2, X, Info } from "lucide-react";
-import { Link } from "@inertiajs/react";
+import { Link, usePage } from "@inertiajs/react";
 import { useI18n } from "@/contexts/I18nContext";
+
+const DELIVERY_CHARGE = 10;
 
 export default function CartDrawer({ isOpen, onClose, cart, onUpdateQuantity, onRemove, getTotalItems, getTotalPrice }) {
     const { t } = useI18n();
+    const { auth } = usePage<{ auth: { user: any } }>().props;
+    const isLoggedIn = !!auth?.user;
+    const scheduleHref = isLoggedIn ? '/schedule' : '/login';
+
+    const totalWithDelivery = getTotalPrice() + DELIVERY_CHARGE;
 
     return (
         <>
@@ -64,16 +71,29 @@ export default function CartDrawer({ isOpen, onClose, cart, onUpdateQuantity, on
                             <Info className="w-5 h-5 text-yellow-600 shrink-0" />
                             <p className="text-xs text-yellow-800 leading-tight">{t('checkrate.prices_note')}</p>
                         </div>
-                        <div className="flex justify-between items-end pb-2">
-                            <span className="text-gray-500">{t('checkrate.total_estimate')}</span>
-                            <span className="text-3xl font-bold text-[#361b6b]">${getTotalPrice().toFixed(2)}</span>
+
+                        {/* Price breakdown */}
+                        <div className="space-y-2">
+                            <div className="flex justify-between text-sm text-gray-500">
+                                <span>{t('checkrate.total_estimate')}</span>
+                                <span>${getTotalPrice().toFixed(2)}</span>
+                            </div>
+                            <div className="flex justify-between text-sm text-gray-500">
+                                <span>Delivery charge</span>
+                                <span>${DELIVERY_CHARGE.toFixed(2)}</span>
+                            </div>
+                            <div className="flex justify-between items-end pt-2 border-t border-gray-100">
+                                <span className="text-gray-700 font-medium">Total</span>
+                                <span className="text-3xl font-bold text-[#361b6b]">${totalWithDelivery.toFixed(2)}</span>
+                            </div>
                         </div>
+
                         <Link
-                            href="/schedule"
+                            href={scheduleHref}
                             className="group relative inline-flex items-center justify-center px-8 py-3 bg-[#361b6b] text-white text-md rounded-2xl overflow-hidden transition-transform duration-300 active:scale-95 shadow-lg shadow-purple-900/20 hover:shadow-purple-900/30 w-full"
                         >
                             <span className="relative z-10 flex items-center gap-3">
-                                {t('checkrate.schedule_pickup')}
+                                {isLoggedIn ? t('checkrate.schedule_pickup') : 'Login to Schedule Pickup'}
                                 <svg className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
                                 </svg>

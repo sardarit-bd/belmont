@@ -1,5 +1,4 @@
-import { usePage } from '@inertiajs/react';
-import { Link } from '@inertiajs/react';
+import { usePage, Link } from '@inertiajs/react';
 
 interface OrderItem {
     name:        string;
@@ -24,13 +23,9 @@ interface Schedule {
     items:             OrderItem[];
 }
 
-interface PageProps {
-    activeSchedules: Schedule[];
-    stats: {
-        total:     number;
-        completed: number;
-        pending:   number;
-    };
+interface Props {
+    selectedOrderId: string | null;
+    onSelectOrder:   (id: string) => void;
 }
 
 const STATUS_ICONS: Record<string, string> = {
@@ -53,7 +48,11 @@ const STATUS_BADGE: Record<string, string> = {
     cancelled:        'bg-red-50 text-red-600',
 };
 
-function OrderRow({ schedule }: { schedule: Schedule }) {
+function OrderRow({ schedule, isSelected, onSelect }: {
+    schedule:   Schedule;
+    isSelected: boolean;
+    onSelect:   () => void;
+}) {
     const icon        = STATUS_ICONS[schedule.status] ?? '📦';
     const badgeClass  = STATUS_BADGE[schedule.status] ?? 'bg-gray-50 text-gray-600';
     const itemSummary = schedule.items.length > 0
@@ -61,8 +60,16 @@ function OrderRow({ schedule }: { schedule: Schedule }) {
         : `${schedule.items_count} item(s)`;
 
     return (
-        <div className="flex cursor-pointer items-center gap-4 border-b border-[#ede7da] px-6 py-4 last:border-0 hover:bg-[#f7f3ec] transition-colors">
-            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#f7f3ec] text-2xl">
+        <div
+            onClick={onSelect}
+            className={`flex cursor-pointer items-center gap-4 border-b border-[#ede7da] px-6 py-4 last:border-0 transition-colors
+                ${isSelected
+                    ? 'bg-[#fef9ef] border-l-2 border-l-[#c9a84c]'
+                    : 'hover:bg-[#f7f3ec]'
+                }`}
+        >
+            <div className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl text-2xl transition-colors
+                ${isSelected ? 'bg-[#fef3d0]' : 'bg-[#f7f3ec]'}`}>
                 {icon}
             </div>
             <div className="flex-1 min-w-0">
@@ -97,7 +104,7 @@ function EmptyState() {
     );
 }
 
-export default function ActiveOrders() {
+export default function ActiveOrders({ selectedOrderId, onSelectOrder }: Props) {
     const { activeSchedules } = usePage<{ activeSchedules: Schedule[] }>().props;
 
     return (
@@ -111,7 +118,7 @@ export default function ActiveOrders() {
                         </span>
                     )}
                 </div>
-                <Link href="/schedule" className="text-xs font-medium text-[#c9a84c] hover:underline">
+                <Link href="/checkrate" className="text-xs font-medium text-[#c9a84c] hover:underline">
                     + New Pickup
                 </Link>
             </div>
@@ -121,7 +128,12 @@ export default function ActiveOrders() {
                     <EmptyState />
                 ) : (
                     activeSchedules.map((schedule) => (
-                        <OrderRow key={schedule.id} schedule={schedule} />
+                        <OrderRow
+                            key={schedule.id}
+                            schedule={schedule}
+                            isSelected={selectedOrderId === schedule.id}
+                            onSelect={() => onSelectOrder(schedule.id)}
+                        />
                     ))
                 )}
             </div>

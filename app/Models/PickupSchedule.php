@@ -7,23 +7,48 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\DB;
 
 class PickupSchedule extends Model
 {
     use HasFactory, HasUuids;
 
     protected $fillable = [
-        'full_name', 'phone_number', 'street', 'city', 'zip',
-        'pickup_date', 'preferred_time', 'special_instructions',
-        'cardholder_name', 'card_last_four', 'card_expiry',
+        'user_id',
+        'order_number',
+        'full_name',
+        'phone_number',
+        'street',
+        'city',
+        'zip',
+        'pickup_date',
+        'preferred_time', 
+        'special_instructions',
+        'cardholder_name', 
+        'card_last_four', 
+        'card_expiry',
         'gateway',
-        'stripe_payment_intent_id', 'stripe_customer_id', 'stripe_payment_method_id',
-        'payment_status', 'status',
+        'stripe_payment_intent_id', 
+        'stripe_customer_id', 
+        'stripe_payment_method_id',
+        'payment_status', 
+        'status',
     ];
 
     protected $casts = [
         'pickup_date' => 'date',
     ];
+
+    protected static function booted(): void
+    {
+        static::creating(function (PickupSchedule $schedule) {
+            do {
+                $order_number = 'BC-' . strtoupper(substr(str_shuffle('ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'), 0, 10));
+            } while (PickupSchedule::where('order_number', $order_number)->exists());
+
+            $schedule->order_number = $order_number;
+        });
+    }
 
     // ── Relationships ─────────────────────────────────────────────────────────
 

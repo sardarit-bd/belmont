@@ -2,6 +2,7 @@ import { usePage, Link } from '@inertiajs/react';
 
 interface Schedule {
     id:             string;
+    order_number:   string;
     status:         string;
     status_label:   string;
     status_color:   string;
@@ -69,8 +70,8 @@ function UpcomingCard({ schedule }: { schedule: Schedule }) {
             </div>
 
             <div className="mt-3 flex items-center justify-between">
-                <span className="text-[11px] text-[#8a9bb0]">
-                    #{schedule.id.slice(0, 8).toUpperCase()}
+                <span className="text-xs font-medium text-[#c9a84c]">
+                    #{schedule.order_number}
                 </span>
                 <span className={`text-[11px] font-medium ${
                     schedule.payment_status === 'confirmed'
@@ -95,7 +96,7 @@ function EmptyState() {
             <p className="text-sm font-medium text-[#0d1b2a]">No upcoming pickups</p>
             <p className="mt-1 text-xs text-[#8a9bb0]">Ready for fresh, clean garments?</p>
             <Link
-                href="/check-rates"
+                href="/checkrate"
                 className="mt-4 rounded-full bg-[#0d1b2a] px-5 py-2 text-xs font-semibold text-white transition-colors hover:bg-[#1a2e45]"
             >
                 Schedule a Pickup
@@ -124,7 +125,7 @@ export default function SchedulePickup() {
                     )}
                 </div>
                 <Link
-                    href="/check-rates"
+                    href="/checkrate"
                     className="text-xs font-medium text-[#c9a84c] hover:underline"
                 >
                     + New
