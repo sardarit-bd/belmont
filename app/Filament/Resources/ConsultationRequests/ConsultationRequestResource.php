@@ -21,7 +21,7 @@ class ConsultationRequestResource extends Resource
 {
     protected static ?string $model = ConsultationRequest::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-chat-bubble-left-right';
 
     protected static string|UnitEnum|null $navigationGroup = 'User\'s Query';
     protected static ?string $navigationLabel = 'Consultations';
