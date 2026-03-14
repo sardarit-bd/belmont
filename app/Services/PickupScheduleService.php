@@ -238,6 +238,15 @@ class PickupScheduleService
 
     private function resolveAmount(PickupSchedule $schedule): int
     {
-        return (int) config('services.payment.pickup_fee_cents', 2000);
+        $schedule->loadMissing('orderItems.product');
+
+        $itemsTotal = $schedule->orderItems->sum(function ($item) {
+            $unitPrice = $item->product?->price ?? 0;
+            return $unitPrice * $item->quantity;
+        });
+
+        $deliveryCharge = (int) config('services.payment.delivery_fee_cents', 1000); // $10.00
+
+        return (int) round(($itemsTotal * 100)) + $deliveryCharge;
     }
 }

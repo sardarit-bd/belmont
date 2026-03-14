@@ -10,6 +10,7 @@ interface OrderItem {
 
 interface Order {
     id:             string;
+    order_number:   string;
     status:         string;
     status_label:   string;
     payment_status: string;
@@ -136,8 +137,8 @@ export default function Orders() {
                                         {orderList.map((order) => (
                                             <tr key={order.id} className="hover:bg-[#f7f3ec] transition-colors">
                                                 <td className="px-6 py-4">
-                                                    <span className="font-mono text-xs font-semibold text-[#0d1b2a]">
-                                                        #{order.id.slice(0, 8).toUpperCase()}
+                                                    <span className="text-xs font-medium text-[#c9a84c]">
+                                                        #{order.order_number}
                                                     </span>
                                                 </td>
                                                 <td className="px-6 py-4 max-w-[200px]">

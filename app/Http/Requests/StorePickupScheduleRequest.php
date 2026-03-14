@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Product;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StorePickupScheduleRequest extends FormRequest
@@ -27,7 +28,41 @@ class StorePickupScheduleRequest extends FormRequest
             'items.*.id'           => ['required', 'uuid'],
             'items.*.name'         => ['required', 'string'],
             'items.*.price'        => ['required', 'numeric', 'min:0'],
-            'items.*.quantity'     => ['required', 'integer', 'min:1'],
+            'items.*.quantity'     => ['required', 'integer', 'min:1', 'max:50'],
         ];
+    }
+
+    public function withValidator($validator): void
+    {
+        $validator->after(function ($validator) {
+            foreach ($this->input('items', []) as $index => $item) {
+                $product = Product::find($item['id'] ?? null);
+
+                // Product must exist
+                if (!$product) {
+                    $validator->errors()->add(
+                        "items.{$index}.id",
+                        'Product not found.'
+                    );
+                    continue;
+                }
+
+                // Product must be active
+                if (!$product->is_active) {
+                    $validator->errors()->add(
+                        "items.{$index}.id",
+                        "Product \"{$product->name}\" is no longer available."
+                    );
+                }
+
+                // Price must match DB — prevent client-side tampering
+                if (isset($item['price']) && (float) $item['price'] !== (float) $product->price) {
+                    $validator->errors()->add(
+                        "items.{$index}.price",
+                        "Price mismatch for \"{$product->name}\". Please refresh and try again."
+                    );
+                }
+            }
+        });
     }
 }
