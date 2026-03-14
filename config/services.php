@@ -41,4 +41,9 @@ return [
         'webhook_secret' => env('STRIPE_WEBHOOK_SECRET'),
     ],
 
+    'payment' => [
+        'pickup_fee_cents'  => env('PICKUP_FEE_CENTS', 2000),
+        'delivery_fee_cents'=> env('DELIVERY_FEE_CENTS', 1000),
+    ],
+
 ];
