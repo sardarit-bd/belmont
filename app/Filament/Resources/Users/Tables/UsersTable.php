@@ -54,7 +54,8 @@ class UsersTable
             ])
             ->recordActions([
                 EditAction::make(),
-                DeleteAction::make(),
+                DeleteAction::make()
+                    ->hidden(fn ($record) => $record->role?->name === 'admin'),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
