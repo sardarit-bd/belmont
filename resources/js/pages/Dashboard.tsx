@@ -1,4 +1,5 @@
-import { Head } from '@inertiajs/react';
+import { Head, router } from '@inertiajs/react';
+import { useState, useEffect } from 'react';
 import AppLayout from '@/layouts/app-layout';
 import { dashboard } from '@/routes';
 import type { BreadcrumbItem } from '@/types';
@@ -14,7 +15,23 @@ const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Dashboard', href: dashboard().url },
 ];
 
+const POLL_INTERVAL = 15000; // 15 seconds
+
 export default function Dashboard() {
+    const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            router.reload({
+                only: ['activeSchedules', 'trackerSchedule', 'stats', 'notifications', 'unreadCount'],
+                preserveScroll: true,
+                preserveState:  true,
+            });
+        }, POLL_INTERVAL);
+
+        return () => clearInterval(interval);
+    }, []);
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Dashboard" />
@@ -25,17 +42,20 @@ export default function Dashboard() {
 
                 <div className="grid grid-cols-1 gap-5 lg:grid-cols-5">
                     <div className="lg:col-span-3">
-                        <ActiveOrders />
+                        <ActiveOrders
+                            selectedOrderId={selectedOrderId}
+                            onSelectOrder={setSelectedOrderId}
+                        />
                     </div>
                     <div className="lg:col-span-2">
-                        <OrderTracker />
+                        <OrderTracker selectedOrderId={selectedOrderId} />
                     </div>
                 </div>
 
-                <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
+                <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-2">
                     <SchedulePickup />
                     <MyGarments />
-                    <Notifications />
+                    {/* <Notifications /> */}
                 </div>
 
             </div>

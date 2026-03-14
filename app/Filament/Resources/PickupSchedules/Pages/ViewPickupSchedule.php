@@ -25,7 +25,8 @@ class ViewPickupSchedule extends ViewRecord
                 ->visible(fn () => !$this->record->isTerminal() && $this->record->getNextStatus() !== null && $this->record->payment_status === 'confirmed')
                 ->action(function () {
                     app(PickupScheduleService::class)->advanceStatus($this->record);
-                    $this->refreshFormData(['status']);
+                    $this->refreshFormData(['status', 'payment_status']);
+                    $this->record->refresh();
                 }),
 
             Action::make('cancel')
@@ -37,8 +38,9 @@ class ViewPickupSchedule extends ViewRecord
                 ->modalDescription('Are you sure? This cannot be undone. The customer will not be automatically refunded.')
                 ->visible(fn () => !$this->record->isTerminal())
                 ->action(function () {
-                    app(PickupScheduleService::class)->cancelBooking($this->record);
-                    $this->refreshFormData(['status']);
+                    app(PickupScheduleService::class)->advanceStatus($this->record);
+                    $this->refreshFormData(['status', 'payment_status']);
+                    $this->record->refresh();
                 }),
 
             \Filament\Actions\EditAction::make(),

@@ -8,4 +8,9 @@ use Filament\Resources\Pages\CreateRecord;
 class CreatePickupSchedule extends CreateRecord
 {
     protected static string $resource = PickupScheduleResource::class;
+
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
 }

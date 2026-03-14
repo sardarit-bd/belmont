@@ -36,8 +36,8 @@ function EmptyState() {
     return (
         <div className="col-span-2 flex flex-col items-center justify-center py-10 text-center">
             <div className="text-4xl mb-3">👗</div>
-            <p className="text-sm font-medium text-[#0d1b2a]">No garments yet</p>
-            <p className="text-xs text-[#8a9bb0] mt-1">Your cleaned items will appear here</p>
+            <p className="text-sm font-medium text-[#0d1b2a]">No active garments</p>
+            <p className="text-xs text-[#8a9bb0] mt-1">Items from your active orders will appear here</p>
         </div>
     );
 }
@@ -52,11 +52,11 @@ export default function MyGarments() {
                     <span className="font-serif text-lg text-[#0d1b2a]">My Garments</span>
                     {myGarments.length > 0 && (
                         <span className="rounded-full bg-[#0d1b2a] px-2 py-0.5 text-[10px] font-bold text-white">
-                            {myGarments.length}
+                            {myGarments.reduce((sum, g) => sum + g.total_qty, 0)}
                         </span>
                     )}
                 </div>
-                <a href="/check-rates" className="text-xs font-medium text-[#c9a84c] hover:underline">
+                <a href="/checkrate" className="text-xs font-medium text-[#c9a84c] hover:underline">
                     + Add →
                 </a>
             </div>

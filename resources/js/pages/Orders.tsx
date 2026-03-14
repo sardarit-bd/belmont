@@ -106,7 +106,7 @@ export default function Orders() {
                         </p>
                     </div>
                     <Link
-                        href="/check-rates"
+                        href="/checkrate"
                         className="rounded-full bg-[#0d1b2a] px-5 py-2 text-xs font-semibold text-white hover:bg-[#1a2e45] transition-colors"
                     >
                         + New Pickup

@@ -1,15 +1,16 @@
-import { usePage, Link } from '@inertiajs/react';
+import { usePage } from '@inertiajs/react';
 
 type StepState = 'done' | 'active' | 'pending';
 
 interface TrackStep {
-    label:  string;
-    time:   string;
-    state:  StepState;
+    label: string;
+    time:  string;
+    state: StepState;
 }
 
 interface Schedule {
     id:             string;
+    order_number:   string;
     status:         string;
     status_label:   string;
     pickup_date:    string;
@@ -18,13 +19,17 @@ interface Schedule {
     items_count:    number;
 }
 
+interface Props {
+    selectedOrderId: string | null;
+}
+
 const STAGES = [
-    { key: 'pending',          label: 'Order Placed'             },
-    { key: 'confirmed',        label: 'Payment Confirmed'        },
-    { key: 'picked_up',        label: 'Picked Up from Address'   },
-    { key: 'being_cleaned',    label: 'Cleaning in Progress'     },
-    { key: 'out_for_delivery', label: 'Out for Delivery'         },
-    { key: 'delivered',        label: 'Delivered'                },
+    { key: 'pending',          label: 'Order Placed'           },
+    { key: 'confirmed',        label: 'Payment Confirmed'      },
+    { key: 'picked_up',        label: 'Picked Up from Address' },
+    { key: 'being_cleaned',    label: 'Cleaning in Progress'   },
+    { key: 'out_for_delivery', label: 'Out for Delivery'       },
+    { key: 'delivered',        label: 'Delivered'              },
 ];
 
 const dotStyles: Record<StepState, string> = {
@@ -60,8 +65,8 @@ function EmptyState() {
     return (
         <div className="flex flex-col items-center justify-center py-16 px-6 text-center">
             <div className="text-5xl mb-4">📦</div>
-            <p className="text-sm font-medium text-[#0d1b2a] mb-1">No active order to track</p>
-            <p className="text-xs text-[#8a9bb0]">Your order tracker will appear here once you schedule a pickup</p>
+            <p className="text-sm font-medium text-[#0d1b2a] mb-1">No order selected</p>
+            <p className="text-xs text-[#8a9bb0]">Click any active order to track it</p>
         </div>
     );
 }
@@ -75,26 +80,26 @@ function buildSteps(schedule: Schedule): TrackStep[] {
 
         if (index < currentIndex) {
             state = 'done';
-            time  = index === 0
-                ? schedule.pickup_date
-                : '✓ Completed';
+            time  = index === 0 ? schedule.pickup_date : '✓ Completed';
         } else if (index === currentIndex) {
             state = schedule.status === 'delivered' ? 'done' : 'active';
             time  = index === 0
                 ? `${schedule.pickup_date} · ${schedule.preferred_time}`
-                : schedule.status === 'delivered'
-                    ? '✓ Completed'
-                    : 'In progress...';
+                : schedule.status === 'delivered' ? '✓ Completed' : 'In progress...';
         }
 
         return { label: stage.label, time, state };
     });
 }
 
-export default function OrderTracker() {
-    const { trackerSchedule } = usePage<{ trackerSchedule: Schedule | null }>().props;
+export default function OrderTracker({ selectedOrderId }: Props) {
+    const { activeSchedules } = usePage<{ activeSchedules: Schedule[] }>().props;
 
-    if (!trackerSchedule) {
+    const schedule = selectedOrderId
+        ? activeSchedules.find(s => s.id === selectedOrderId) ?? activeSchedules[0] ?? null
+        : activeSchedules[0] ?? null;
+
+    if (!schedule) {
         return (
             <div className="overflow-hidden rounded-2xl border border-[#ede7da] bg-white h-full">
                 <div className="flex items-center justify-between border-b border-[#ede7da] px-6 py-5">
@@ -105,22 +110,22 @@ export default function OrderTracker() {
         );
     }
 
-    const steps       = buildSteps(trackerSchedule);
-    const itemSummary = trackerSchedule.items.length > 0
-        ? trackerSchedule.items.map(i => `${i.quantity}× ${i.name}`).join(', ')
-        : `${trackerSchedule.items_count} item(s)`;
+    const steps       = buildSteps(schedule);
+    const itemSummary = schedule.items.length > 0
+        ? schedule.items.map(i => `${i.quantity}× ${i.name}`).join(', ')
+        : `${schedule.items_count} item(s)`;
 
     return (
         <div className="overflow-hidden rounded-2xl border border-[#ede7da] bg-white h-full">
             <div className="flex items-center justify-between border-b border-[#ede7da] px-6 py-5">
                 <span className="font-serif text-lg text-[#0d1b2a]">Order Tracker</span>
                 <span className="text-xs font-medium text-[#c9a84c]">
-                    #{trackerSchedule.id.slice(0, 8).toUpperCase()}
+                    #{schedule.order_number}
                 </span>
             </div>
             <div className="px-6 py-5">
                 <p className="mb-5 text-xs text-[#8a9bb0]">
-                    Tracking: <span className="font-semibold text-[#0d1b2a] truncate">{itemSummary}</span>
+                    Tracking: <span className="font-semibold text-[#0d1b2a]">{itemSummary}</span>
                 </p>
                 <div className="flex flex-col">
                     {steps.map((step, i) => (

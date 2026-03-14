@@ -19,6 +19,7 @@ class OrdersController extends Controller
             ->paginate(15)
             ->through(fn ($schedule) => [
                 'id'             => $schedule->id,
+                'order_number'   => $schedule->order_number,
                 'status'         => $schedule->status,
                 'status_label'   => $schedule->getStatusLabel(),
                 'status_color'   => $schedule->getStatusColor(),

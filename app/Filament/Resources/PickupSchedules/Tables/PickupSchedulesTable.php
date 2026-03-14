@@ -19,6 +19,13 @@ class PickupSchedulesTable
             ->heading('Pickup Schedules')
             ->description('Manage and track all customer pickup bookings.')
             ->columns([
+                TextColumn::make('order_number')
+                        ->label('Order #')
+                        ->searchable()
+                        ->copyable()
+                        ->weight('bold')
+                        ->color('primary'),
+                        
                 TextColumn::make('full_name')
                     ->label('Customer')
                     ->searchable()
@@ -70,6 +77,7 @@ class PickupSchedulesTable
                         default     => 'warning',
                     })
                     ->formatStateUsing(fn ($state) => ucfirst($state)),
+                
 
                 TextColumn::make('created_at')
                     ->label('Booked')
