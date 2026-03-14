@@ -5,17 +5,19 @@ import Pricing from "@/components/home/Pricing";
 import Howitworks from "@/components/home/Howitworks";
 import Testimonial from "@/components/home/Testimonial";
 import Contactme from "@/components/home/Contact";
-import { Contact } from "lucide-react";
+import { usePage } from "@inertiajs/react";
 
-export default function welcome() {
+export default function Welcome() {
+    const { testimonials } = usePage().props as any;
+
     return (
         <AppHeaderLayout>
             <Hero />
             <Services />
             <Pricing />
             <Howitworks />
-            <Testimonial />
-            <Contactme/>
+            <Testimonial testimonials={testimonials} />
+            <Contactme />
         </AppHeaderLayout>
-    )
+    );
 }

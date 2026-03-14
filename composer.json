@@ -13,6 +13,7 @@
         "laravel/framework": "^12.0",
         "laravel/tinker": "^2.10.1",
         "laravel/wayfinder": "*",
+        "spatie/laravel-translatable": "*",
         "stripe/stripe-php": "*",
         "tightenco/ziggy": "*"
     },

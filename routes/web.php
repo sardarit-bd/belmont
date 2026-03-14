@@ -9,15 +9,35 @@ use App\Http\Controllers\PickupScheduleController;
 use App\Http\Controllers\StripeWebhookController;
 use App\Models\ContentBlock;
 use App\Models\Service;
+use App\Models\Testimonial;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Laravel\Fortify\Features;
 
 Route::get('/', function () {
+    $locale   = App::getLocale();
+    $fallback = config('languages.fallback', 'en');
+
+    $testimonials = Testimonial::where('is_active', true)
+        ->with('translations')
+        ->orderBy('sort_order')
+        ->get()
+        ->map(fn($t) => [
+            'id'          => $t->id,
+            'name'        => $t->customer_name,
+            'title'       => $t->designation,
+            'company'     => $t->company,
+            'rating'      => $t->rating,
+            'text'        => $t->translations->where('locale', $locale)->where('key', 'review')->first()?->value
+                             ?? $t->translations->where('locale', $fallback)->where('key', 'review')->first()?->value
+                             ?? $t->getRawOriginal('review'),
+        ]);
+
     return Inertia::render('welcome', [
         'canRegister' => Features::enabled(Features::registration()),
-        'hero' => ContentBlock::getSection('hero'),
+        'hero'        => ContentBlock::getSection('hero'),
+        'testimonials' => $testimonials,
     ]);
 })->name('home');
 

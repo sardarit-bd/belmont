@@ -21,10 +21,9 @@ class ContactMessageResource extends Resource
 {
     protected static ?string $model = ContactMessage::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-envelope';
 
     protected static string|UnitEnum|null $navigationGroup = 'User\'s Query';
-    // protected static ?string $navigationLabel = 'Contact Messages';
     protected static ?int $navigationSort = 2;
 
     public static function form(Schema $schema): Schema

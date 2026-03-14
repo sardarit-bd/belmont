@@ -20,7 +20,7 @@ class HeroContentResource extends Resource
 {
     protected static ?string $model = ContentBlock::class;
 
-    protected static string | BackedEnum | null $navigationIcon = Heroicon::OutlinedSquares2x2;
+    protected static string | BackedEnum | null $navigationIcon = 'heroicon-o-sparkles';
     protected static string | UnitEnum | null $navigationGroup = 'Content Section';
     protected static ?string $navigationLabel = 'Hero Section';
 

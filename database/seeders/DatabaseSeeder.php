@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use PHPUnit\Metadata\Test;
 
 class DatabaseSeeder extends Seeder
 {
@@ -21,6 +22,7 @@ class DatabaseSeeder extends Seeder
             PricingSeeder::class,
             TranslationSeeder::class,
             PaymentGatewaySettingSeeder::class,
+            TestimonialSeeder::class,
         ]);
     }
 }
