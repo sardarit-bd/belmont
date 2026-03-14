@@ -8,6 +8,7 @@ import { Spinner } from '@/components/ui/spinner';
 import { register } from '@/routes';
 import { store } from '@/routes/login';
 import { request } from '@/routes/password';
+import { useI18n, I18nProvider } from '@/contexts/I18nContext';
 
 type Props = {
     status?: string;
@@ -15,7 +16,17 @@ type Props = {
     canRegister: boolean;
 };
 
-export default function Login({ status, canResetPassword, canRegister }: Props) {
+export default function Login(props: Props) {
+    return (
+        <I18nProvider>
+            <LoginInner {...props} />
+        </I18nProvider>
+    );
+}
+
+function LoginInner({ status, canResetPassword, canRegister }: Props) {
+    const { t } = useI18n();
+
     const { data, setData, post, processing, errors, reset } = useForm({
         email: '',
         password: '',
@@ -28,6 +39,12 @@ export default function Login({ status, canResetPassword, canRegister }: Props) 
             onFinish: () => reset('password'),
         });
     };
+
+    const stats = [
+        { number: '1K+', label: t('auth.stat_customers') },
+        { number: '24hr', label: t('auth.stat_turnaround') },
+        { number: '100%', label: t('auth.stat_satisfaction') },
+    ];
 
     return (
         <>
@@ -70,31 +87,31 @@ export default function Login({ status, canResetPassword, canRegister }: Props) 
                         <div className="absolute -bottom-20 -left-20 w-72 h-72 rounded-full border border-white/5" />
                     </div>
 
+                    {/* Brand */}
                     <div className="relative z-10 flex items-center gap-3">
                         <span className="text-white/90 font-semibold text-[15px] tracking-tight">Belmont Dry Cleaners</span>
                     </div>
 
+                    {/* Hero */}
                     <div className="relative z-10 flex flex-col flex-1 justify-center py-16">
                         <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-purple-500/15 border border-purple-500/30 w-fit mb-7">
                             <span className="w-1.5 h-1.5 rounded-full bg-purple-400" />
-                            <span className="text-purple-300 text-[11px] font-medium tracking-widest uppercase">Premium Care</span>
+                            <span className="text-purple-300 text-[11px] font-medium tracking-widest uppercase">
+                                {t('auth.login_badge')}
+                            </span>
                         </div>
 
                         <h1 className="text-5xl font-bold text-white leading-[1.15] tracking-tight mb-5">
-                            Your garments,<br />
-                            <em className="italic text-purple-300">perfectly cared for.</em>
+                            {t('auth.login_tagline')}<br />
+                            <em className="italic text-purple-300">{t('auth.login_tagline_em')}</em>
                         </h1>
 
                         <p className="text-white/50 text-[15px] leading-relaxed max-w-sm mb-12">
-                            Professional dry cleaning and laundry services with pickup and delivery — trusted by over 1,000 customers in Brockton, MA.
+                            {t('auth.login_body')}
                         </p>
 
                         <div className="flex gap-10">
-                            {[
-                                { number: '1K+', label: 'Happy customers' },
-                                { number: '24hr', label: 'Turnaround' },
-                                { number: '100%', label: 'Satisfaction' },
-                            ].map((stat) => (
+                            {stats.map((stat) => (
                                 <div key={stat.label} className="flex flex-col gap-1">
                                     <span className="text-2xl font-bold text-white tracking-tight">{stat.number}</span>
                                     <span className="text-xs text-white/40 tracking-wide">{stat.label}</span>
@@ -110,19 +127,28 @@ export default function Login({ status, canResetPassword, canRegister }: Props) 
                 <div className="flex items-center justify-center p-8 lg:p-12">
                     <div className="w-full max-w-[400px]">
 
+                        {/* Back to home */}
                         <a href="/" className="inline-flex items-center gap-2 text-[13px] font-medium text-gray-400 hover:text-[#1a0a2e] transition-colors mb-10 group">
                             <svg className="w-4 h-4 transition-transform group-hover:-translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                                 <path d="M19 12H5M12 5l-7 7 7 7" />
                             </svg>
-                            Back to home
+                            {t('auth.back_home')}
                         </a>
 
+                        {/* Header */}
                         <div className="mb-8">
-                            <p className="text-[11px] font-semibold tracking-[0.1em] uppercase text-[#9007EE] mb-2">Welcome back</p>
-                            <h2 className="text-[26px] font-bold text-[#0f0a1a] tracking-tight leading-snug mb-2">Sign in to your account</h2>
-                            <p className="text-[14px] text-gray-400 leading-relaxed">Enter your credentials to access your dashboard</p>
+                            <p className="text-[11px] font-semibold tracking-[0.1em] uppercase text-[#9007EE] mb-2">
+                                {t('auth.welcome_back')}
+                            </p>
+                            <h2 className="text-[26px] font-bold text-[#0f0a1a] tracking-tight leading-snug mb-2">
+                                {t('auth.login_title')}
+                            </h2>
+                            <p className="text-[14px] text-gray-400 leading-relaxed">
+                                {t('auth.login_subtitle')}
+                            </p>
                         </div>
 
+                        {/* Status */}
                         {status && (
                             <div className="flex items-center gap-2 bg-green-50 border border-green-200 rounded-xl px-4 py-3 mb-6 text-[13px] text-green-700">
                                 <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -134,23 +160,32 @@ export default function Login({ status, canResetPassword, canRegister }: Props) 
 
                         <form onSubmit={submit} className="flex flex-col">
                             <div className="flex flex-col gap-5 mb-5">
+
+                                {/* Email */}
                                 <div className="flex flex-col gap-1.5">
-                                    <Label htmlFor="email" className="text-[13px] font-medium text-gray-600">Email address</Label>
+                                    <Label htmlFor="email" className="text-[13px] font-medium text-gray-600">
+                                        {t('auth.email')}
+                                    </Label>
                                     <Input
                                         id="email" type="email" name="email"
                                         value={data.email}
                                         onChange={(e) => setData('email', e.target.value)}
-                                        required autoFocus tabIndex={1} autoComplete="email" placeholder="you@example.com"
+                                        required autoFocus tabIndex={1}
+                                        autoComplete="email"
+                                        placeholder={t('auth.email_placeholder')}
                                     />
                                     <InputError message={errors.email} />
                                 </div>
 
+                                {/* Password */}
                                 <div className="flex flex-col gap-1.5">
                                     <div className="flex items-center justify-between">
-                                        <Label htmlFor="password" className="text-[13px] font-medium text-gray-600">Password</Label>
+                                        <Label htmlFor="password" className="text-[13px] font-medium text-gray-600">
+                                            {t('auth.password')}
+                                        </Label>
                                         {canResetPassword && (
                                             <TextLink href={request()} className="text-[12px] text-[#9007EE] font-medium hover:opacity-70 transition-opacity" tabIndex={5}>
-                                                Forgot password?
+                                                {t('auth.forgot_password')}
                                             </TextLink>
                                         )}
                                     </div>
@@ -158,31 +193,34 @@ export default function Login({ status, canResetPassword, canRegister }: Props) 
                                         id="password" type="password" name="password"
                                         value={data.password}
                                         onChange={(e) => setData('password', e.target.value)}
-                                        required tabIndex={2} autoComplete="current-password" placeholder="••••••••"
+                                        required tabIndex={2}
+                                        autoComplete="current-password"
+                                        placeholder="••••••••"
                                     />
                                     <InputError message={errors.password} />
                                 </div>
                             </div>
 
+                            {/* Remember me */}
                             <div className="flex items-center gap-2.5 mb-6">
                                 <Checkbox
-                                    id="remember"
-                                    name="remember"
+                                    id="remember" name="remember"
                                     checked={data.remember}
                                     onCheckedChange={(checked) => setData('remember', !!checked)}
                                     tabIndex={3}
                                 />
-                                <label htmlFor="remember" className="text-[13px] text-gray-500 cursor-pointer">Keep me signed in</label>
+                                <label htmlFor="remember" className="text-[13px] text-gray-500 cursor-pointer">
+                                    {t('auth.remember_me')}
+                                </label>
                             </div>
 
+                            {/* Submit */}
                             <button
-                                type="submit"
-                                tabIndex={4}
-                                disabled={processing}
+                                type="submit" tabIndex={4} disabled={processing}
                                 className="w-full h-11 rounded-xl bg-[#1a0a2e] text-white text-[14px] font-semibold flex items-center justify-center gap-2 transition-all hover:bg-[#2d1249] hover:-translate-y-px hover:shadow-xl hover:shadow-[#1a0a2e]/25 active:translate-y-0 disabled:opacity-60 disabled:cursor-not-allowed disabled:transform-none mb-6 cursor-pointer"
                             >
                                 {processing && <Spinner />}
-                                {processing ? 'Signing in...' : 'Sign in'}
+                                {processing ? t('auth.signing_in') : t('auth.sign_in')}
                                 {!processing && (
                                     <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                                         <path d="M5 12h14M12 5l7 7-7 7" />
@@ -192,9 +230,9 @@ export default function Login({ status, canResetPassword, canRegister }: Props) 
 
                             {canRegister && (
                                 <p className="text-center text-[13px] text-gray-400">
-                                    New to Belmont?{' '}
+                                    {t('auth.no_account')}{' '}
                                     <TextLink href={register()} className="text-[#9007EE] font-semibold hover:opacity-70 transition-opacity" tabIndex={6}>
-                                        Create an account
+                                        {t('auth.create_account')}
                                     </TextLink>
                                 </p>
                             )}
