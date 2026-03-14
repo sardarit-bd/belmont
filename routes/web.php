@@ -4,6 +4,7 @@ use App\Http\Controllers\ConsultationRequestController;
 use App\Http\Controllers\ContactMessageController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LanguageController;
+use App\Http\Controllers\OrdersController;
 use App\Http\Controllers\PickupScheduleController;
 use App\Http\Controllers\StripeWebhookController;
 use App\Models\ContentBlock;
@@ -99,6 +100,7 @@ Route::get('/refund', function () {
 Route::middleware(['auth', 'role:customer'])->group(function () {
     // dashboard
     Route::get('/dashboard', DashboardController::class)->name('dashboard');
+    Route::get('/orders', OrdersController::class)->name('orders');
 
     // notifications
     Route::post('/notifications/{id}/read', function ($id) {

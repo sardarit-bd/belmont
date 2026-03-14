@@ -1,6 +1,5 @@
 import { Link } from '@inertiajs/react';
-import { BookOpen, Folder, LayoutGrid } from 'lucide-react';
-import { NavFooter } from '@/components/nav-footer';
+import { LayoutGrid, ShoppingBag } from 'lucide-react';
 import { NavMain } from '@/components/nav-main';
 import { NavUser } from '@/components/nav-user';
 import {
@@ -12,7 +11,7 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import { dashboard } from '@/routes';
+import { dashboard, orders } from '@/routes';
 import type { NavItem } from '@/types';
 import AppLogo from './app-logo';
 
@@ -21,6 +20,11 @@ const mainNavItems: NavItem[] = [
         title: 'Dashboard',
         href: dashboard(),
         icon: LayoutGrid,
+    },
+    {
+        title: 'Orders',
+        href: orders(),
+        icon: ShoppingBag,
     },
 ];
 
@@ -44,7 +48,6 @@ export function AppSidebar() {
             </SidebarContent>
 
             <SidebarFooter>
-                {/* <NavFooter items={footerNavItems} className="mt-auto" /> */}
                 <NavUser />
             </SidebarFooter>
         </Sidebar>

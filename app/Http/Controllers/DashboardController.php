@@ -40,6 +40,24 @@ class DashboardController extends Controller
                 ]),
             ]);
 
+        // My Garments — distinct items from all schedules
+        $myGarments = \App\Models\OrderItem::whereHas('pickupSchedule', fn ($q) =>
+                $q->where('user_id', $user->id)
+            )
+            ->with('product.category')
+            ->get()
+            ->groupBy('product_id')
+            ->map(fn ($items) => [
+                'product_id'    => $items->first()->product_id,
+                'name'          => $items->first()->product?->name,
+                'category'      => $items->first()->product?->category?->name,
+                'category_slug' => $items->first()->product?->category?->slug,
+                'total_qty'     => $items->sum('quantity'),
+                'order_count'   => $items->count(),
+            ])
+            ->values()
+            ->take(6);
+
         // Most recent active schedule for the tracker
         $trackerSchedule = $activeSchedules->first();
 
@@ -72,6 +90,7 @@ class DashboardController extends Controller
             ],
             'notifications'   => $notifications,
             'unreadCount'     => $unreadCount,
+            'myGarments'      => $myGarments,
         ]);
     }
 }
