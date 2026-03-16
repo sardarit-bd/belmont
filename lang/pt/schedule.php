@@ -16,6 +16,7 @@ return [
     'city_state'       => 'Cidade/Estado',
     'zip'              => 'CEP',
     'continue_schedule'=> 'Continuar para agendamento',
+    'error_expiry_expired' => 'Seu cartão expirou',
 
     'schedule_title'    => 'Escolha o horário perfeito',
     'schedule_subtitle' => 'Quando devemos passar?',

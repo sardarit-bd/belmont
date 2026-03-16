@@ -1,48 +1,18 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useRef } from 'react';
 import AppHeaderLayout from "@/layouts/app/app-header-layout";
 import { useI18n, I18nProvider } from '@/contexts/I18nContext';
 import { usePage } from '@inertiajs/react';
-import { loadStripe } from '@stripe/stripe-js';
-import {
-    Elements,
-    CardNumberElement,
-    CardExpiryElement,
-    CardCvcElement,
-    useStripe,
-    useElements,
-} from '@stripe/react-stripe-js';
-
-
-// Matches your existing bg-white border border-gray-200 input style exactly
-const STRIPE_STYLE = {
-    style: {
-        base: {
-            fontSize: '16px',
-            lineHeight: '1.5',
-            color: '#374151',
-            fontFamily: 'ui-sans-serif, system-ui, sans-serif',
-            '::placeholder': { color: '#9CA3AF' },
-        },
-        invalid: { color: '#EF4444' },
-    },
-};
 
 export default function PickupScheduler() {
-    const { stripe_key } = usePage().props;
-    const stripePromise = useMemo(() => loadStripe(stripe_key), [stripe_key]);
-
     return (
         <I18nProvider>
-            <Elements stripe={stripePromise}>
-                <PickupSchedulerInner />
-            </Elements>
+            <PickupSchedulerInner />
         </I18nProvider>
     );
 }
 
 function PickupSchedulerInner() {
 
-    // Read cart from localStorage
     const [cart, setCart] = useState(() => {
         try {
             const saved = localStorage.getItem('laundryServiceCart');
@@ -54,171 +24,170 @@ function PickupSchedulerInner() {
 
     const { props } = usePage();
     const { t } = useI18n();
-    const stripe   = useStripe();
-    const elements = useElements();
 
     const [currentStep,  setCurrentStep]  = useState(1);
     const [errors,       setErrors]       = useState({});
+    const [touched,      setTouched]      = useState({});
     const [isProcessing, setIsProcessing] = useState(false);
     const [isSubmitted,  setIsSubmitted]  = useState(false);
     const [paymentError, setPaymentError] = useState('');
-
-    // Stripe per-field errors (shown under each field, just like your existing errors)
-    const [stripeErrors, setStripeErrors] = useState({
-        cardNumber: '', cardExpiry: '', cardCvc: '',
-    });
-
-    // Stripe token + safe display metadata (replaces raw card state)
-    const [paymentMethodId, setPaymentMethodId] = useState('');
-    const [cardMeta, setCardMeta] = useState({ last4: '', expiry: '', brand: '' });
 
     const [formData, setFormData] = useState({
         fullName: '', phoneNumber: '', street: '', city: '', zip: '',
         pickupDate: '', preferredTime: '', specialInstructions: '',
         cardholderName: '',
+        cardNumber: '',
+        cardExpiry: '',
+        cardCvc: '',
         cardConsent: false,
     });
 
-    // When user goes Back to Step 2, clear stale token so they re-enter card
-    useEffect(() => {
-        if (currentStep === 2) {
-            setPaymentMethodId('');
-            setCardMeta({ last4: '', expiry: '', brand: '' });
-            setStripeErrors({ cardNumber: '', cardExpiry: '', cardCvc: '' });
-            setPaymentError('');
-        }
-    }, [currentStep]);
+    // ─── Per-field validators ────────────────────────────────────────────────
 
+    const validators = {
+        fullName: (v) => {
+            if (!v.trim()) return t('schedule.error_full_name_required');
+            return '';
+        },
+        phoneNumber: (v) => {
+            if (!v.trim()) return t('schedule.error_phone_required');
+            if (!/^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/.test(v.replace(/\s/g, '')))
+                return t('schedule.error_phone_invalid');
+            return '';
+        },
+        street: (v) => (!v.trim() ? t('schedule.error_street_required') : ''),
+        city:   (v) => (!v.trim() ? t('schedule.error_city_required')   : ''),
+
+        zip: (v) => {
+            if (!v.trim()) return t('schedule.error_zip_required');
+            if (!/^\d{5}$/.test(v)) return t('schedule.error_zip_invalid');
+            return '';
+        },
+        pickupDate: (v) => {
+            if (!v) return t('schedule.error_date_required');
+            const selected = new Date(v);
+            const today = new Date(); today.setHours(0, 0, 0, 0);
+            if (selected < today) return t('schedule.error_date_past');
+            return '';
+        },
+        preferredTime: (v) => (!v ? t('schedule.error_time_required') : ''),
+        cardholderName: (v) => (!v.trim() ? t('schedule.error_cardholder_required') : ''),
+        cardNumber: (v) => {
+            const raw = v.replace(/\s/g, '');
+            if (!raw) return t('schedule.error_card_number_required');
+            if (!/^\d{16}$/.test(raw)) return t('schedule.error_card_number_invalid');
+            return '';
+        },
+        cardExpiry: (v) => {
+            if (!v.trim()) return t('schedule.error_expiry_required');
+            if (!/^(0[1-9]|1[0-2])\/\d{2}$/.test(v)) return t('schedule.error_expiry_invalid');
+            const [mm, yy] = v.split('/');
+            const expMonth = parseInt(mm, 10);
+            const expYear  = 2000 + parseInt(yy, 10);
+            const now      = new Date();
+            if (expYear < now.getFullYear() || (expYear === now.getFullYear() && expMonth < now.getMonth() + 1))
+                return t('schedule.error_expiry_expired');
+            return '';
+        },
+        cardCvc: (v) => {
+            if (!v.trim()) return t('schedule.error_cvc_required');
+            if (!/^\d{3,4}$/.test(v)) return t('schedule.error_cvc_invalid');
+            return '';
+        },
+    };
+
+    // Validate a single field and update errors state
+    const validateField = (name, value) => {
+        const validator = validators[name];
+        if (!validator) return '';
+        const error = validator(value);
+        setErrors(prev => ({ ...prev, [name]: error }));
+        return error;
+    };
+
+    // Mark field as touched on blur, then validate
+    const handleBlur = (e) => {
+        const { name, value } = e.target;
+        setTouched(prev => ({ ...prev, [name]: true }));
+        validateField(name, value);
+    };
+
+    // On change: always update formData; only re-validate if field was already touched
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
-        setFormData({ ...formData, [name]: type === 'checkbox' ? checked : value });
-        if (errors[name]) setErrors({ ...errors, [name]: '' });
+        const newValue = type === 'checkbox' ? checked : value;
+        setFormData(prev => ({ ...prev, [name]: newValue }));
+        if (touched[name]) {
+            validateField(name, newValue);
+        }
     };
 
-    // Real-time Stripe field validation — mirrors your existing per-field error pattern
-    const handleStripeChange = (field) => (e) => {
-        setStripeErrors(prev => ({ ...prev, [field]: e.error ? e.error.message : '' }));
-    };
+    // ─── Step validators (used on Next click) ───────────────────────────────
 
     const validateStep1 = () => {
-        const e = {};
-        if (!formData.fullName.trim())    e.fullName    = t('schedule.error_full_name_required');
-        if (!formData.phoneNumber.trim()) e.phoneNumber = t('schedule.error_phone_required');
-        else if (!/^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/.test(formData.phoneNumber.replace(/\s/g, '')))
-            e.phoneNumber = t('schedule.error_phone_invalid');
-        if (!formData.street.trim()) e.street = t('schedule.error_street_required');
-        if (!formData.city.trim())   e.city   = t('schedule.error_city_required');
-        if (!formData.zip.trim())    e.zip    = t('schedule.error_zip_required');
-        else if (!/^\d{4}$/.test(formData.zip)) e.zip = t('schedule.error_zip_invalid');
-        return e;
+        const fields = ['fullName', 'phoneNumber', 'street', 'city', 'zip'];
+        const newErrors = {};
+        const newTouched = {};
+        fields.forEach(field => {
+            newTouched[field] = true;
+            const error = validators[field]?.(formData[field]) ?? '';
+            if (error) newErrors[field] = error;
+        });
+        setTouched(prev => ({ ...prev, ...newTouched }));
+        setErrors(prev => ({ ...prev, ...newErrors }));
+        return newErrors;
     };
 
     const validateStep2 = () => {
-        const e = {};
-        if (!formData.pickupDate) {
-            e.pickupDate = t('schedule.error_date_required');
-        } else {
-            const selected = new Date(formData.pickupDate);
-            const today = new Date(); today.setHours(0, 0, 0, 0);
-            if (selected < today) e.pickupDate = t('schedule.error_date_past');
-        }
-        if (!formData.preferredTime)         e.preferredTime  = t('schedule.error_time_required');
-        if (!formData.cardholderName.trim()) e.cardholderName = t('schedule.error_cardholder_required');
-        return e;
+        const fields = ['pickupDate', 'preferredTime', 'cardholderName', 'cardNumber', 'cardExpiry', 'cardCvc'];
+        const newErrors = {};
+        const newTouched = {};
+        fields.forEach(field => {
+            newTouched[field] = true;
+            const error = validators[field]?.(formData[field]) ?? '';
+            if (error) newErrors[field] = error;
+        });
+        setTouched(prev => ({ ...prev, ...newTouched }));
+        setErrors(prev => ({ ...prev, ...newErrors }));
+        return newErrors;
     };
+
+    // ─── Navigation ─────────────────────────────────────────────────────────
 
     const nextStep = () => {
         if (currentStep === 1) {
             const validationErrors = validateStep1();
             if (Object.keys(validationErrors).length > 0) {
-                setErrors(validationErrors);
                 const first = document.getElementsByName(Object.keys(validationErrors)[0])[0];
                 if (first) { first.scrollIntoView({ behavior: 'smooth', block: 'center' }); first.focus(); }
                 return;
             }
-            setErrors({});
             setCurrentStep(2);
         }
-
         if (currentStep === 2) {
-            handleTokenizeCard();
+            const validationErrors = validateStep2();
+            if (Object.keys(validationErrors).length > 0) return;
+            setCurrentStep(3);
         }
     };
 
     const prevStep = () => {
-        setErrors({});
         setPaymentError('');
         if (currentStep > 1) setCurrentStep(currentStep - 1);
     };
 
-    /**
-     * Step 2 "Continue" — tokenize the card via Stripe.js.
-     * Stripe's hosted iframes send card data directly to Stripe servers.
-     * We only receive a pm_xxx token — raw card data never touches your server.
-     */
-    const handleTokenizeCard = async () => {
-        const validationErrors = validateStep2();
-        if (Object.keys(validationErrors).length > 0) {
-            setErrors(validationErrors);
-            return;
-        }
-        if (!stripe || !elements) return;
+    // ─── Submit ──────────────────────────────────────────────────────────────
 
-        setIsProcessing(true);
-        setPaymentError('');
-
-        const { error, paymentMethod } = await stripe.createPaymentMethod({
-            type: 'card',
-            card: elements.getElement(CardNumberElement),
-            billing_details: { name: formData.cardholderName },
-        });
-
-        setIsProcessing(false);
-
-        if (error) {
-            // Map error to the specific field if Stripe tells us which one
-            if (error.code?.startsWith('invalid_number') || error.code === 'incomplete_number') {
-                setStripeErrors(prev => ({ ...prev, cardNumber: error.message }));
-            } else if (error.code?.includes('expir')) {
-                setStripeErrors(prev => ({ ...prev, cardExpiry: error.message }));
-            } else if (error.code?.includes('cvc') || error.code?.includes('security')) {
-                setStripeErrors(prev => ({ ...prev, cardCvc: error.message }));
-            } else {
-                setPaymentError(error.message);
-            }
-            return;
-        }
-
-        // Store token + safe display metadata only
-        setPaymentMethodId(paymentMethod.id);
-        setCardMeta({
-            last4:  paymentMethod.card.last4,
-            expiry: `${String(paymentMethod.card.exp_month).padStart(2, '0')}/${String(paymentMethod.card.exp_year).slice(-2)}`,
-            brand:  paymentMethod.card.brand,
-        });
-
-        setErrors({});
-        setCurrentStep(3);
-    };
-
-    /**
-     * Step 3 "Confirm Pickup":
-     * POST pm_xxx + form data → backend creates Customer, attaches PM, charges.
-     * stripe.confirmCardPayment() handles 3DS authentication if required.
-     * Booking only confirmed once Stripe webhook fires — not here.
-     */
     const handleSubmit = async () => {
-        if (!stripe || isProcessing) return;
-
+        if (isProcessing) return;
         if (cart.length === 0) {
             setPaymentError(t('schedule.error_no_items'));
             return;
         }
-
         setIsProcessing(true);
         setPaymentError('');
-
         try {
+            const cardNum = formData.cardNumber.replace(/\s/g, '');
             const response = await fetch('/schedule', {
                 method: 'POST',
                 headers: {
@@ -236,46 +205,25 @@ function PickupSchedulerInner() {
                     preferred_time:       formData.preferredTime,
                     special_instructions: formData.specialInstructions,
                     cardholder_name:      formData.cardholderName,
-                    payment_method_id:    paymentMethodId,
-                    card_last_four:       cardMeta.last4,
-                    card_expiry:          cardMeta.expiry,
-                    items:                cart.map(item => ({
-                        id:       item.id,
-                        name:     item.name,
-                        price:    item.price,
-                        quantity: item.quantity,
+                    card_number:          cardNum,
+                    card_expiry:          formData.cardExpiry,
+                    card_cvc:             formData.cardCvc,
+                    card_last_four:       cardNum.slice(-4),
+                    items: cart.map(item => ({
+                        id: item.id, name: item.name, price: item.price, quantity: item.quantity,
                     })),
                 }),
             });
-
             const data = await response.json();
-
             if (!response.ok) {
                 if (data.errors) setErrors(data.errors);
                 else setPaymentError(data.message || t('schedule.error_generic'));
                 setIsProcessing(false);
                 return;
             }
-
-            if (data.status === 'requires_action' || data.status === 'requires_confirmation') {
-                const { error: confirmError, paymentIntent } = await stripe.confirmCardPayment(data.client_secret);
-                if (confirmError) {
-                    setPaymentError(confirmError.message || t('schedule.error_3ds_failed'));
-                    setIsProcessing(false);
-                    return;
-                }
-                if (paymentIntent.status !== 'succeeded') {
-                    setPaymentError(t('schedule.error_payment_incomplete'));
-                    setIsProcessing(false);
-                    return;
-                }
-            }
-
-            // Clear cart on success
             localStorage.removeItem('laundryServiceCart');
             setCart([]);
             setIsSubmitted(true);
-
         } catch (err) {
             setPaymentError(t('schedule.error_generic'));
         } finally {
@@ -283,17 +231,81 @@ function PickupSchedulerInner() {
         }
     };
 
-    // Your original inputClass — untouched
-    const inputClass = (field) =>
-        `w-full px-4 py-3 bg-gray-50 rounded-lg focus:outline-none ${
-            errors[field] ? 'border-2 border-red-500' : 'border-0 focus:ring-2 focus:ring-purple-500'
-        }`;
+    // ─── Input class helpers ─────────────────────────────────────────────────
 
-    // Same as your card inputs (bg-white border) — used as wrapper for Stripe iframes
-    const stripeWrapperClass = (field) =>
-        `w-full px-4 py-3 bg-white border rounded-lg focus-within:ring-2 focus-within:ring-purple-500 focus-within:outline-none transition-all ${
-            stripeErrors[field] ? 'border-2 border-red-500' : 'border-gray-200'
+    // Returns '' | 'error' | 'success' for a field
+    const fieldStatus = (name) => {
+        if (!touched[name]) return '';
+        if (errors[name])   return 'error';
+        return 'success';
+    };
+
+    const inputClass = (field) => {
+        const status = fieldStatus(field);
+        return `w-full px-4 py-3 bg-gray-50 rounded-lg focus:outline-none transition-all ${
+            status === 'error'   ? 'border-2 border-red-500 bg-red-50'
+          : status === 'success' ? 'border-2 border-green-500 bg-green-50'
+          : 'border-0 focus:ring-2 focus:ring-purple-500'
         }`;
+    };
+
+    const cardInputClass = (field) => {
+        const status = fieldStatus(field);
+        return `w-full px-4 py-3 bg-white border rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none transition-all ${
+            status === 'error'   ? 'border-2 border-red-500 bg-red-50'
+          : status === 'success' ? 'border-2 border-green-500 bg-green-50'
+          : 'border-gray-200'
+        }`;
+    };
+
+    // Small icon shown at the right of touched fields
+    const FieldIcon = ({ name }) => {
+        const status = fieldStatus(name);
+        if (!status) return null;
+        if (status === 'success') return (
+            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-green-500 pointer-events-none">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+            </span>
+        );
+        return (
+            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-red-400 pointer-events-none">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+            </span>
+        );
+    };
+
+    // ─── Card-specific handlers ──────────────────────────────────────────────
+
+    const expiryRef = useRef(null);
+    const cvcRef    = useRef(null);
+
+    const handleCardNumberChange = (e) => {
+        let value = e.target.value.replace(/[^\d]/g, '').slice(0, 16);
+        value = value.replace(/(\d{4})(?=\d)/g, '$1 ');
+        setFormData(prev => ({ ...prev, cardNumber: value }));
+        if (touched.cardNumber) validateField('cardNumber', value);
+        if (value.replace(/\s/g, '').length === 16) expiryRef.current?.focus();
+    };
+
+    const handleCardExpiryChange = (e) => {
+        let value = e.target.value.replace(/[^\d]/g, '').slice(0, 4);
+        if (value.length >= 3) value = value.slice(0, 2) + '/' + value.slice(2);
+        setFormData(prev => ({ ...prev, cardExpiry: value }));
+        if (touched.cardExpiry) validateField('cardExpiry', value);
+        if (value.replace(/[^\d]/g, '').length === 4) cvcRef.current?.focus();
+    };
+
+    const handleCardCvcChange = (e) => {
+        const value = e.target.value.replace(/[^\d]/g, '').slice(0, 4);
+        setFormData(prev => ({ ...prev, cardCvc: value }));
+        if (touched.cardCvc) validateField('cardCvc', value);
+    };
+
+    // ─── Render ──────────────────────────────────────────────────────────────
 
     return (
         <AppHeaderLayout>
@@ -309,7 +321,7 @@ function PickupSchedulerInner() {
                             <p className="text-gray-600">{t('schedule.subtitle')}</p>
                         </div>
 
-                        {/* Progress Steps — untouched */}
+                        {/* Progress Steps */}
                         <div className="mb-12">
                             <div className="flex items-center justify-center">
                                 {[
@@ -336,7 +348,7 @@ function PickupSchedulerInner() {
 
                         <div className="bg-white rounded-2xl shadow-xl p-8">
 
-                            {/* Step 1 — Contact (unchanged) */}
+                            {/* ── Step 1 — Contact ── */}
                             {currentStep === 1 && (
                                 <div>
                                     <div className="bg-purple-50 rounded-lg p-4 mb-6 flex items-start gap-3">
@@ -351,30 +363,42 @@ function PickupSchedulerInner() {
                                             <p className="text-sm text-gray-600">{t('schedule.contact_subtitle')}</p>
                                         </div>
                                     </div>
+
                                     <div className="space-y-4">
                                         {[
                                             { name: 'fullName',    labelKey: 'schedule.full_name',    type: 'text', placeholder: 'John Doe' },
                                             { name: 'phoneNumber', labelKey: 'schedule.phone_number', type: 'tel',  placeholder: '(555) 123-4567' },
                                             { name: 'street',      labelKey: 'schedule.street',       type: 'text', placeholder: '123 Main St' },
                                             { name: 'city',        labelKey: 'schedule.city_state',   type: 'text', placeholder: 'Brockton, MA' },
-                                            { name: 'zip',         labelKey: 'schedule.zip',          type: 'text', placeholder: '0230', maxLength: 4, inputMode: 'numeric', onInput: (e) => { e.target.value = e.target.value.replace(/[^0-9]/g, '').slice(0, 4); } },
+                                            { name: 'zip',         labelKey: 'schedule.zip',          type: 'text', placeholder: '02300', maxLength: 5, inputMode: 'numeric',
+                                              onInput: (e) => { e.target.value = e.target.value.replace(/[^0-9]/g, '').slice(0, 5); } },
                                         ].map(({ name, labelKey, type, placeholder, maxLength, inputMode, onInput }) => (
                                             <div key={name}>
                                                 <label className="block text-sm font-medium text-gray-700 mb-2">
                                                     {t(labelKey)} <span className="text-red-500">*</span>
                                                 </label>
-                                                <input
-                                                    type={type} name={name} value={formData[name]}
-                                                    onChange={handleChange} placeholder={placeholder}
-                                                    maxLength={maxLength}
-                                                    inputMode={inputMode}
-                                                    onInput={onInput}
-                                                    className={inputClass(name)}
-                                                />
-                                                {errors[name] && <p className="mt-1 text-sm text-red-500">{errors[name]}</p>}
+                                                <div className="relative">
+                                                    <input
+                                                        type={type} name={name} value={formData[name]}
+                                                        onChange={handleChange}
+                                                        onBlur={handleBlur}
+                                                        placeholder={placeholder}
+                                                        maxLength={maxLength}
+                                                        inputMode={inputMode}
+                                                        onInput={onInput}
+                                                        className={inputClass(name)}
+                                                    />
+                                                    <FieldIcon name={name} />
+                                                </div>
+                                                {touched[name] && errors[name] && (
+                                                    <p className="mt-1 text-sm text-red-500 flex items-center gap-1">
+                                                        {errors[name]}
+                                                    </p>
+                                                )}
                                             </div>
                                         ))}
                                     </div>
+
                                     <button onClick={nextStep} className="inline-flex items-center justify-center gap-2 text-sm font-medium h-10 rounded-md px-6 w-full bg-[#361b6b] text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 mt-5">
                                         {t('schedule.continue_schedule')}
                                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
@@ -382,7 +406,7 @@ function PickupSchedulerInner() {
                                 </div>
                             )}
 
-                            {/* Step 2 — Schedule + Payment */}
+                            {/* ── Step 2 — Schedule + Payment ── */}
                             {currentStep === 2 && (
                                 <div className="space-y-6">
                                     <div className="bg-purple-50 rounded-lg p-4 flex items-start gap-3">
@@ -400,13 +424,28 @@ function PickupSchedulerInner() {
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                         <div>
                                             <label className="block text-sm font-medium text-gray-700 mb-2">{t('schedule.pickup_date')} <span className="text-red-500">*</span></label>
-                                            <input type="date" name="pickupDate" value={formData.pickupDate} onChange={handleChange} min={new Date().toISOString().split('T')[0]} className={inputClass('pickupDate')} style={{ colorScheme: 'light' }} />
-                                            {errors.pickupDate && <p className="mt-1 text-sm text-red-500">{errors.pickupDate}</p>}
+                                            <div className="relative">
+                                                <input
+                                                    type="date" name="pickupDate" value={formData.pickupDate}
+                                                    onChange={handleChange} onBlur={handleBlur}
+                                                    min={new Date().toISOString().split('T')[0]}
+                                                    className={inputClass('pickupDate')} style={{ colorScheme: 'light' }}
+                                                />
+                                                <FieldIcon name="pickupDate" />
+                                            </div>
+                                            {touched.pickupDate && errors.pickupDate && <p className="mt-1 text-sm text-red-500">{errors.pickupDate}</p>}
                                         </div>
                                         <div>
                                             <label className="block text-sm font-medium text-gray-700 mb-2">{t('schedule.preferred_time')} <span className="text-red-500">*</span></label>
-                                            <input type="time" name="preferredTime" value={formData.preferredTime} onChange={handleChange} className={inputClass('preferredTime')} style={{ colorScheme: 'light' }} />
-                                            {errors.preferredTime && <p className="mt-1 text-sm text-red-500">{errors.preferredTime}</p>}
+                                            <div className="relative">
+                                                <input
+                                                    type="time" name="preferredTime" value={formData.preferredTime}
+                                                    onChange={handleChange} onBlur={handleBlur}
+                                                    className={inputClass('preferredTime')} style={{ colorScheme: 'light' }}
+                                                />
+                                                <FieldIcon name="preferredTime" />
+                                            </div>
+                                            {touched.preferredTime && errors.preferredTime && <p className="mt-1 text-sm text-red-500">{errors.preferredTime}</p>}
                                         </div>
                                     </div>
 
@@ -414,10 +453,16 @@ function PickupSchedulerInner() {
                                         <label className="block text-sm font-medium text-gray-700 mb-2">
                                             {t('schedule.special_instructions')} <span className="text-gray-400 text-xs">({t('schedule.optional')})</span>
                                         </label>
-                                        <textarea name="specialInstructions" value={formData.specialInstructions} onChange={handleChange} placeholder={t('schedule.special_instructions_placeholder')} rows="3" className="w-full px-4 py-3 bg-gray-50 border-0 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none resize-none" />
+                                        <textarea
+                                            name="specialInstructions" value={formData.specialInstructions}
+                                            onChange={handleChange}
+                                            placeholder={t('schedule.special_instructions_placeholder')}
+                                            rows="3"
+                                            className="w-full px-4 py-3 bg-gray-50 border-0 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none resize-none"
+                                        />
                                     </div>
 
-                                    {/* Payment section — same structure, Stripe iframes replace raw inputs */}
+                                    {/* Payment section */}
                                     <div className="bg-green-50 border border-green-200 rounded-lg p-4">
                                         <div className="flex items-start gap-3 mb-4">
                                             <div className="w-10 h-10 bg-green-500 rounded-lg flex items-center justify-center flex-shrink-0">
@@ -430,44 +475,72 @@ function PickupSchedulerInner() {
                                         </div>
                                         <div className="space-y-4">
 
-                                            {/* Cardholder Name — plain input, not sensitive */}
+                                            {/* Cardholder Name */}
                                             <div>
                                                 <label className="block text-sm font-medium text-gray-700 mb-2">{t('schedule.cardholder_name')} <span className="text-red-500">*</span></label>
-                                                <input
-                                                    type="text"
-                                                    name="cardholderName"
-                                                    value={formData.cardholderName}
-                                                    onChange={handleChange}
-                                                    className={`w-full px-4 py-3 bg-white border rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none ${errors.cardholderName ? 'border-2 border-red-500' : 'border-gray-200'}`}
-                                                />
-                                                {errors.cardholderName && <p className="mt-1 text-sm text-red-500">{errors.cardholderName}</p>}
+                                                <div className="relative">
+                                                    <input
+                                                        type="text" name="cardholderName" value={formData.cardholderName}
+                                                        onChange={handleChange} onBlur={handleBlur}
+                                                        placeholder="John Doe"
+                                                        className={cardInputClass('cardholderName')}
+                                                    />
+                                                    <FieldIcon name="cardholderName" />
+                                                </div>
+                                                {touched.cardholderName && errors.cardholderName && <p className="mt-1 text-sm text-red-500">{errors.cardholderName}</p>}
                                             </div>
 
                                             {/* Card Number */}
-                                            <div className={stripeWrapperClass('cardNumber')}>
-                                                <CardNumberElement
-                                                    options={{
-                                                        ...STRIPE_STYLE,
-                                                        showIcon: true,
-                                                    }}
-                                                    onChange={handleStripeChange('cardNumber')}
-                                                />
+                                            <div>
+                                                <label className="block text-sm font-medium text-gray-700 mb-2">{t('schedule.card_number')} <span className="text-red-500">*</span></label>
+                                                <div className="relative">
+                                                    <input
+                                                        type="text" name="cardNumber" value={formData.cardNumber}
+                                                        onChange={handleCardNumberChange}
+                                                        onBlur={handleBlur}
+                                                        placeholder="4242 4242 4242 4242"
+                                                        inputMode="numeric" autoComplete="cc-number" maxLength={19}
+                                                        className={cardInputClass('cardNumber')}
+                                                    />
+                                                    <FieldIcon name="cardNumber" />
+                                                </div>
+                                                {touched.cardNumber && errors.cardNumber && <p className="mt-1 text-sm text-red-500">{errors.cardNumber}</p>}
                                             </div>
 
-                                            {/* Expiry */}
-                                            <div className={stripeWrapperClass('cardExpiry')}>
-                                                <CardExpiryElement
-                                                    options={STRIPE_STYLE}
-                                                    onChange={handleStripeChange('cardExpiry')}
-                                                />
-                                            </div>
-
-                                            {/* CVC */}
-                                            <div className={stripeWrapperClass('cardCvc')}>
-                                                <CardCvcElement
-                                                    options={STRIPE_STYLE}
-                                                    onChange={handleStripeChange('cardCvc')}
-                                                />
+                                            {/* Expiry + CVC */}
+                                            <div className="grid grid-cols-2 gap-4">
+                                                <div>
+                                                    <label className="block text-sm font-medium text-gray-700 mb-2">{t('schedule.expiry_date')} <span className="text-red-500">*</span></label>
+                                                    <div className="relative">
+                                                        <input
+                                                            ref={expiryRef}
+                                                            type="text" name="cardExpiry" value={formData.cardExpiry}
+                                                            onChange={handleCardExpiryChange}
+                                                            onBlur={handleBlur}
+                                                            placeholder="MM/YY"
+                                                            inputMode="numeric" autoComplete="cc-exp" maxLength={5}
+                                                            className={cardInputClass('cardExpiry')}
+                                                        />
+                                                        <FieldIcon name="cardExpiry" />
+                                                    </div>
+                                                    {touched.cardExpiry && errors.cardExpiry && <p className="mt-1 text-sm text-red-500">{errors.cardExpiry}</p>}
+                                                </div>
+                                                <div>
+                                                    <label className="block text-sm font-medium text-gray-700 mb-2">{t('schedule.cvc')} <span className="text-red-500">*</span></label>
+                                                    <div className="relative">
+                                                        <input
+                                                            ref={cvcRef}
+                                                            type="text" name="cardCvc" value={formData.cardCvc}
+                                                            onChange={handleCardCvcChange}
+                                                            onBlur={handleBlur}
+                                                            placeholder="123"
+                                                            inputMode="numeric" autoComplete="cc-csc" maxLength={4}
+                                                            className={cardInputClass('cardCvc')}
+                                                        />
+                                                        <FieldIcon name="cardCvc" />
+                                                    </div>
+                                                    {touched.cardCvc && errors.cardCvc && <p className="mt-1 text-sm text-red-500">{errors.cardCvc}</p>}
+                                                </div>
                                             </div>
 
                                         </div>
@@ -490,7 +563,7 @@ function PickupSchedulerInner() {
                                         </button>
                                         <button
                                             onClick={nextStep}
-                                            disabled={!formData.cardConsent || isProcessing || !stripe}
+                                            disabled={!formData.cardConsent || isProcessing}
                                             className="inline-flex items-center justify-center gap-2 text-sm font-medium h-10 rounded-md px-6 w-full bg-[#361b6b] text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 disabled:opacity-50 disabled:pointer-events-none disabled:grayscale"
                                         >
                                             {isProcessing ? (
@@ -512,7 +585,7 @@ function PickupSchedulerInner() {
                                 </div>
                             )}
 
-                            {/* Step 3 — Review (unchanged structure, updated payment summary) */}
+                            {/* ── Step 3 — Review ── */}
                             {currentStep === 3 && (
                                 <div className="space-y-6">
 
@@ -567,7 +640,7 @@ function PickupSchedulerInner() {
                                         </div>
                                         <div className="bg-white rounded-lg px-4 py-2">
                                             <p className="text-purple-600 font-medium text-xs">{t('schedule.label_payment')}</p>
-                                            <p className="text-black capitalize">{cardMeta.brand} •••• {cardMeta.last4} &nbsp; exp {cardMeta.expiry}</p>
+                                            <p className="text-black">•••• •••• •••• {formData.cardNumber.replace(/\s/g, '').slice(-4)} &nbsp; exp {formData.cardExpiry}</p>
                                         </div>
                                     </div>
 
@@ -608,12 +681,13 @@ function PickupSchedulerInner() {
                                                 onClick={() => {
                                                     setIsSubmitted(false);
                                                     setCurrentStep(1);
-                                                    setPaymentMethodId('');
-                                                    setCardMeta({ last4: '', expiry: '', brand: '' });
+                                                    setTouched({});
+                                                    setErrors({});
                                                     setFormData({
                                                         fullName: '', phoneNumber: '', street: '', city: '', zip: '',
                                                         pickupDate: '', preferredTime: '', specialInstructions: '',
-                                                        cardholderName: '', cardConsent: false,
+                                                        cardholderName: '', cardNumber: '', cardExpiry: '', cardCvc: '',
+                                                        cardConsent: false,
                                                     });
                                                 }}
                                                 className="h-10 px-6 w-full bg-[#361b6b] text-white rounded-md shadow-lg hover:scale-105 transition-all"
