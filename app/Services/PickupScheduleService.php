@@ -34,19 +34,19 @@ class PickupScheduleService
     {
         return DB::transaction(function () use ($data) {
 
-            // 1. Persist schedule as 'pending'
+            // Persist schedule as 'pending'
             $schedule = $this->scheduleRepository->create($data);
 
-            // 2. Persist order items atomically with the schedule
+            // Persist order items atomically with the schedule
             if (!empty($data->items)) {
                 $this->orderItemRepository->createForSchedule($schedule->id, $data->items);
             }
 
-            // 3. Vault customer + payment method in gateway
+            // Vault customer + payment method in gateway
             $customerId = $this->paymentGateway->createCustomer($data);
             $this->paymentGateway->attachPaymentMethod($customerId, $data->paymentMethodId);
 
-            // 4. Charge immediately.
+            // Charge immediately.
             //    Idempotency key ties this specific schedule to exactly one charge.
             //    If the network drops and we retry, Stripe returns the existing intent
             //    instead of creating a new one — prevents double-charging.
@@ -63,7 +63,7 @@ class PickupScheduleService
                 ]
             );
 
-            // 5. Persist gateway identifiers — safe to store, not sensitive
+            // Persist gateway identifiers — safe to store, not sensitive
             $this->scheduleRepository->updatePaymentIntent(
                 scheduleId:      $schedule->id,
                 intentId:        $result->paymentIntentId,
