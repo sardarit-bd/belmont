@@ -3,7 +3,7 @@ import { useEffect, useRef, useState, useCallback } from 'react';
 
 function StarIcon({ filled }) {
     return (
-        <svg width="14" height="14" viewBox="0 0 24 24" style={{ opacity: filled ? 1 : 0.2 }}>
+        <svg width="18" height="18" viewBox="0 0 24 24" style={{ opacity: filled ? 1 : 0.2 }}>
             <polygon
                 points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"
                 fill="#534AB7"
@@ -117,7 +117,7 @@ export default function Testimonial({ testimonials = [] }) {
                                     </div>
 
                                     {/* Quote */}
-                                    <p className="text-gray-700 leading-relaxed text-[15px] flex-1 mb-6 font-serif">
+                                    <p className="text-gray-700 leading-relaxed text-[18px] flex-1 mb-6 font-serif">
                                         "{testimonial.text}"
                                     </p>
 
@@ -127,10 +127,10 @@ export default function Testimonial({ testimonials = [] }) {
                                             {initials(testimonial.name)}
                                         </div>
                                         <div>
-                                            <p className="text-[13px] font-semibold text-gray-900 leading-tight">
+                                            <p className="text-[15px] font-semibold text-gray-900 leading-tight">
                                                 {testimonial.name}
                                             </p>
-                                            <p className="text-[12px] text-gray-500 leading-tight mt-0.5">
+                                            <p className="text-[13px] text-gray-500 leading-tight mt-0.5">
                                                 {testimonial.title}
                                                 {testimonial.company && (
                                                     <span className="text-gray-400"> · {testimonial.company}</span>
