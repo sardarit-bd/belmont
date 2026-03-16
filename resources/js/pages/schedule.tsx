@@ -109,7 +109,7 @@ function PickupSchedulerInner() {
         if (!formData.street.trim()) e.street = t('schedule.error_street_required');
         if (!formData.city.trim())   e.city   = t('schedule.error_city_required');
         if (!formData.zip.trim())    e.zip    = t('schedule.error_zip_required');
-        else if (!/^\d{5}(-\d{4})?$/.test(formData.zip)) e.zip = t('schedule.error_zip_invalid');
+        else if (!/^\d{4}$/.test(formData.zip)) e.zip = t('schedule.error_zip_invalid');
         return e;
     };
 
@@ -357,8 +357,8 @@ function PickupSchedulerInner() {
                                             { name: 'phoneNumber', labelKey: 'schedule.phone_number', type: 'tel',  placeholder: '(555) 123-4567' },
                                             { name: 'street',      labelKey: 'schedule.street',       type: 'text', placeholder: '123 Main St' },
                                             { name: 'city',        labelKey: 'schedule.city_state',   type: 'text', placeholder: 'Brockton, MA' },
-                                            { name: 'zip',         labelKey: 'schedule.zip',          type: 'text', placeholder: '02301', maxLength: 10 },
-                                        ].map(({ name, labelKey, type, placeholder, maxLength }) => (
+                                            { name: 'zip',         labelKey: 'schedule.zip',          type: 'text', placeholder: '0230', maxLength: 4, inputMode: 'numeric', onInput: (e) => { e.target.value = e.target.value.replace(/[^0-9]/g, '').slice(0, 4); } },
+                                        ].map(({ name, labelKey, type, placeholder, maxLength, inputMode, onInput }) => (
                                             <div key={name}>
                                                 <label className="block text-sm font-medium text-gray-700 mb-2">
                                                     {t(labelKey)} <span className="text-red-500">*</span>
@@ -367,6 +367,8 @@ function PickupSchedulerInner() {
                                                     type={type} name={name} value={formData[name]}
                                                     onChange={handleChange} placeholder={placeholder}
                                                     maxLength={maxLength}
+                                                    inputMode={inputMode}
+                                                    onInput={onInput}
                                                     className={inputClass(name)}
                                                 />
                                                 {errors[name] && <p className="mt-1 text-sm text-red-500">{errors[name]}</p>}
