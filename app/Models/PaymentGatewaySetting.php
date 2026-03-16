@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Log;
 
 class PaymentGatewaySetting extends Model
 {
@@ -24,6 +26,15 @@ class PaymentGatewaySetting extends Model
 
     public function getCredential(string $key): ?string
     {
-        return $this->credentials[$key] ?? null;
+        try {
+            return $this->credentials[$key] ?? null;
+        } catch (DecryptException $e) {
+            Log::error('PaymentGatewaySetting: failed to decrypt credentials — APP_KEY may have changed.', [
+                'gateway' => $this->gateway,
+                'error'   => $e->getMessage(),
+            ]);
+
+            return null;
+        }
     }
 }
