@@ -16,6 +16,7 @@ return [
     'city_state'       => '城市/州',
     'zip'              => '邮政编码',
     'continue_schedule'=> '继续安排',
+    'error_expiry_expired' => '您的卡已过期',
 
     'schedule_title'    => '选择合适的时间',
     'schedule_subtitle' => '我们什么时候方便过来？',

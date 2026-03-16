@@ -16,6 +16,7 @@ return [
     'city_state'       => 'Vil/Eta',
     'zip'              => 'Kòd Postal',
     'continue_schedule'=> 'Kontinye pou Orè',
+    'error_expiry_expired' => 'Kat ou a ekspire',
 
     'schedule_title'    => 'Chwazi Bon Lè a',
     'schedule_subtitle' => 'Kilè nou ka pase?',

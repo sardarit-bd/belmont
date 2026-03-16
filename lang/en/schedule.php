@@ -38,6 +38,7 @@ return [
     'cvc'              => 'CVC',
     'card_consent'     => 'I acknowledge and authorize :company to charge my provided credit or debit card upon the successful completion of the cleaning services.',
     'continue_review'  => 'Continue to Review',
+    'error_expiry_expired' => 'Your card has expired',
 
     // Step 3
     'review_title'     => 'Almost There!',

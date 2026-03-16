@@ -16,6 +16,7 @@ return [
     'city_state'       => 'Ville/État',
     'zip'              => 'Code postal',
     'continue_schedule'=> 'Continuer vers la planification',
+    'error_expiry_expired' => 'Votre carte a expiré',
 
     'schedule_title'    => 'Choisissez l\'heure idéale',
     'schedule_subtitle' => 'Quand devrions-nous passer ?',

@@ -16,6 +16,7 @@ return [
     'city_state'       => 'Ciudad/Estado',
     'zip'              => 'Código Postal',
     'continue_schedule'=> 'Continuar a Programación',
+    'error_expiry_expired' => 'Su tarjeta ha expirado',
 
     'schedule_title'    => 'Elige tu Hora Perfecta',
     'schedule_subtitle' => '¿Cuándo deberíamos pasar?',
