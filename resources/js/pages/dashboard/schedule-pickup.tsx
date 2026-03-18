@@ -5,7 +5,6 @@ interface Schedule {
     order_number:   string;
     status:         string;
     status_label:   string;
-    status_color:   string;
     payment_status: string;
     pickup_date:    string;
     preferred_time: string;
@@ -14,90 +13,108 @@ interface Schedule {
     items:          { name: string; quantity: number }[];
 }
 
-const STATUS_ICONS: Record<string, string> = {
-    pending:          '⏳',
-    confirmed:        '✅',
-    picked_up:        '🚗',
-    being_cleaned:    '🧺',
-    out_for_delivery: '🚚',
-    delivered:        '🎉',
-    cancelled:        '❌',
+// ─── Status config ─────────────────────────────────────────────────────────
+
+const STATUS_PILL: Record<string, { bg: string; text: string; border: string }> = {
+    pending:   { bg: '#F1F5F9', text: '#475569', border: '#E2E8F0' },
+    confirmed: { bg: '#DBEAFE', text: '#1D4ED8', border: '#BFDBFE' },
 };
 
-const STATUS_BADGE: Record<string, string> = {
-    pending:          'bg-gray-50 text-gray-500 border-gray-200',
-    confirmed:        'bg-blue-50 text-blue-600 border-blue-100',
-    picked_up:        'bg-amber-50 text-amber-700 border-amber-100',
-    being_cleaned:    'bg-purple-50 text-purple-700 border-purple-100',
-    out_for_delivery: 'bg-orange-50 text-orange-700 border-orange-100',
-    delivered:        'bg-emerald-50 text-emerald-700 border-emerald-100',
-    cancelled:        'bg-red-50 text-red-600 border-red-100',
+const STATUS_ICON_BG: Record<string, { bg: string; color: string }> = {
+    pending:   { bg: '#F1F5F9', color: '#64748B' },
+    confirmed: { bg: '#EFF6FF', color: '#2563EB' },
 };
 
-function UpcomingCard({ schedule }: { schedule: Schedule }) {
-    const icon       = STATUS_ICONS[schedule.status] ?? '📦';
-    const badgeClass = STATUS_BADGE[schedule.status] ?? 'bg-gray-50 text-gray-500 border-gray-200';
-    const summary    = schedule.items.length > 0
-        ? schedule.items.map(i => `${i.quantity}× ${i.name}`).join(', ')
+// ─── Calendar icon ──────────────────────────────────────────────────────────
+
+function CalendarIcon({ className, style }: { className?: string; style?: React.CSSProperties }) {
+    return (
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className={className}
+            style={style}
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={1.8}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+        >
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+            <line x1="16" y1="2" x2="16" y2="6"/>
+            <line x1="8" y1="2" x2="8" y2="6"/>
+            <line x1="3" y1="10" x2="21" y2="10"/>
+        </svg>
+    );
+}
+
+// ─── Single pickup card ─────────────────────────────────────────────────────
+
+function PickupRow({ schedule }: { schedule: Schedule }) {
+    const pill      = STATUS_PILL[schedule.status]  ?? STATUS_PILL.pending;
+    const iconStyle = STATUS_ICON_BG[schedule.status] ?? STATUS_ICON_BG.pending;
+
+    const summary = schedule.items.length > 0
+        ? schedule.items.map((i) => `${i.quantity}× ${i.name}`).join(', ')
         : `${schedule.items_count} item(s)`;
 
     return (
-        <div className="rounded-xl border border-[#ede7da] bg-[#f7f3ec] p-4 transition-all hover:shadow-sm">
-            <div className="flex items-start justify-between gap-3">
-                <div className="flex items-center gap-3">
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white text-xl shadow-sm">
-                        {icon}
-                    </div>
-                    <div className="min-w-0">
-                        <div className="truncate text-sm font-semibold text-[#0d1b2a]">
-                            {schedule.pickup_date}
-                        </div>
-                        <div className="mt-0.5 text-[11px] text-[#8a9bb0]">
-                            {schedule.preferred_time}
-                        </div>
-                    </div>
-                </div>
-                <span className={`shrink-0 rounded-full border px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide ${badgeClass}`}>
-                    {schedule.status_label}
-                </span>
+        <div className="flex items-center gap-3 border-b border-slate-100 px-5 py-4 last:border-b-0">
+            {/* Icon */}
+            <div
+                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl"
+                style={{ background: iconStyle.bg, color: iconStyle.color }}
+            >
+                <CalendarIcon className="h-5 w-5" />
             </div>
 
-            <div className="mt-3 border-t border-[#ede7da] pt-3">
-                <p className="truncate text-xs text-[#8a9bb0]">{summary}</p>
-                <p className="mt-1 truncate text-[11px] text-[#8a9bb0]">
+            {/* Info */}
+            <div className="min-w-0 flex-1">
+                <p className="truncate text-sm font-semibold text-slate-800">
+                    {schedule.pickup_date}
+                </p>
+                <p className="mt-0.5 truncate text-xs text-slate-400">
+                    {schedule.preferred_time} · {summary}
+                </p>
+                <p className="mt-0.5 truncate text-[11px] text-slate-400">
                     📍 {schedule.full_address}
                 </p>
             </div>
 
-            <div className="mt-3 flex items-center justify-between">
-                <span className="text-xs font-medium text-[#c9a84c]">
+            {/* Status pill */}
+            <div className="shrink-0">
+                <span
+                    className="inline-block rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide"
+                    style={{
+                        background:   pill.bg,
+                        color:        pill.text,
+                        border:       `0.5px solid ${pill.border}`,
+                    }}
+                >
+                    {schedule.status_label}
+                </span>
+                <p className="mt-1.5 text-right text-[10px] font-semibold text-slate-400">
                     #{schedule.order_number}
-                </span>
-                <span className={`text-[11px] font-medium ${
-                    schedule.payment_status === 'confirmed'
-                        ? 'text-emerald-600'
-                        : schedule.payment_status === 'failed'
-                            ? 'text-red-500'
-                            : 'text-amber-600'
-                }`}>
-                    {schedule.payment_status === 'confirmed' ? '✓ Paid' : schedule.payment_status === 'failed' ? '✗ Failed' : '⏳ Pending'}
-                </span>
+                </p>
             </div>
         </div>
     );
 }
 
+// ─── Empty state ────────────────────────────────────────────────────────────
+
 function EmptyState() {
     return (
-        <div className="flex flex-col items-center justify-center py-10 text-center">
-            <div className="mb-3 flex h-14 w-14 items-center justify-center rounded-2xl bg-[#f7f3ec] text-3xl">
-                📅
+        <div className="flex flex-col items-center justify-center px-6 py-12 text-center">
+            <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl border border-blue-100 bg-gradient-to-br from-blue-50 to-purple-50">
+                <CalendarIcon className="h-7 w-7 text-blue-400" />
             </div>
-            <p className="text-sm font-medium text-[#0d1b2a]">No upcoming pickups</p>
-            <p className="mt-1 text-xs text-[#8a9bb0]">Ready for fresh, clean garments?</p>
+            <p className="text-sm font-semibold text-slate-700">No upcoming pickups</p>
+            <p className="mt-1 text-xs text-slate-400">Ready for fresh, clean garments?</p>
             <Link
                 href="/checkrate"
-                className="mt-4 rounded-full bg-[#0d1b2a] px-5 py-2 text-xs font-semibold text-white transition-colors hover:bg-[#1a2e45]"
+                className="mt-5 inline-flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 px-5 py-2 text-xs font-semibold text-white shadow-sm shadow-blue-200 transition-all hover:-translate-y-0.5 hover:shadow-md"
             >
                 Schedule a Pickup
             </Link>
@@ -105,42 +122,46 @@ function EmptyState() {
     );
 }
 
+// ─── Main export ─────────────────────────────────────────────────────────────
+
 export default function SchedulePickup() {
     const { activeSchedules } = usePage<{ activeSchedules: Schedule[] }>().props;
 
-    // Show upcoming — confirmed but not yet picked up
-    const upcoming = activeSchedules.filter(s =>
-        ['pending', 'confirmed'].includes(s.status)
+    const upcoming = activeSchedules.filter((s) =>
+        ['pending', 'confirmed'].includes(s.status),
     );
 
     return (
-        <div className="overflow-hidden rounded-2xl border border-[#ede7da] bg-white">
-            <div className="flex items-center justify-between border-b border-[#ede7da] px-6 py-5">
-                <div className="flex items-center gap-2">
-                    <span className="font-serif text-lg text-[#0d1b2a]">Upcoming Pickups</span>
+        <div className="flex flex-col overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-sm">
+            {/* Header */}
+            <div className="flex items-center justify-between border-b border-slate-100 px-5 py-4">
+                <div className="flex items-center gap-2.5">
+                    <div className="flex h-8 w-8 items-center justify-center rounded-lg border border-blue-100 bg-blue-50 text-blue-600">
+                        <CalendarIcon className="h-4 w-4" />
+                    </div>
+                    <h2 className="text-base font-bold text-slate-900">Upcoming Pickups</h2>
                     {upcoming.length > 0 && (
-                        <span className="rounded-full bg-[#0d1b2a] px-2 py-0.5 text-[10px] font-bold text-white">
+                        <span className="rounded-full bg-slate-900 px-2 py-0.5 text-[10px] font-bold text-white">
                             {upcoming.length}
                         </span>
                     )}
                 </div>
                 <Link
                     href="/checkrate"
-                    className="text-xs font-medium text-[#c9a84c] hover:underline"
+                    className="rounded-lg border border-blue-100 bg-blue-50 px-3 py-1.5 text-xs font-semibold text-blue-700 transition-all hover:bg-blue-600 hover:text-white hover:border-blue-600"
                 >
                     + New
                 </Link>
             </div>
 
-            <div className="px-6 py-5">
+            {/* List */}
+            <div className="flex flex-col">
                 {upcoming.length === 0 ? (
                     <EmptyState />
                 ) : (
-                    <div className="flex flex-col gap-3">
-                        {upcoming.map(schedule => (
-                            <UpcomingCard key={schedule.id} schedule={schedule} />
-                        ))}
-                    </div>
+                    upcoming.map((schedule) => (
+                        <PickupRow key={schedule.id} schedule={schedule} />
+                    ))
                 )}
             </div>
         </div>
