@@ -1,27 +1,31 @@
 <?php
-// app/Http/Controllers/Auth/ForgotPasswordController.php
 
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Auth\ForgotPasswordRequest;
-use App\Services\PasswordResetService;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Password;
 
 class ForgotPasswordController extends Controller
 {
-    public function __construct(
-        private readonly PasswordResetService $service,
-    ) {}
-
-    public function store(ForgotPasswordRequest $request): \Illuminate\Http\JsonResponse
+    public function store(Request $request)
     {
-        $this->service->sendResetLink(
-            $request->validated('email'),
-            $request->ip(),
+        $request->validate([
+            'email' => ['required', 'email'],
+        ]);
+
+        $status = Password::sendResetLink(
+            $request->only('email')
         );
 
-        return response()->json([
-            'message' => 'If that email is registered, a reset link is on its way.',
-        ]);
+        if ($status === Password::RESET_LINK_SENT || $status === Password::INVALID_USER) {
+            return back()->with('status', 'passwords.sent');
+        }
+
+        if ($status === Password::RESET_THROTTLED) {
+            return back()->with('status', 'passwords.throttled');
+        }
+
+        return back()->with('status', 'passwords.sent');
     }
 }

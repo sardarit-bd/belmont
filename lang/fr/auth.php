@@ -63,4 +63,11 @@ return [
     'sending_link'        => 'Envoi du lien...',
     'remembered'          => 'Vous vous en souvenez ?',
     'sign_in_instead'     => 'Se connecter à la place',
+
+    'failed'   => 'Ces identifiants ne correspondent pas à nos enregistrements.',
+    'password' => 'Le mot de passe fourni est incorrect.',
+    'throttle' => 'Trop de tentatives de connexion. Veuillez réessayer dans :seconds secondes.',
+    'status_reset_sent'      => 'Si cet e-mail existe dans notre système, nous vous avons envoyé un lien. Vérifiez votre boîte de réception.',
+    'status_reset_throttled' => 'Trop de tentatives. Veuillez patienter un moment avant de réessayer.',
+
 ];

@@ -63,4 +63,11 @@ return [
     'sending_link'        => 'Enviando enlace...',
     'remembered'          => '¿La recordaste?',
     'sign_in_instead'     => 'Iniciar sesión en su lugar',
+
+    'failed'   => 'Estas credenciales no coinciden con nuestros registros.',
+    'password' => 'La contraseña proporcionada es incorrecta.',
+    'throttle' => 'Demasiados intentos de acceso. Por favor, inténtalo de nuevo en :seconds segundos.',
+    'status_reset_sent'      => 'Si ese correo está en nuestro sistema, te hemos enviado un enlace. Revisa tu bandeja de entrada.',
+    'status_reset_throttled' => 'Demasiados intentos. Por favor, espera un momento antes de intentarlo de nuevo.',
+
 ];

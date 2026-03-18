@@ -63,4 +63,11 @@ return [
     'sending_link'        => '发送中...',
     'remembered'          => '记起来了？',
     'sign_in_instead'     => '改为登录',
+
+
+    'failed'   => '这些凭据与我们的记录不匹配。',
+    'password' => '提供的密码不正确。',
+    'throttle' => '登录尝试次数过多，请在 :seconds 秒后重试。',
+    'status_reset_sent'      => '如果该邮箱在我们的系统中，我们已发送了一封重置链接邮件，请检查您的收件箱。',
+    'status_reset_throttled' => '尝试次数过多，请稍等片刻后再试。',
 ];

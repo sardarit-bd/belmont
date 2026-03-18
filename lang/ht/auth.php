@@ -63,4 +63,11 @@ return [
     'sending_link'        => 'Ap voye lyen...',
     'remembered'          => 'Ou sonje li?',
     'sign_in_instead'     => 'Konekte olye de sa',
+
+    'failed'   => 'Enfòmasyon sa yo pa koresponn ak dosye nou yo.',
+    'password' => 'Modpas ou bay la pa kòrèk.',
+    'throttle' => 'Twòp tantativ koneksyon. Tanpri eseye ankò nan :seconds segonn.',
+    'status_reset_sent'      => 'Si imel sa a nan sistèm nou an, nou voye yon lyen. Tcheke bwat resepsyon ou.',
+    'status_reset_throttled' => 'Twòp tantativ. Tanpri tann yon ti moman anvan ou eseye ankò.',
+
 ];

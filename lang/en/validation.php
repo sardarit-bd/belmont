@@ -167,6 +167,16 @@ return [
     'ulid' => 'The :attribute field must be a valid ULID.',
     'uuid' => 'The :attribute field must be a valid UUID.',
 
+    // In the main array:
+    'email'    => 'The :attribute must be a valid email address.',
+    'required' => 'The :attribute field is required.',
+
+    // In the 'attributes' sub-array:
+    'attributes' => [
+        'email'    => 'email address',
+        'password' => 'password',
+    ],
+
     /*
     |--------------------------------------------------------------------------
     | Custom Validation Language Lines
