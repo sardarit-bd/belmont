@@ -70,4 +70,5 @@ return [
     'throttle' => '登录尝试次数过多，请在 :seconds 秒后重试。',
     'status_reset_sent'      => '如果该邮箱在我们的系统中，我们已发送了一封重置链接邮件，请检查您的收件箱。',
     'status_reset_throttled' => '尝试次数过多，请稍等片刻后再试。',
+    'status_password_reset' => '您的密码已重置，请重新登录。',
 ];

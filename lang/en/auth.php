@@ -72,4 +72,5 @@ return [
     'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
     'status_reset_sent'      => 'If that email is in our system, we\'ve sent a reset link. Check your inbox.',
     'status_reset_throttled' => 'Too many attempts. Please wait a moment before trying again.',
+    'status_password_reset' => 'Your password has been reset. Please sign in.',
 ];

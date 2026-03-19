@@ -69,5 +69,6 @@ return [
     'throttle' => 'Twòp tantativ koneksyon. Tanpri eseye ankò nan :seconds segonn.',
     'status_reset_sent'      => 'Si imel sa a nan sistèm nou an, nou voye yon lyen. Tcheke bwat resepsyon ou.',
     'status_reset_throttled' => 'Twòp tantativ. Tanpri tann yon ti moman anvan ou eseye ankò.',
+    'status_password_reset' => 'Modpas ou te chanje. Tanpri konekte.',
 
 ];

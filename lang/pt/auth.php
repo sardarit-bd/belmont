@@ -69,5 +69,6 @@ return [
     'throttle' => 'Muitas tentativas de login. Por favor, tente novamente em :seconds segundos.',
     'status_reset_sent'      => 'Se esse e-mail estiver em nosso sistema, enviamos um link. Verifique sua caixa de entrada.',
     'status_reset_throttled' => 'Muitas tentativas. Por favor, aguarde um momento antes de tentar novamente.',
+    'status_password_reset' => 'Sua senha foi redefinida. Por favor, faça login.',
 
 ];

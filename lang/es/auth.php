@@ -69,5 +69,6 @@ return [
     'throttle' => 'Demasiados intentos de acceso. Por favor, inténtalo de nuevo en :seconds segundos.',
     'status_reset_sent'      => 'Si ese correo está en nuestro sistema, te hemos enviado un enlace. Revisa tu bandeja de entrada.',
     'status_reset_throttled' => 'Demasiados intentos. Por favor, espera un momento antes de intentarlo de nuevo.',
+    'status_password_reset' => 'Tu contraseña ha sido restablecida. Por favor, inicia sesión.',
 
 ];

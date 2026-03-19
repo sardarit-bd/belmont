@@ -69,5 +69,6 @@ return [
     'throttle' => 'Trop de tentatives de connexion. Veuillez réessayer dans :seconds secondes.',
     'status_reset_sent'      => 'Si cet e-mail existe dans notre système, nous vous avons envoyé un lien. Vérifiez votre boîte de réception.',
     'status_reset_throttled' => 'Trop de tentatives. Veuillez patienter un moment avant de réessayer.',
+    'status_password_reset' => 'Votre mot de passe a été réinitialisé. Veuillez vous connecter.',
 
 ];
