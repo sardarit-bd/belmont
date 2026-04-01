@@ -34,7 +34,8 @@ interface PaymentGatewayInterface
         int $amountInCents,
         string $currency,
         string $idempotencyKey,
-        array $metadata = []
+        array $metadata = [],
+        array $paymentDetails = []
     ): PaymentIntentResult;
 
     /**

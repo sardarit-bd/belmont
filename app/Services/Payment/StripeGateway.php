@@ -73,7 +73,8 @@ final class StripeGateway implements PaymentGatewayInterface
         int $amountInCents,
         string $currency,
         string $idempotencyKey,
-        array $metadata = []
+        array $metadata = [],
+        array $paymentDetails = []
     ): PaymentIntentResult {
         $intent = $this->client->paymentIntents->create(
             [

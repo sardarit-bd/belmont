@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\DTOs\PickupScheduleData;
+use App\Models\PaymentGatewaySetting;
 use App\Models\PickupSchedule;
 use App\Repositories\Contracts\PickupScheduleRepositoryInterface;
 
@@ -23,7 +24,7 @@ class PickupScheduleRepository implements PickupScheduleRepositoryInterface
             'cardholder_name'      => $data->cardholderName,
             'card_last_four'       => $data->cardLastFour,
             'card_expiry'          => $data->cardExpiry,
-            'gateway'              => $data->gateway,
+            'gateway'              => $this->resolveActiveGateway(),
         ]);
     }
 
@@ -35,6 +36,9 @@ class PickupScheduleRepository implements PickupScheduleRepositoryInterface
     public function updatePaymentIntent(string $scheduleId, string $intentId, string $customerId, string $paymentMethodId): void
     {
         PickupSchedule::where('id', $scheduleId)->update([
+            'gateway_transaction_id'    => $intentId,
+            'gateway_customer_id'       => $customerId,
+            'gateway_payment_method_id' => $paymentMethodId,
             'stripe_payment_intent_id' => $intentId,
             'stripe_customer_id'       => $customerId,
             'stripe_payment_method_id' => $paymentMethodId,
@@ -43,7 +47,10 @@ class PickupScheduleRepository implements PickupScheduleRepositoryInterface
 
     public function findByPaymentIntentId(string $paymentIntentId): ?PickupSchedule
     {
-        return PickupSchedule::where('stripe_payment_intent_id', $paymentIntentId)->first();
+        return PickupSchedule::query()
+            ->where('gateway_transaction_id', $paymentIntentId)
+            ->orWhere('stripe_payment_intent_id', $paymentIntentId)
+            ->first();
     }
 
     public function markConfirmed(string $scheduleId): bool
@@ -71,5 +78,18 @@ class PickupScheduleRepository implements PickupScheduleRepositoryInterface
         return (bool) PickupSchedule::where('id', $scheduleId)
             ->where('status', $fromStatus)
             ->update(['status' => $toStatus]);
+    }
+
+    private function resolveActiveGateway(): string
+    {
+        $forcedGateway = env('PAYMENT_GATEWAY_FORCE');
+        $supportedGateways = array_keys((array) config('payment.gateways', []));
+
+        if (is_string($forcedGateway) && in_array($forcedGateway, $supportedGateways, true)) {
+            return $forcedGateway;
+        }
+
+        return PaymentGatewaySetting::where('is_active', true)->value('gateway')
+            ?? config('payment.default');
     }
 }

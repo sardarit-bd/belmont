@@ -38,6 +38,16 @@ class HandleInertiaRequests extends Middleware
     public function share(Request $request): array
     {
         $locale = App::getLocale();
+        $forcedGateway = env('PAYMENT_GATEWAY_FORCE');
+        $supportedGateways = array_keys((array) config('payment.gateways', []));
+
+        if (is_string($forcedGateway) && in_array($forcedGateway, $supportedGateways, true)) {
+            $activeGatewaySetting = PaymentGatewaySetting::where('gateway', $forcedGateway)->first();
+        } else {
+            $activeGatewaySetting = PaymentGatewaySetting::where('is_active', true)->first();
+        }
+
+        $activeGateway = $activeGatewaySetting?->gateway ?? config('payment.default');
         
         return [
             ...parent::share($request),
@@ -55,12 +65,8 @@ class HandleInertiaRequests extends Middleware
                 'error'   => $request->session()->get('error'),
             ],
 
-            'stripe_key' => cache()->rememberForever('stripe_public_key', function () {
-                $setting = PaymentGatewaySetting::where('gateway', 'stripe')
-                    ->where('is_active', true)
-                    ->first();
-                return $setting?->getCredential('public_key');
-            }),
+            'payment_gateway' => $activeGateway,
+            'payment_gateway_public_key' => $activeGatewaySetting?->getCredential('public_key'),
         ];
     }
 

@@ -5,6 +5,7 @@ use App\Http\Controllers\ContactMessageController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\OrdersController;
+use App\Http\Controllers\PayrocWebhookController;
 use App\Http\Controllers\PickupScheduleController;
 use App\Http\Controllers\StripeWebhookController;
 use App\Models\ContentBlock;
@@ -144,6 +145,10 @@ Route::post('/schedule', [PickupScheduleController::class, 'store'])
 // ── Stripe webhook ────────────────────────────────────────────────────────────
 Route::post('/webhooks/stripe', [StripeWebhookController::class, 'handle'])
     ->name('webhooks.stripe')
+    ->middleware('throttle:60,1');
+
+Route::post('/webhooks/payroc', [PayrocWebhookController::class, 'handle'])
+    ->name('webhooks.payroc')
     ->middleware('throttle:60,1');
 
 require __DIR__.'/settings.php';

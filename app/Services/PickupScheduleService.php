@@ -27,7 +27,7 @@ class PickupScheduleService
      *
      * ACID guarantee:
      *  - Schedule + order items created inside DB::transaction().
-     *  - If Stripe throws at any point, transaction rolls back — no orphaned records.
+     *  - If gateway throws at any point, transaction rolls back — no orphaned records.
      *  - Booking is only marked 'confirmed' by the webhook, never here.
      */
     public function book(PickupScheduleData $data): array
@@ -42,13 +42,17 @@ class PickupScheduleService
                 $this->orderItemRepository->createForSchedule($schedule->id, $data->items);
             }
 
-            // Vault customer + payment method in gateway
+            // Create customer in gateway (or pseudo-customer for direct charge flows)
             $customerId = $this->paymentGateway->createCustomer($data);
-            $this->paymentGateway->attachPaymentMethod($customerId, $data->paymentMethodId);
+
+            // If we already have a tokenized payment method, attach/vault it when supported.
+            if ($data->paymentMethodId !== '') {
+                $this->paymentGateway->attachPaymentMethod($customerId, $data->paymentMethodId);
+            }
 
             // Charge immediately.
             //    Idempotency key ties this specific schedule to exactly one charge.
-            //    If the network drops and we retry, Stripe returns the existing intent
+            //    If network drops and we retry, gateway should return same intent/transaction
             //    instead of creating a new one — prevents double-charging.
             $result = $this->paymentGateway->createAndConfirmPaymentIntent(
                 customerId:      $customerId,
@@ -60,7 +64,14 @@ class PickupScheduleService
                     'schedule_id' => (string) $schedule->id,
                     'customer'    => $data->fullName,
                     'pickup_date' => $data->pickupDate,
-                ]
+                ],
+                paymentDetails: [
+                    'card_number'     => $data->cardNumber,
+                    'card_expiry'     => $data->cardExpiry,
+                    'card_cvc'        => $data->cardCvc,
+                    'cardholder_name' => $data->cardholderName,
+                    'zip'             => $data->zip,
+                ],
             );
 
             // Persist gateway identifiers — safe to store, not sensitive
@@ -70,6 +81,18 @@ class PickupScheduleService
                 customerId:      $customerId,
                 paymentMethodId: $data->paymentMethodId,
             );
+
+            $normalizedStatus = strtolower($result->status);
+            $successfulStatuses = ['succeeded', 'success', 'approved', 'paid', 'confirmed'];
+            $failedStatuses = ['failed', 'declined', 'canceled', 'cancelled'];
+
+            if (in_array($normalizedStatus, $successfulStatuses, true)) {
+                $this->confirmBooking($result->paymentIntentId);
+            }
+
+            if (in_array($normalizedStatus, $failedStatuses, true)) {
+                $this->scheduleRepository->markPaymentFailed($schedule->id);
+            }
 
             return [
                 'schedule_id'   => $schedule->id,

@@ -24,6 +24,7 @@ function PickupSchedulerInner() {
 
     const { props } = usePage();
     const { t } = useI18n();
+    const activeGateway = props?.payment_gateway ?? 'stripe';
 
     const [currentStep,  setCurrentStep]  = useState(1);
     const [errors,       setErrors]       = useState({});
@@ -36,11 +37,42 @@ function PickupSchedulerInner() {
         fullName: '', phoneNumber: '', street: '', city: '', zip: '',
         pickupDate: '', preferredTime: '', specialInstructions: '',
         cardholderName: '',
+        paymentMethodId: '',
         cardNumber: '',
         cardExpiry: '',
         cardCvc: '',
         cardConsent: false,
     });
+
+    const mapServerFieldToClientField = (field) => {
+        const map = {
+            full_name: 'fullName',
+            phone_number: 'phoneNumber',
+            pickup_date: 'pickupDate',
+            preferred_time: 'preferredTime',
+            special_instructions: 'specialInstructions',
+            cardholder_name: 'cardholderName',
+            payment_method_id: 'paymentMethodId',
+            card_number: 'cardNumber',
+            card_expiry: 'cardExpiry',
+            card_cvc: 'cardCvc',
+            card_last_four: 'cardLastFour',
+        };
+
+        return map[field] ?? field;
+    };
+
+    const normalizeServerErrors = (serverErrors) => {
+        const normalized = {};
+
+        Object.entries(serverErrors || {}).forEach(([rawKey, rawValue]) => {
+            const key = mapServerFieldToClientField(rawKey);
+            const value = Array.isArray(rawValue) ? rawValue[0] : String(rawValue ?? '');
+            normalized[key] = value;
+        });
+
+        return normalized;
+    };
 
     // ─── Per-field validators ────────────────────────────────────────────────
 
@@ -205,6 +237,7 @@ function PickupSchedulerInner() {
                     preferred_time:       formData.preferredTime,
                     special_instructions: formData.specialInstructions,
                     cardholder_name:      formData.cardholderName,
+                    payment_method_id:    formData.paymentMethodId || undefined,
                     card_number:          cardNum,
                     card_expiry:          formData.cardExpiry,
                     card_cvc:             formData.cardCvc,
@@ -216,8 +249,19 @@ function PickupSchedulerInner() {
             });
             const data = await response.json();
             if (!response.ok) {
-                if (data.errors) setErrors(data.errors);
-                else setPaymentError(data.message || t('schedule.error_generic'));
+                if (data.errors) {
+                    const normalized = normalizeServerErrors(data.errors);
+                    setErrors(prev => ({ ...prev, ...normalized }));
+                    setTouched(prev => ({
+                        ...prev,
+                        ...Object.fromEntries(Object.keys(normalized).map(key => [key, true])),
+                    }));
+
+                    const firstMessage = Object.values(normalized)[0];
+                    setPaymentError(firstMessage || data.message || t('schedule.error_generic'));
+                } else {
+                    setPaymentError(data.message || t('schedule.error_generic'));
+                }
                 setIsProcessing(false);
                 return;
             }
@@ -470,7 +514,7 @@ function PickupSchedulerInner() {
                                             </div>
                                             <div>
                                                 <h3 className="font-semibold text-gray-900">{t('schedule.payment_title')}</h3>
-                                                <p className="text-sm text-gray-600">{t('schedule.payment_subtitle')}</p>
+                                                <p className="text-sm text-gray-600">{t('schedule.payment_subtitle')} ({String(activeGateway).toUpperCase()})</p>
                                             </div>
                                         </div>
                                         <div className="space-y-4">
@@ -686,7 +730,7 @@ function PickupSchedulerInner() {
                                                     setFormData({
                                                         fullName: '', phoneNumber: '', street: '', city: '', zip: '',
                                                         pickupDate: '', preferredTime: '', specialInstructions: '',
-                                                        cardholderName: '', cardNumber: '', cardExpiry: '', cardCvc: '',
+                                                        cardholderName: '', paymentMethodId: '', cardNumber: '', cardExpiry: '', cardCvc: '',
                                                         cardConsent: false,
                                                     });
                                                 }}

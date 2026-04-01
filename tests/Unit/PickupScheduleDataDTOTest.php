@@ -20,6 +20,8 @@ test('PickupScheduleData::fromRequest maps all fields correctly', function () {
         'preferred_time'       => '14:30',
         'special_instructions' => 'Ring the bell',
         'cardholder_name'      => 'Jane Doe',
+        'card_number'          => '4111111111111111',
+        'card_cvc'             => '123',
         'card_last_four'       => '1234',
         'card_expiry'          => '03/27',
         'payment_method_id'    => 'pm_test_abc123',
@@ -39,6 +41,8 @@ test('PickupScheduleData::fromRequest maps all fields correctly', function () {
         ->and($dto->preferredTime)->toBe('14:30')
         ->and($dto->specialInstructions)->toBe('Ring the bell')
         ->and($dto->cardholderName)->toBe('Jane Doe')
+        ->and($dto->cardNumber)->toBe('4111111111111111')
+        ->and($dto->cardCvc)->toBe('123')
         ->and($dto->cardLastFour)->toBe('1234')
         ->and($dto->cardExpiry)->toBe('03/27')
         ->and($dto->paymentMethodId)->toBe('pm_test_abc123')
@@ -57,12 +61,12 @@ test('PickupScheduleData::fromRequest defaults special_instructions to null', fu
         'cardholder_name'   => 'John',
         'card_last_four'    => '4242',
         'card_expiry'       => '01/30',
-        'payment_method_id' => 'pm_xyz',
     ];
 
     $dto = PickupScheduleData::fromRequest($input);
 
     expect($dto->specialInstructions)->toBeNull()
+        ->and($dto->paymentMethodId)->toBe('')
         ->and($dto->items)->toBe([]);
 });
 

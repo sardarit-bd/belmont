@@ -52,7 +52,8 @@ class PaymentGatewaySettingsTable
                         \App\Models\PaymentGatewaySetting::query()->update(['is_active' => false]);
                         $record->update(['is_active' => true]);
                         \Illuminate\Support\Facades\Cache::forget('active_payment_gateway');
-                        \Illuminate\Support\Facades\Cache::forget('stripe_public_key');
+                        \Illuminate\Support\Facades\Cache::forget('active_payment_gateway_name');
+                        \Illuminate\Support\Facades\Cache::forget('payment_gateway_public_key');
                     }),
             ])
             ->toolbarActions([

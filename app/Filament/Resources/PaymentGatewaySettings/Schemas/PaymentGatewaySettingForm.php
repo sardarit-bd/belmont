@@ -23,6 +23,16 @@ class PaymentGatewaySettingForm
             ['key' => 'client_secret', 'label' => 'Client Secret', 'prefix' => null],
             ['key' => 'webhook_id',    'label' => 'Webhook ID',    'prefix' => null],
         ],
+        'payroc' => [
+            ['key' => 'api_key',        'label' => 'API Key',             'prefix' => null],
+            ['key' => 'terminal_id',    'label' => 'Terminal ID',         'prefix' => null],
+            ['key' => 'environment',    'label' => 'Environment (uat/prod)', 'prefix' => null],
+            ['key' => 'token_url',      'label' => 'Bearer Token URL (Optional Override)',    'prefix' => 'https://'],
+            ['key' => 'payments_url',   'label' => 'Payments API URL (Optional Override)',    'prefix' => 'https://'],
+            ['key' => 'channel',        'label' => 'Channel (default: web)',       'prefix' => null],
+            ['key' => 'merchant_id',    'label' => 'Merchant ID',         'prefix' => null],
+            ['key' => 'webhook_secret', 'label' => 'Webhook Secret',      'prefix' => null],
+        ],
     ];
 
     public static function configure(Schema $schema): Schema
@@ -53,6 +63,8 @@ class PaymentGatewaySettingForm
                                     \App\Models\PaymentGatewaySetting::where('id', '!=', $record->id)
                                         ->update(['is_active' => false]);
                                     \Illuminate\Support\Facades\Cache::forget('active_payment_gateway');
+                                    \Illuminate\Support\Facades\Cache::forget('active_payment_gateway_name');
+                                    \Illuminate\Support\Facades\Cache::forget('payment_gateway_public_key');
                                 }
                             })
                             ->live(),
@@ -73,13 +85,23 @@ class PaymentGatewaySettingForm
                         }
 
                         return array_map(function ($field) {
+                            $optionalForPayroc = [
+                                'token_url',
+                                'payments_url',
+                                'channel',
+                                'merchant_id',
+                                'webhook_secret',
+                            ];
+
+                            $isRequired = !in_array($field['key'], $optionalForPayroc, true);
+
                             return TextInput::make("credentials.{$field['key']}")
                                 ->label($field['label'])
                                 ->password()
                                 ->revealable()
-                                ->required()
+                                ->required($isRequired)
                                 ->placeholder($field['prefix'] ? "{$field['prefix']}..." : 'Enter value...')
-                                ->helperText("Starts with: {$field['prefix']}" ?? null);
+                                ->helperText($field['prefix'] ? "Starts with: {$field['prefix']}" : null);
                         }, self::$credentialFields[$gateway]);
                     })
                     ->columns(1),

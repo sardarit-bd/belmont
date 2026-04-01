@@ -16,6 +16,8 @@ readonly class PickupScheduleData
         public string  $cardholderName,
         public string  $cardLastFour,
         public string  $cardExpiry,
+        public ?string $cardNumber,
+        public ?string $cardCvc,
         public string  $paymentMethodId,
         public string  $gateway,
         public array   $items,
@@ -35,8 +37,10 @@ readonly class PickupScheduleData
             cardholderName:      $data['cardholder_name'],
             cardLastFour:        $data['card_last_four'],
             cardExpiry:          $data['card_expiry'],
-            paymentMethodId:     $data['payment_method_id'],
-            gateway:             config('payment.default'),
+            cardNumber:          $data['card_number'] ?? null,
+            cardCvc:             $data['card_cvc'] ?? null,
+            paymentMethodId:     (string) ($data['payment_method_id'] ?? ''),
+            gateway:             (string) ($data['gateway'] ?? (env('PAYMENT_GATEWAY') ?: 'stripe')),
             items:               $data['items'] ?? [],
         );
     }
